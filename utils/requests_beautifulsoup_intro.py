@@ -18,3 +18,9 @@ def get_upcoming_events(url):
 if __name__ == '__main__':
     url = 'https://www.python.org/events/python-events/'
     get_upcoming_events(url)
+
+# TODO: At work
+"""1. Look at urllib3 and scrapy docs.
+2. Implement the same code using urllib3
+3. Most importantly the use of Scrapy for spider and crawler creation(tool of choice).
+4. Improve the code."""
