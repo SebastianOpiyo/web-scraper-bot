@@ -23,4 +23,6 @@ if __name__ == '__main__':
 """1. Look at urllib3 and scrapy docs.
 2. Implement the same code using urllib3
 3. Most importantly the use of Scrapy for spider and crawler creation(tool of choice).
-4. Improve the code."""
+4. Improve the code.
+Links: PacktPublishing/Python-Web-Scraping-Cookbook
+"""
