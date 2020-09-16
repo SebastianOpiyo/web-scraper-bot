@@ -1,0 +1,3 @@
+--> we use requests and urllib3 to fetch data and BeautifulSoup to extract the data.
+--> Scrapy however is more advanced.
+--> Everything in Scrapy revolves around creating a "Spider".

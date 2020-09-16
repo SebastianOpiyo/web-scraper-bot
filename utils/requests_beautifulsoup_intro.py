@@ -1,6 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 
+# REQUESTS
+# builds on top of urllib3's connection pooling
+# session reuses the same TCP connection if
+# requests are made to the same host
+# see https://en.wikipedia.org/wiki/HTTP_persistent_connection for details
+
 
 def get_upcoming_events(url):
     req = requests.get(url)
