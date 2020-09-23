@@ -48,7 +48,10 @@ class TollWebsiteAccess(object):
 
     def login(self):
         """we do the click and data entry into tables
-        then login below:"""
+        then login below:
+
+        We have 3 sec pause between each input just to ensure the bot
+        is not that instant, and we get to see what it actually does."""
         # We need a try except block here!
         try:
             self.driver.get(self.base_url)
