@@ -1,0 +1,7 @@
+# ACCESS
+mysql -h inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com -P 3306 -u admin -p
+
+OR
+telnet inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com
+
+# QUERY
