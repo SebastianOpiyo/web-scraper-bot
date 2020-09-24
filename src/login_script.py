@@ -84,6 +84,9 @@ class TollWebsiteAccess(object):
     def get_payment_plan(self):
         return self._pay_plan
 
+    def quit_browser(self):
+        return self.driver.close()
+
 
 def main():
     url = "https://www.ezpassnj.com/vector/violations/violationList.do"
