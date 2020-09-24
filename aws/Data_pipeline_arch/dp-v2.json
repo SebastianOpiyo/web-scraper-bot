@@ -1,20 +1,13 @@
 {
   "objects": [
     {
-      "input": {
-        "ref": "S3StagingDataNode"
-      },
-      "dependsOn": {
-        "ref": "S3ToRedshiftCopyActivity"
-      },
-      "stage": "false",
-      "name": "S3StagingCleanupActivity",
-      "id": "S3StagingCleanupActivity",
-      "runsOn": {
-        "ref": "Ec2Instance"
-      },
-      "type": "ShellCommandActivity",
-      "command": "(sudo yum -y update aws-cli) && (aws s3 rm #{input.directoryPath} --recursive)"
+      "role": "DataPipelineDefaultRole",
+      "subject": "Data Pipeline Notification",
+      "name": "s3toRedshiftCopy Fail",
+      "id": "ActionId_gie6U",
+      "message": "The Data pipeline Pipeline s3toRedshiftCopy Faulure!!",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
     {
       "directoryPath": "#{myS3StagingLoc}/#{format(@scheduledStartTime, 'YYYY-MM-dd-HH-mm-ss')}",
@@ -31,6 +24,15 @@
       "username": "admin"
     },
     {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Data Pipeline Notification",
+      "name": "s3-RedShift Success",
+      "id": "ActionId_QKfmi",
+      "message": "The Data pipeline Pipeline s3toRedshiftCopy Success!!",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
+    },
+    {
       "failureAndRerunMode": "CASCADE",
       "resourceRole": "DataPipelineDefaultResourceRole",
       "role": "DataPipelineDefaultRole",
@@ -38,36 +40,6 @@
       "scheduleType": "ONDEMAND",
       "name": "Default",
       "id": "Default"
-    },
-    {
-      "connectionString": "#{myRedshiftJdbcConnectStr}",
-      "*password": "#{*myRedshiftPassword}",
-      "name": "RedshiftCluster",
-      "id": "RedshiftCluster",
-      "type": "RedshiftDatabase",
-      "username": "#{myRedshiftUsername}"
-    },
-    {
-      "resourceRole": "DataPipelineDefaultResourceRole",
-      "role": "DataPipelineDefaultRole",
-      "name": "Ec2Instance",
-      "id": "Ec2Instance",
-      "type": "Ec2Resource",
-      "terminateAfter": "20 Minutes"
-    },
-    {
-      "output": {
-        "ref": "S3StagingDataNode"
-      },
-      "input": {
-        "ref": "SrcRDSTable"
-      },
-      "name": "RDSToS3CopyActivity",
-      "id": "RDSToS3CopyActivity",
-      "runsOn": {
-        "ref": "Ec2Instance"
-      },
-      "type": "CopyActivity"
     },
     {
       "database": {
@@ -111,14 +83,40 @@
       "type": "ShellCommandActivity"
     },
     {
-      "database": {
-        "ref": "rds_mysql"
+      "input": {
+        "ref": "S3StagingDataNode"
       },
-      "name": "SrcRDSTable",
-      "id": "SrcRDSTable",
-      "type": "SqlDataNode",
-      "table": "#{myRDSTableName}",
-      "selectQuery": "select * from #{table}"
+      "dependsOn": {
+        "ref": "S3ToRedshiftCopyActivity"
+      },
+      "stage": "false",
+      "name": "S3StagingCleanupActivity",
+      "id": "S3StagingCleanupActivity",
+      "runsOn": {
+        "ref": "Ec2Instance"
+      },
+      "type": "ShellCommandActivity",
+      "command": "(sudo yum -y update aws-cli) && (aws s3 rm #{input.directoryPath} --recursive)"
+    },
+    {
+      "output": {
+        "ref": "S3StagingDataNode"
+      },
+      "input": {
+        "ref": "SrcRDSTable"
+      },
+      "onFail": {
+        "ref": "ActionId_mNbiD"
+      },
+      "name": "RDSToS3CopyActivity",
+      "id": "RDSToS3CopyActivity",
+      "runsOn": {
+        "ref": "Ec2Instance"
+      },
+      "type": "CopyActivity",
+      "onSuccess": {
+        "ref": "ActionId_c1zTO"
+      }
     },
     {
       "output": {
@@ -130,13 +128,75 @@
       "dependsOn": {
         "ref": "RedshiftTableCreateActivity"
       },
+      "onFail": {
+        "ref": "ActionId_gie6U"
+      },
       "name": "S3ToRedshiftCopyActivity",
       "id": "S3ToRedshiftCopyActivity",
       "runsOn": {
         "ref": "Ec2Instance"
       },
       "type": "RedshiftCopyActivity",
-      "insertMode": "#{myInsertMode}"
+      "insertMode": "#{myInsertMode}",
+      "onSuccess": {
+        "ref": "ActionId_QKfmi"
+      }
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Data Pipeline Notification",
+      "name": "EC2 Fail Notifier",
+      "id": "ActionId_opfnX",
+      "type": "SnsAlarm",
+      "message": "The Data pipeline Pipeline EC2 faulure!!",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Data Pipeline Notification",
+      "name": "RDS-s3Copy Failure",
+      "id": "ActionId_mNbiD",
+      "message": "The Data pipeline Pipeline RDS-s3Copy Failure Failure!!",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Data Pipeline Notification",
+      "name": "RDS-s3Copy Success",
+      "id": "ActionId_c1zTO",
+      "type": "SnsAlarm",
+      "message": "The Data pipeline Pipeline RDS-s3Copy Failure Success!!",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
+    },
+    {
+      "connectionString": "#{myRedshiftJdbcConnectStr}",
+      "*password": "#{*myRedshiftPassword}",
+      "name": "RedshiftCluster",
+      "id": "RedshiftCluster",
+      "type": "RedshiftDatabase",
+      "username": "#{myRedshiftUsername}"
+    },
+    {
+      "database": {
+        "ref": "rds_mysql"
+      },
+      "name": "SrcRDSTable",
+      "id": "SrcRDSTable",
+      "type": "SqlDataNode",
+      "table": "#{myRDSTableName}",
+      "selectQuery": "select * from #{table}"
+    },
+    {
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "onFail": {
+        "ref": "ActionId_opfnX"
+      },
+      "name": "Ec2Instance",
+      "id": "Ec2Instance",
+      "type": "Ec2Resource",
+      "terminateAfter": "20 Minutes"
     }
   ],
   "parameters": [
