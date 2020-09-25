@@ -1,3 +1,11 @@
+# Access Cred
+Endpoint: inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com
+Port: 3306
+Username: admin
+Password: invtus3r
+DB instance: inno-ai-db-1
+DB name: innovative_database
+
 # ACCESS
 mysql -h inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com -P 3306 -u admin -p
 
