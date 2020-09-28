@@ -30,7 +30,6 @@
       "name": "data_warehouse",
       "jdbcDriverJarUri": "jdbc:mysql://inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com:3306/data_warehouse",
       "id": "data_warehouse",
-      "region": "us-west-2a",
       "type": "RdsDatabase",
       "rdsInstanceId": "inno-ai-db-1",
       "username": "admin"
