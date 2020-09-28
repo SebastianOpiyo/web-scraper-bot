@@ -5,7 +5,7 @@
       "subject": "Data Pipeline Notification",
       "name": "s3toRedshiftCopy Fail",
       "id": "ActionId_gie6U",
-      "message": "The Data pipeline Pipeline s3toRedshiftCopy Faulure!!",
+      "message": "The Data Pipeline s3toRedshiftCopy Faulure!!",
       "type": "SnsAlarm",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
@@ -28,7 +28,7 @@
       "subject": "Data Pipeline Notification",
       "name": "s3-RedShift Success",
       "id": "ActionId_QKfmi",
-      "message": "The Data pipeline Pipeline s3toRedshiftCopy Success!!",
+      "message": "The Data Pipeline s3toRedshiftCopy is Success!!",
       "type": "SnsAlarm",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
@@ -156,7 +156,7 @@
       "subject": "Data Pipeline Notification",
       "name": "RDS-s3Copy Failure",
       "id": "ActionId_mNbiD",
-      "message": "The Data pipeline Pipeline RDS-s3Copy Failure Failure!!",
+      "message": "The Data Pipeline RDS-s3Copy Failure!!",
       "type": "SnsAlarm",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
@@ -166,7 +166,7 @@
       "name": "RDS-s3Copy Success",
       "id": "ActionId_c1zTO",
       "type": "SnsAlarm",
-      "message": "The Data pipeline Pipeline RDS-s3Copy Failure Success!!",
+      "message": "The Data Pipeline RDS-s3Copy Success!!",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
     {
@@ -196,7 +196,7 @@
       "name": "Ec2Instance",
       "id": "Ec2Instance",
       "type": "Ec2Resource",
-      "terminateAfter": "20 Minutes"
+      "terminateAfter": "120 Minutes"
     }
   ],
   "parameters": [
@@ -298,10 +298,10 @@
     "myRedshiftJdbcConnectStr": "jdbc:redshift://redshift-cluster-1.c1oyyugo2c6e.us-west-2.redshift.amazonaws.com:5439/innovativeredshift",
     "*myRedshiftPassword": "Invtus3r",
     "myInsertMode": "OVERWRITE_EXISTING",
-    "myRDSJdbcConnectStr": "jdbc:mysql://inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com:3306/?user=admin",
+    "myRDSJdbcConnectStr": "jdbc:mysql://inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com:3306/data_warehouse",
     "myRDSRedshiftSecurityGrps": "default",
     "*myRDSPassword": "invtus3r",
     "myRedshiftTableName": "innovativeredshift",
-    "myRDSTableName": "innovative_database"
+    "myRDSTableName": "amazon_transactions"
   }
 }
