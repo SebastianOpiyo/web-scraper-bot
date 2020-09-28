@@ -1,6 +1,12 @@
 {
   "objects": [
     {
+      "directoryPath": "s3://staging-area-innovative/data_warehouse",
+      "name": "S3StagingDataNode",
+      "id": "S3StagingDataNode",
+      "type": "S3DataNode"
+    },
+    {
       "output": {
         "ref": "DestRedshiftTable"
       },
@@ -25,10 +31,19 @@
       }
     },
     {
+      "failureAndRerunMode": "CASCADE",
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "pipelineLogUri": "s3://innovative-results-bucket-dp1/logs",
+      "scheduleType": "ONDEMAND",
+      "name": "Default",
+      "id": "Default"
+    },
+    {
+      "connectionString": "jdbc:mysql://inno-ai-db-1.id.us-west-2a.rds.amazonaws.com:3306/data_warehouse",
       "databaseName": "data_warehouse",
       "*password": "invtus3r",
       "name": "data_warehouse",
-      "jdbcDriverJarUri": "jdbc:mysql://inno-ai-db-1.cpsxv0hr2fjp.us-west-2.rds.amazonaws.com:3306/data_warehouse",
       "id": "data_warehouse",
       "type": "RdsDatabase",
       "rdsInstanceId": "inno-ai-db-1",
@@ -44,13 +59,21 @@
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
     {
-      "failureAndRerunMode": "CASCADE",
-      "resourceRole": "DataPipelineDefaultResourceRole",
       "role": "DataPipelineDefaultRole",
-      "pipelineLogUri": "s3://innovative-results-bucket-dp1/logs",
-      "scheduleType": "ONDEMAND",
-      "name": "Default",
-      "id": "Default"
+      "subject": "Data Pipeline Notification",
+      "name": "RDS-s3Copy Success",
+      "id": "ActionId_c1zTO",
+      "message": "The Data Pipeline RDS-s3Copy Success!!",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
+    },
+    {
+      "connectionString": "jdbc:redshift://redshift-cluster-1.c1oyyugo2c6e.us-west-2.redshift.amazonaws.com:5439/innovativeredshift",
+      "*password": "Invtus3r",
+      "name": "RedshiftCluster",
+      "id": "RedshiftCluster",
+      "type": "RedshiftDatabase",
+      "username": "admin"
     },
     {
       "input": {
@@ -67,53 +90,6 @@
       },
       "type": "ShellCommandActivity",
       "command": "(sudo yum -y update aws-cli) && (aws s3 rm #{input.directoryPath} --recursive)"
-    },
-    {
-      "database": {
-        "ref": "RedshiftCluster"
-      },
-      "name": "DestRedshiftTable",
-      "id": "DestRedshiftTable",
-      "type": "RedshiftDataNode",
-      "tableName": "DestRedshiftTable"
-    },
-    {
-      "connectionString": "jdbc:redshift://redshift-cluster-1.c1oyyugo2c6e.us-west-2.redshift.amazonaws.com:5439/innovativeredshift",
-      "*password": "Invtus3r",
-      "name": "RedshiftCluster",
-      "id": "RedshiftCluster",
-      "type": "RedshiftDatabase",
-      "username": "admin"
-    },
-    {
-      "role": "DataPipelineDefaultRole",
-      "subject": "Data Pipeline Notification",
-      "name": "RDS-s3Copy Success",
-      "id": "ActionId_c1zTO",
-      "message": "The Data Pipeline RDS-s3Copy Success!!",
-      "type": "SnsAlarm",
-      "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
-    },
-    {
-      "database": {
-        "ref": "data_warehouse"
-      },
-      "name": "SrcRDSTable",
-      "id": "SrcRDSTable",
-      "type": "SqlDataNode",
-      "table": "amazon_transactions",
-      "selectQuery": "select * from #{table}"
-    },
-    {
-      "resourceRole": "DataPipelineDefaultResourceRole",
-      "role": "DataPipelineDefaultRole",
-      "onFail": {
-        "ref": "ActionId_opfnX"
-      },
-      "name": "Ec2Instance",
-      "id": "Ec2Instance",
-      "type": "Ec2Resource",
-      "terminateAfter": "120 Minutes"
     },
     {
       "output": {
@@ -136,12 +112,32 @@
       }
     },
     {
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "onFail": {
+        "ref": "ActionId_opfnX"
+      },
+      "name": "Ec2Instance",
+      "id": "Ec2Instance",
+      "type": "Ec2Resource",
+      "terminateAfter": "120 Minutes"
+    },
+    {
+      "database": {
+        "ref": "RedshiftCluster"
+      },
+      "name": "DestRedshiftTable",
+      "id": "DestRedshiftTable",
+      "type": "RedshiftDataNode",
+      "tableName": "DestRedshiftTable"
+    },
+    {
       "role": "DataPipelineDefaultRole",
       "subject": "Data Pipeline Notification",
-      "name": "s3toRedshiftCopy Fail",
-      "id": "ActionId_gie6U",
-      "message": "The Data Pipeline s3toRedshiftCopy Failure!!",
+      "name": "EC2 Fail Notifier",
+      "id": "ActionId_opfnX",
       "type": "SnsAlarm",
+      "message": "The Data pipeline Pipeline EC2 failure!!",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
     {
@@ -174,17 +170,21 @@
     {
       "role": "DataPipelineDefaultRole",
       "subject": "Data Pipeline Notification",
-      "name": "EC2 Fail Notifier",
-      "id": "ActionId_opfnX",
-      "message": "The Data pipeline Pipeline EC2 failure!!",
+      "name": "s3toRedshiftCopy Fail",
+      "id": "ActionId_gie6U",
+      "message": "The Data Pipeline s3toRedshiftCopy Failure!!",
       "type": "SnsAlarm",
       "topicArn": "arn:aws:sns:us-west-2:773536259142:Innovative"
     },
     {
-      "directoryPath": "s3://staging-area-innovative/data_warehouse",
-      "name": "S3StagingDataNode",
-      "id": "S3StagingDataNode",
-      "type": "S3DataNode"
+      "database": {
+        "ref": "data_warehouse"
+      },
+      "name": "SrcRDSTable",
+      "id": "SrcRDSTable",
+      "type": "SqlDataNode",
+      "table": "amazon_transactions",
+      "selectQuery": "select * from #{table}"
     }
   ],
   "parameters": []
