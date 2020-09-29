@@ -16,6 +16,6 @@ Secret Access Key: p14fuP76bYxgtFlp14bQX/OWB92Ai7WbWakTePq9,
 Password: ng@NZrLDC]f!,
 ,
  ,
-
-# redshift jdbc connector
-jdbc:redshift://redshift-cluster-1.c1oyyugo2c6e.us-west-2.redshift.amazonaws.com:5439/innovativeredshift
+,
+# redshift jdbc connector,
+jdbc:redshift://redshift-cluster-1.c1oyyugo2c6e.us-west-2.redshift.amazonaws.com:5439/innovativeredshift,
