@@ -58,5 +58,5 @@ for db in $databases;
 
 done;
 
-# Jobs a goodun
+# Job done!
 echo -e "\e[1;32mJob completed\e[00m"
