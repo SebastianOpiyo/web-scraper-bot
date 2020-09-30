@@ -27,7 +27,7 @@ def lambda_handler(event, context):
             for filename in z.namelist():
                 file_info = z.getinfo(filename)
                 try:
-                    respose = s3_resource.meta.client.upload_fileobj(
+                    response = s3_resource.meta.client.upload_fileobj(
                         z.open(filename),
                         Bucket=target_s3_bucket,
                         Key=f'{filename}'

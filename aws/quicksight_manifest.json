@@ -1,0 +1,22 @@
+
+{
+    "fileLocations": [
+        {
+            "URIs": [
+                "s3://staging-area-innovative/data_warehouse/1601365958 - Tuesday 29 September 2020 @ 1052/data_warehouse-1601365958 - Tuesday 29 September 2020 @ 1052.csv"
+
+            ]
+        },
+      {
+        "URIPrefixes": [
+          "s3://staging-area-innovative/data_warehouse/"
+        ]
+      }
+    ],
+    "globalUploadSettings": {
+        "format": "CSV",
+        "delimiter": ",",
+        "textqualifier": "'",
+        "containsHeader": "true"
+    }
+}
