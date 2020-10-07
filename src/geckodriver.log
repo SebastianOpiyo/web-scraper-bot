@@ -310,3 +310,178 @@ JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line
 JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
 JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
 1600683256768	Marionette	INFO	Stopped listening on port 43909
+1602056257879	geckodriver	INFO	Listening on 127.0.0.1:52917
+1602056258003	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileljfKFu"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1602056265653	Marionette	INFO	Listening on port 43543
+1602056265746	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1158291928, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1158291928, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1158291928, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1158291928 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1158291928 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3429: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3386: ReferenceError: totalAmount is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=10&cb=1611421804, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=10&cb=1611421804, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=10&cb=1611421804, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=10&cb=1611421804 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=10&cb=1611421804 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+1602057340793	Marionette	INFO	Stopped listening on port 43543
+1602057351949	geckodriver	INFO	Listening on 127.0.0.1:40043
+1602057351954	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileeOukOp"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1602057355300	Marionette	INFO	Listening on port 45719
+1602057355404	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=2072451964, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=2072451964, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=2072451964 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.
+1602057706761	geckodriver	INFO	Listening on 127.0.0.1:39875
+1602057706766	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileqmy0Nw"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1602057711187	Marionette	INFO	Listening on port 45281
+1602057711278	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1750906326, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1750906326, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1750906326, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1750906326 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1750906326 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3429: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3386: ReferenceError: totalAmount is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1654075037, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1654075037, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1654075037 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1654075037 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+1602058516953	Marionette	INFO	Stopped listening on port 45281
+1602058526020	geckodriver	INFO	Listening on 127.0.0.1:52545
+1602058527020	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileqNpbXY"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1602058530519	Marionette	INFO	Listening on port 34001
+1602058530539	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1771923847, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1771923847, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1771923847, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1771923847 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1771923847 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3429: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.warn: services.settings: security-state/intermediates sync interrupted by shutdown
+console.warn: services.settings: main/cfr sync interrupted by shutdown
+console.warn: services.settings: security-state/onecrl sync interrupted by shutdown
+console.warn: services.settings: main/top-sites sync interrupted by shutdown
+console.warn: services.settings: main/search-config sync interrupted by shutdown
+console.warn: services.settings: main/fxmonitor-breaches sync interrupted by shutdown
+console.warn: services.settings: main/pioneer-study-addons-v1 sync interrupted by shutdown
+console.warn: services.settings: main/message-groups sync interrupted by shutdown
+console.warn: services.settings: main/search-default-override-allowlist sync interrupted by shutdown
+console.warn: services.settings: main/url-classifier-skip-urls sync interrupted by shutdown
+console.warn: services.settings: blocklists/plugins sync interrupted by shutdown
+console.warn: services.settings: main/partitioning-exempt-urls sync interrupted by shutdown
+console.warn: services.settings: main/cfr-fxa sync interrupted by shutdown
+1602058804490	Marionette	INFO	Stopped listening on port 34001
+1602064379669	geckodriver	INFO	Listening on 127.0.0.1:38429
+1602064380688	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileLgdZcH"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1602064397573	Marionette	INFO	Listening on port 46693
+1602064397960	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1739549919, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1739549919, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1739549919, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1739549919 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=2&cb=1739549919 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationInquiry.do, line 770: ReferenceError: preventBrowseBack is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3429: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3386: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3429: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3386: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3238: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3238: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3612: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3588: ReferenceError: totalAmount is not defined
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=709313210, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=709313210, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=709313210, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=709313210 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://www.ezpassnj.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=709313210 line 1 > eval, line 1: unreachable code after return statement
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/violations/violationList.do, line 3655: ReferenceError: totalAmount is not defined
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+SourceActor threw an exception: [Exception... "Component returned failure code: 0x80470002 (NS_BASE_STREAM_CLOSED) [nsIInputStream.available]"  nsresult: "0x80470002 (NS_BASE_STREAM_CLOSED)"  location: "JS frame :: resource://devtools/shared/DevToolsUtils.js :: onResponse :: line 560"  data: no]
+Stack: onResponse@resource://devtools/shared/DevToolsUtils.js:560:34
+onStopRequest@resource://gre/modules/NetUtil.jsm:128:18
+Line: 560, column: 0
+console.error: ({})
+JavaScript error: resource://devtools/shared/DevToolsUtils.js, line 560: NS_BASE_STREAM_CLOSED: Component returned failure code: 0x80470002 (NS_BASE_STREAM_CLOSED) [nsIInputStream.available]
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+JavaScript error: https://www.ezpassnj.com/vector/nj/app/jscript/custom.js, line 21: TypeError: document.getElementById(...) is null
+SourceActor threw an exception: [Exception... "Component returned failure code: 0x80470002 (NS_BASE_STREAM_CLOSED) [nsIInputStream.available]"  nsresult: "0x80470002 (NS_BASE_STREAM_CLOSED)"  location: "JS frame :: resource://devtools/shared/DevToolsUtils.js :: onResponse :: line 560"  data: no]
+Stack: onResponse@resource://devtools/shared/DevToolsUtils.js:560:34
+onStopRequest@resource://gre/modules/NetUtil.jsm:128:18
+Line: 560, column: 0
+console.error: ({})
+JavaScript error: resource://devtools/shared/DevToolsUtils.js, line 560: NS_BASE_STREAM_CLOSED: Component returned failure code: 0x80470002 (NS_BASE_STREAM_CLOSED) [nsIInputStream.available]
