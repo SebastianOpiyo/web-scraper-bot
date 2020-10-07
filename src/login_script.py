@@ -2,7 +2,7 @@
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
 # Date Modified: Sep 21, 2020
-# Description: An Amazon Toll Scraping Bot.
+# Description: An Amazon Toll Scraping Bot: Login page.
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
@@ -14,8 +14,10 @@ from webdriver_manager.firefox import GeckoDriverManager
 # from selenium.common.exceptions import NoAlertPresentException
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
+
 import time
 
+# home url: https://www.ezpassnj.com/vector/violations/violationInquiry.do
 
 class BotExceptionHandler(Exception):
     pass
@@ -25,7 +27,9 @@ class TollWebsiteAccess(object):
 
     def __init__(self, url):
         self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-        # self.driver.implicitly_wait(20)
+        # To resolve issues with phantom--my preference.
+        # self.driver = webdriver.PhantomJS(executable_path='/home/intelligentbots/Projects/web-scraper-bot/phantomjs')
+        self.driver.implicitly_wait(1000)
         self.base_url = url
         self.verificationErrors = []
         self.accept_next_alert = True
@@ -42,6 +46,7 @@ class TollWebsiteAccess(object):
     def test_site_access(self):
         try:
             self.driver.get(self.base_url)
+            print("Site can be reached!")
         except BotExceptionHandler:
             # Does this really work?
             print("Bot could not access the page...is the vpn ok?")
@@ -80,6 +85,10 @@ class TollWebsiteAccess(object):
         except BotExceptionHandler:
             print("The Bot could not login!")
 
+    def timer(self):
+        """Does ensure that the page loads successfully before login credentials are submitted."""
+        return time.sleep(3600)
+
     # getter and setter methods for the login credentials.
     def get_email(self):
         return self._email
@@ -95,6 +104,7 @@ def main():
     url = "https://www.ezpassnj.com/vector/violations/violationList.do"
     process = TollWebsiteAccess(url)
     process.test_site_access()
+    # process.timer()
     process.collect_login_credentials()
     print("Your credentials:")
     print(process.get_email())
