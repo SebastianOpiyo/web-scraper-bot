@@ -17,6 +17,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 import time
 
+
 # home url: https://www.ezpassnj.com/vector/violations/violationInquiry.do
 
 class BotExceptionHandler(Exception):
@@ -24,13 +25,14 @@ class BotExceptionHandler(Exception):
 
 
 class TollWebsiteAccess(object):
+    url = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
-    def __init__(self, url):
+    def __init__(self, URL=url):
         self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         # To resolve issues with phantom--my preference.
         # self.driver = webdriver.PhantomJS(executable_path='/home/intelligentbots/Projects/web-scraper-bot/phantomjs')
         self.driver.implicitly_wait(1000)
-        self.base_url = url
+        self.base_url = URL
         self.verificationErrors = []
         self.accept_next_alert = True
         self._pay_plan = None
@@ -41,7 +43,6 @@ class TollWebsiteAccess(object):
         password = input("Please enter a valid Email:")
         self._pay_plan = username
         self._email = password
-        # return self._login()
 
     def test_site_access(self):
         try:
@@ -52,16 +53,16 @@ class TollWebsiteAccess(object):
             print("Bot could not access the page...is the vpn ok?")
 
     def login(self):
-        """we do the click and data entry into tables
-        then login below:
-
+        """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does."""
-        # We need a try except block here!
         try:
             self.driver.get(self.base_url)
         except BotExceptionHandler:
             print("The Bot Failed to Access the site!!")
+
+        self.collect_login_credentials()
+
         try:
             pay_plan = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/'
                                                          'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
@@ -81,13 +82,24 @@ class TollWebsiteAccess(object):
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
             submit_button.submit()
+
+            time.sleep(120)
             print("Login Successful!!")
         except BotExceptionHandler:
-            print("The Bot could not login!")
+            print("Timeout exception or Wrong Credentials!")
 
+    def logout(self):
+        try:
+            sign_out = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/'
+                                                         'div[3]/div/div/form/div/div[1]/div/div[3]/button')
+            self.driver.execute_script("arguments[0].click();", sign_out)
+        except:
+            raise BotExceptionHandler("The Bot could not sign out!")
+
+    @property
     def timer(self):
         """Does ensure that the page loads successfully before login credentials are submitted."""
-        return time.sleep(3600)
+        return time.sleep(7200)
 
     # getter and setter methods for the login credentials.
     def get_email(self):
@@ -100,17 +112,14 @@ class TollWebsiteAccess(object):
         return self.driver.close()
 
 
-def main():
-    url = "https://www.ezpassnj.com/vector/violations/violationList.do"
-    process = TollWebsiteAccess(url)
+def main_run():
+    process = TollWebsiteAccess()
     process.test_site_access()
-    # process.timer()
-    process.collect_login_credentials()
     print("Your credentials:")
-    print(process.get_email())
-    print(process.get_payment_plan())
     process.login()
+    print(f'Toll Acc: {process.get_payment_plan()}')
+    print(f'Acc. Mail {process.get_email()}')
 
 
 if __name__ == '__main__':
-    main()
+    main_run()
