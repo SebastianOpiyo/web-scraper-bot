@@ -86,7 +86,8 @@ class TollWebsiteAccess(object):
             print("Login Successful!!")
             toll_scraper.ScrapeTolls.scrape_title_info(self)
             # toll_scraper.ScrapeTolls.check_all_boxes(self)
-            toll_scraper.ScrapeTolls.scrape_table_rows(self)
+            # toll_scraper.ScrapeTolls.scrape_table_rows(self)
+            self.driver.get_screenshot_as_file('checkbox-page.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -125,8 +126,8 @@ def main_run():
     process.test_site_access()
     print("Your credentials:")
     process.login()
-    print(f'Toll Acc: {process.get_payment_plan()}')
-    print(f'Acc. Mail {process.get_email()}')
+    # print(f'Toll Acc: {process.get_payment_plan()}')
+    # print(f'Acc. Mail {process.get_email()}')
 
 
 if __name__ == '__main__':

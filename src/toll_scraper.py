@@ -54,9 +54,10 @@ class ScrapeTolls(TollWebsiteAccess):
         # main_run()
         try:
             WebDriverWait(self.driver, 120).until(EC.element_to_be_clickable((By.ID, 'checkAll')))
-            check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
-                                                                'div/div[11]/table/thead/tr/th[1]/div/ins"]')
-            self.driver.execute_script("arguments[0].click();", check_all_boxes)
+            # check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
+            #                                                     'div/div[11]/table/thead/tr/th[1]/div/ins"]')
+            # self.driver.execute_script("arguments[0].click();", check_all_boxes)
+            self.driver.find_element_by_id('checkAll').click()
 
             time.sleep(3)
 
