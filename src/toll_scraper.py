@@ -8,8 +8,12 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from login_script import TollWebsiteAccess, main_run
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 import requests
 import time
+import psutil
 
 """After login we have to do the following:
 1. Select each row and View Details per rows
@@ -47,11 +51,12 @@ class ScrapeTolls(TollWebsiteAccess):
     def check_all_boxes(self):
         """Check all the checkboxes in the toll list so as
         to get the dynamically generated data using the web driver."""
-        # self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(30)
+        main_run()
         try:
-            main_run()
-            check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/'
-                                                                'div/div/form/div/div[11]/table/thead/tr/th[1]/div/ins')
+            wait = WebDriverWait(self.driver, 30)
+            check_all = wait.until(EC.element_to_be_clickable((By.ID, 'checkAll')))
+            check_all_boxes = self.driver.find_element_by_id('checkAll')
             self.driver.execute_script("arguments[0].click();", check_all_boxes)
         except Exception as e:
             print(e)
@@ -67,8 +72,14 @@ class ScrapeTolls(TollWebsiteAccess):
 
     def run(self):
         self.check_all_boxes()
+        self.driver.get_screenshot_as_file('check-page.png')
 
 
 if __name__ == '__main__':
     scraper = ScrapeTolls()
     scraper.run()
+    # Checking for the selenium running instances of chrome.
+    # c = webdriver.Chrome()
+    # c.service.process
+    # p = psutil.Process(c.service.process.pid)
+    # print(p.children(recursive=True))
