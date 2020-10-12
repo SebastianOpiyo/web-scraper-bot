@@ -1,7 +1,7 @@
 #!/bin/python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
-# Date Modified: Sep 21, 2020
+# Date Modified: Oct 12, 2020
 # Description: An Amazon Toll Scraping Bot: Login page.
 # -*- coding: utf-8 -*-
 
@@ -86,6 +86,7 @@ class TollWebsiteAccess(object):
             print("Login Successful!!")
             toll_scraper.ScrapeTolls.scrape_title_info(self)
             # toll_scraper.ScrapeTolls.check_all_boxes(self)
+            toll_scraper.ScrapeTolls.scrape_table_rows(self)
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -97,12 +98,22 @@ class TollWebsiteAccess(object):
         except Exception as e:
             print(e)
 
-    # getter and setter methods for the login credentials.
+    # getter and setter helper methods for the login credentials.
+    @property
     def get_email(self):
         return self._email
 
+    @get_email.setter
+    def get_email(self, email):
+        self._email = email
+
+    @property
     def get_payment_plan(self):
         return self._pay_plan
+
+    @get_payment_plan.setter
+    def get_payment_plan(self, new_pay_plan):
+        self._pay_plan = new_pay_plan
 
     def quit_browser(self):
         return self.driver.close()
