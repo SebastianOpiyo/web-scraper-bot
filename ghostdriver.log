@@ -1,0 +1,9 @@
+Qt: Session management error: None of the authentication protocols specified are supported
+[INFO  - 2020-10-09T05:16:42.820Z] GhostDriver - Main - running on port 49109
+[INFO  - 2020-10-09T05:16:43.666Z] Session [9ed5f2e0-09ee-11eb-bf76-5fe89f22969a] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) PhantomJS/2.1.1 Version/10.0 Safari/602.1"}
+[INFO  - 2020-10-09T05:16:43.666Z] Session [9ed5f2e0-09ee-11eb-bf76-5fe89f22969a] - page.customHeaders:  - {}
+[INFO  - 2020-10-09T05:16:43.666Z] Session [9ed5f2e0-09ee-11eb-bf76-5fe89f22969a] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-10-09T05:16:43.666Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 9ed5f2e0-09ee-11eb-bf76-5fe89f22969a
+[INFO  - 2020-10-09T05:21:42.950Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-10-09T05:26:42.950Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-10-09T05:31:42.950Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW

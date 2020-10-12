@@ -6,33 +6,31 @@
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
+from chromedriver_py import binary_path
 from webdriver_manager.firefox import GeckoDriverManager
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.support.ui import Select
-# from selenium.common.exceptions import NoSuchElementException
-# from selenium.common.exceptions import NoAlertPresentException
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+
 
 import time
 
-
-# home url: https://www.ezpassnj.com/vector/violations/violationInquiry.do
 
 class BotExceptionHandler(Exception):
     pass
 
 
 class TollWebsiteAccess(object):
-    url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+    URL = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
-    def __init__(self, URL=url):
-        self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-        # To resolve issues with phantom--my preference.
-        # self.driver = webdriver.PhantomJS(executable_path='/home/intelligentbots/Projects/web-scraper-bot/phantomjs')
-        self.driver.implicitly_wait(1000)
-        self.base_url = URL
+    def __init__(self, url=URL):
+        # self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('window-size=1200x600')
+        # options = FirefoxOptions()
+        # options.headless = True
+        # self.driver = webdriver.Firefox(options=options, executable_path='/usr/bin/geckodriver')
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.base_url = url
         self.verificationErrors = []
         self.accept_next_alert = True
         self._pay_plan = None
@@ -46,11 +44,11 @@ class TollWebsiteAccess(object):
 
     def test_site_access(self):
         try:
+            self.driver.implicitly_wait(20)
             self.driver.get(self.base_url)
             print("Site can be reached!")
-        except BotExceptionHandler:
-            # Does this really work?
-            print("Bot could not access the page...is the vpn ok?")
+        except Exception as e:
+            print(e)
 
     def login(self):
         """We do the click and data entry into tables then login below:
@@ -81,9 +79,9 @@ class TollWebsiteAccess(object):
             submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
-            submit_button.submit()
-
-            time.sleep(120)
+            # submit_button.submit()
+            self.driver.get_screenshot_as_file('login-page.png')
+            time.sleep(240)
             print("Login Successful!!")
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
@@ -93,13 +91,8 @@ class TollWebsiteAccess(object):
             sign_out = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/'
                                                          'div[3]/div/div/form/div/div[1]/div/div[3]/button')
             self.driver.execute_script("arguments[0].click();", sign_out)
-        except:
-            raise BotExceptionHandler("The Bot could not sign out!")
-
-    @property
-    def timer(self):
-        """Does ensure that the page loads successfully before login credentials are submitted."""
-        return time.sleep(7200)
+        except Exception as e:
+            print(e)
 
     # getter and setter methods for the login credentials.
     def get_email(self):
