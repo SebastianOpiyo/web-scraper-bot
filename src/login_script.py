@@ -9,7 +9,7 @@ from selenium import webdriver
 from chromedriver_py import binary_path
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-
+import toll_scraper
 
 import time
 
@@ -62,6 +62,7 @@ class TollWebsiteAccess(object):
         self.collect_login_credentials()
 
         try:
+            time.sleep(20)
             pay_plan = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/'
                                                          'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
             self.driver.execute_script("arguments[0].click();", pay_plan)
@@ -83,6 +84,8 @@ class TollWebsiteAccess(object):
             self.driver.get_screenshot_as_file('login-page.png')
             time.sleep(240)
             print("Login Successful!!")
+            toll_scraper.ScrapeTolls.scrape_title_info(self)
+            # toll_scraper.ScrapeTolls.check_all_boxes(self)
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -107,6 +110,7 @@ class TollWebsiteAccess(object):
 
 def main_run():
     process = TollWebsiteAccess()
+    scraper = toll_scraper.ScrapeTolls()
     process.test_site_access()
     print("Your credentials:")
     process.login()

@@ -51,18 +51,37 @@ class ScrapeTolls(TollWebsiteAccess):
     def check_all_boxes(self):
         """Check all the checkboxes in the toll list so as
         to get the dynamically generated data using the web driver."""
-        self.driver.implicitly_wait(30)
-        main_run()
+        # main_run()
         try:
-            wait = WebDriverWait(self.driver, 30)
-            check_all = wait.until(EC.element_to_be_clickable((By.ID, 'checkAll')))
-            check_all_boxes = self.driver.find_element_by_id('checkAll')
+            WebDriverWait(self.driver, 120).until(EC.element_to_be_clickable((By.ID, 'checkAll')))
+            check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
+                                                                'div/div[11]/table/thead/tr/th[1]/div/ins"]')
             self.driver.execute_script("arguments[0].click();", check_all_boxes)
+
+            time.sleep(3)
+
+            self.driver.get_screenshot_as_file('check-page.png')
+
         except Exception as e:
-            print(e)
+            print(f'Could not check the box because of: {e}')
+
+    def scrape_title_info(self):
+        load_page = self.driver.find_element_by_xpath('html/body')
+        acc_details = dict()
+        acc_details['TotalAmountDue'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
+                                                                        'div[9]/div[1]/h4').text
+        acc_details['OpenViolation'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
+                                                                       'div/div[9]/div[2]/h4').text
+        print(f'Account Details: {acc_details}')
 
     def move_to_next_page(self):
-        pass
+        try:
+            load_page = self.driver.find_element_by_xpath('html/body')
+            next_icon = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/div[11]/'
+                                                        'div[1]/center/a[2]/img')
+            self.driver.execute_script("arguments[0].click();", next_icon)
+        except Exception as e:
+            print(f'Could not move to the next page because of the Error: {e}')
 
     def create_soup(self):
         pass
@@ -72,7 +91,6 @@ class ScrapeTolls(TollWebsiteAccess):
 
     def run(self):
         self.check_all_boxes()
-        self.driver.get_screenshot_as_file('check-page.png')
 
 
 if __name__ == '__main__':
