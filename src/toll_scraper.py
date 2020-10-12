@@ -74,6 +74,20 @@ class ScrapeTolls(TollWebsiteAccess):
                                                                        'div/div[9]/div[2]/h4').text
         print(f'Account Details: {acc_details}')
 
+    def scrape_table_rows(self):
+        toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
+                                                       'form/div/div[11]/table')
+        table_header = toll_table.find_element_by_xpath('//*[@id="violationTable"]/thead/tr').text
+        print(f'Tolls Table Details:')
+        print(f'{table_header}')
+        table_body = self.driver.find_element_by_xpath('//*[@id="violationTable"]/tbody')
+        for row in table_body:
+            toll_list = []
+            # The xpath is not certain the correct one.
+            item = row.find_element_by_xpath('//*[@id="violationTable"]/tbody/tr').text
+            toll_list.append(item)
+            # when done, write it into a csv file.
+
     def move_to_next_page(self):
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
