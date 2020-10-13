@@ -11,6 +11,8 @@ from login_script import TollWebsiteAccess, main_run
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+
 import requests
 import time
 import psutil
@@ -54,14 +56,15 @@ class ScrapeTolls(TollWebsiteAccess):
         # main_run()
         try:
             WebDriverWait(self.driver, 120).until(EC.element_to_be_clickable((By.ID, 'checkAll')))
-            check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
-                                                                'div/div[11]/table/thead/tr/th[1]/div/ins"]')
-            self.driver.execute_script("arguments[0].click();", check_all_boxes)
-
-            time.sleep(3)
-
+            # check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
+            #                                                     'div/div[11]/table/thead/tr/th[1]/div/ins"]')
+            check_box = self.driver.find_element_by_id('checkAll')
+            actions = ActionChains(self.driver)
+            actions.move_to_element(check_box).perform()
+            self.driver.execute_script("arguments[0].click();", check_box)
+            time.sleep(5)
             self.driver.get_screenshot_as_file('check-page.png')
-
+            print(f'Selected all checkboxes')
         except Exception as e:
             print(f'Could not check the box because of: {e}')
 
@@ -88,12 +91,25 @@ class ScrapeTolls(TollWebsiteAccess):
             toll_list.append(item)
             # when done, write it into a csv file.
 
+    def execute_view_detail(self):
+        """Calls the javascript View Details function on the table so as to create
+        the dynamic content table."""
+        pass
+
+    def take_screen_shot(self, filename):
+        file_path = f'./screenshots/{filename}'
+        body = self.driver.find_element_by_tag_name('body')
+        body.screenshot(file_path)
+
     def move_to_next_page(self):
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
             next_icon = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/div[11]/'
                                                         'div[1]/center/a[2]/img')
             self.driver.execute_script("arguments[0].click();", next_icon)
+            time.sleep(15)
+            self.driver.get_screenshot_as_file('next-page-img.png')
+            print(f'Moved to the next page!')
         except Exception as e:
             print(f'Could not move to the next page because of the Error: {e}')
 
@@ -105,6 +121,9 @@ class ScrapeTolls(TollWebsiteAccess):
 
     def run(self):
         self.check_all_boxes()
+
+    def exit_driver(self):
+        self.driver.quit()
 
 
 if __name__ == '__main__':

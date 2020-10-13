@@ -25,7 +25,8 @@ class TollWebsiteAccess(object):
         # self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('headless')
-        chrome_options.add_argument('window-size=1200x600')
+        self.driver.maximize_window()
+        # chrome_options.add_argument('window-size=1200x600')
         # options = FirefoxOptions()
         # options.headless = True
         # self.driver = webdriver.Firefox(options=options, executable_path='/usr/bin/geckodriver')
@@ -85,8 +86,12 @@ class TollWebsiteAccess(object):
             time.sleep(240)
             print("Login Successful!!")
             toll_scraper.ScrapeTolls.scrape_title_info(self)
+            self.driver.get_screenshot_as_file('checkbox-page.png')
             # toll_scraper.ScrapeTolls.check_all_boxes(self)
-            toll_scraper.ScrapeTolls.scrape_table_rows(self)
+            # toll_scraper.ScrapeTolls.scrape_table_rows(self)
+            toll_scraper.ScrapeTolls.move_to_next_page(self)
+            # time.sleep(15)
+            self.driver.get_screenshot_as_file('next-page.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -125,8 +130,8 @@ def main_run():
     process.test_site_access()
     print("Your credentials:")
     process.login()
-    print(f'Toll Acc: {process.get_payment_plan()}')
-    print(f'Acc. Mail {process.get_email()}')
+    # print(f'Toll Acc: {process.get_payment_plan()}')
+    # print(f'Acc. Mail {process.get_email()}')
 
 
 if __name__ == '__main__':
