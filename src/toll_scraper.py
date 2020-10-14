@@ -54,6 +54,9 @@ class ScrapeTolls(TollWebsiteAccess):
             raise e
 
     def scrape_title_info(self):
+        """Scrapes information about the account, i.e:
+        - Total Amount Due
+        - Open Violation."""
         load_page = self.driver.find_element_by_xpath('html/body')
         acc_details = dict()
         acc_details['TotalAmountDue'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
@@ -61,6 +64,7 @@ class ScrapeTolls(TollWebsiteAccess):
         acc_details['OpenViolation'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
                                                                        'div/div[9]/div[2]/h4').text
         print(f'Account Details: {acc_details}')
+        return acc_details
 
     def scrape_table_rows(self):
         toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
@@ -70,15 +74,17 @@ class ScrapeTolls(TollWebsiteAccess):
         print(f'{table_header}')
         table_body = self.driver.find_element_by_xpath('//*[@id="violationTable"]/tbody')
         for row in table_body:
+            toll_acc = self.scrape_title_info()
             toll_list = []
             # The xpath is not certain the correct one.
             item = row.find_element_by_xpath('//*[@id="violationTable"]/tbody/tr').text
             toll_list.append(item)
             # when done, write it into a csv file.
-            self.write_toll_to_csv(toll_list)
+            self.write_toll_to_csv(toll_list, toll_acc)
 
     @staticmethod
     def write_toll_to_csv(toll_list=None, toll_acc=None):
+        # Writes the title information and tolls scraped into the csv file.
         if toll_list is not list:
             print(f'{toll_list} needs to be a list')
             raise Exception
@@ -105,6 +111,7 @@ class ScrapeTolls(TollWebsiteAccess):
     def execute_view_detail(self):
         """Calls the javascript View Details function on the table so as to create
         the dynamic content table."""
+        dynamic_table_link = '//*[@id="transactionItems"]'
         pass
 
     def take_screen_shot(self, filename: str):
