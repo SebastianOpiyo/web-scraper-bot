@@ -5,6 +5,10 @@
 # Description: An Amazon Toll Scraping Bot: Login page.
 # -*- coding: utf-8 -*-
 
+"""This file manages login to the sites to be scraped.
+It then calls the [toll_scraper] module classes.
+"""
+
 from selenium import webdriver
 from chromedriver_py import binary_path
 from webdriver_manager.firefox import GeckoDriverManager
@@ -22,15 +26,10 @@ class TollWebsiteAccess(object):
     URL = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
     def __init__(self, url=URL):
-        # self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('headless')
-        self.driver.maximize_window()
-        # chrome_options.add_argument('window-size=1200x600')
-        # options = FirefoxOptions()
-        # options.headless = True
-        # self.driver = webdriver.Firefox(options=options, executable_path='/usr/bin/geckodriver')
         self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.maximize_window()
         self.base_url = url
         self.verificationErrors = []
         self.accept_next_alert = True
@@ -44,6 +43,8 @@ class TollWebsiteAccess(object):
         self._email = password
 
     def test_site_access(self):
+        # Check to see that the site is accessible or not
+        # important because the site needs VPN ON to be accessible.
         try:
             self.driver.implicitly_wait(20)
             self.driver.get(self.base_url)
@@ -68,30 +69,26 @@ class TollWebsiteAccess(object):
                                                          'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
             self.driver.execute_script("arguments[0].click();", pay_plan)
             pay_plan.send_keys(self._pay_plan.strip())
-
             time.sleep(3)
-
             email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                       'div[2]/div[3]/div[2]/div/div[1]/input')
             self.driver.execute_script("arguments[0].click();", email)
             email.send_keys(str(self._email))
-
             time.sleep(3)
-
             submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
-            # submit_button.submit()
-            self.driver.get_screenshot_as_file('login-page.png')
             time.sleep(240)
+            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='login-page.png')
             print("Login Successful!!")
+            # The section below needs its own function.
             toll_scraper.ScrapeTolls.scrape_title_info(self)
-            self.driver.get_screenshot_as_file('checkbox-page.png')
-            # toll_scraper.ScrapeTolls.check_all_boxes(self)
-            # toll_scraper.ScrapeTolls.scrape_table_rows(self)
+            time.sleep(10)
+            toll_scraper.ScrapeTolls.check_all_boxes(self)
+            time.sleep(10)
+            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='checkbox-page.png')
             toll_scraper.ScrapeTolls.move_to_next_page(self)
-            # time.sleep(15)
-            self.driver.get_screenshot_as_file('next-page.png')
+            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -130,8 +127,8 @@ def main_run():
     process.test_site_access()
     print("Your credentials:")
     process.login()
-    # print(f'Toll Acc: {process.get_payment_plan()}')
-    # print(f'Acc. Mail {process.get_email()}')
+    print(f'Toll Acc: {process.get_payment_plan}')
+    print(f'Acc. Mail {process.get_email}')
 
 
 if __name__ == '__main__':

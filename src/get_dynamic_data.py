@@ -31,7 +31,7 @@ class Render(QWebPage):
         self.app.quit()
 
 
-url = 'http://pycoders.com/archive/'
+url = 'https://www.ezpassnj.com/vector/violations/violationList.do'
 r = Render(url)
 result = r.frame.toHtml()
 htmltree = html.fromstring(result)
