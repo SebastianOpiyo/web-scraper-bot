@@ -54,31 +54,41 @@ class ScrapeTolls(TollWebsiteAccess):
             raise e
 
     def scrape_title_info(self):
+        """Scrapes information about the account, i.e:
+        - Total Amount Due
+        - Open Violation."""
         load_page = self.driver.find_element_by_xpath('html/body')
         acc_details = dict()
         acc_details['TotalAmountDue'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
                                                                         'div[9]/div[1]/h4').text
         acc_details['OpenViolation'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
                                                                        'div/div[9]/div[2]/h4').text
-        print(f'Account Details: {acc_details}')
+        # print(f'Account Details: {acc_details}')
+        return acc_details
 
     def scrape_table_rows(self):
+        # Scrapes toll data from each row and dumps it into a list
+        # The info from the list is then transferred to a csv file.
+        # toll_acc = self.scrape_title_info()
+        # print(self.scrape_title_info())
         toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
-                                                       'form/div/div[11]/table')
-        table_header = toll_table.find_element_by_xpath('//*[@id="violationTable"]/thead/tr').text
+                                                       'form/div/div[11]/table/tbody')
         print(f'Tolls Table Details:')
-        print(f'{table_header}')
-        table_body = self.driver.find_element_by_xpath('//*[@id="violationTable"]/tbody')
+        # print(f'{table_header}')
+        table_body = toll_table.find_elements_by_tag_name('tr')
         for row in table_body:
-            toll_list = []
-            # The xpath is not certain the correct one.
-            item = row.find_element_by_xpath('//*[@id="violationTable"]/tbody/tr').text
-            toll_list.append(item)
+            print(row)
+            # get the <details link > in each row and click it
+            # The we collect the data we need.
+            # toll_list = []
+            # toll_list.append(item)
+            # print(toll_list)
             # when done, write it into a csv file.
-            self.write_toll_to_csv(toll_list)
+            # self.write_toll_to_csv(toll_list, toll_acc)
 
     @staticmethod
     def write_toll_to_csv(toll_list=None, toll_acc=None):
+        # Writes the title information and tolls scraped into the csv file.
         if toll_list is not list:
             print(f'{toll_list} needs to be a list')
             raise Exception
@@ -105,6 +115,7 @@ class ScrapeTolls(TollWebsiteAccess):
     def execute_view_detail(self):
         """Calls the javascript View Details function on the table so as to create
         the dynamic content table."""
+        # dynamic_table_link = '//*[@id="transactionItems"]'
         pass
 
     def take_screen_shot(self, filename: str):
@@ -121,8 +132,7 @@ class ScrapeTolls(TollWebsiteAccess):
         # on page 1 n=2 and on page 2 n=3 etc.
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
-            next_icon = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/div[11]/'
-                                                        'div[1]/center/a[2]/img')
+            next_icon = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/div[11]/div[1]/center/a[4]/img')
             self.driver.execute_script("arguments[0].click();", next_icon)
             time.sleep(6)
             print(f'Moved to the next page!')
@@ -145,8 +155,3 @@ class ScrapeTolls(TollWebsiteAccess):
 if __name__ == '__main__':
     scraper = ScrapeTolls()
     scraper.run()
-    # Checking for the selenium running instances of chrome.
-    # c = webdriver.Chrome()
-    # c.service.process
-    # p = psutil.Process(c.service.process.pid)
-    # print(p.children(recursive=True))
