@@ -81,14 +81,6 @@ class TollWebsiteAccess(object):
             time.sleep(240)
             toll_scraper.ScrapeTolls.take_screen_shot(self, filename='login-page.png')
             print("Login Successful!!")
-            # The section below needs its own function.
-            toll_scraper.ScrapeTolls.scrape_title_info(self)
-            time.sleep(10)
-            toll_scraper.ScrapeTolls.check_all_boxes(self)
-            time.sleep(10)
-            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='checkbox-page.png')
-            toll_scraper.ScrapeTolls.move_to_next_page(self)
-            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -117,6 +109,17 @@ class TollWebsiteAccess(object):
     def get_payment_plan(self, new_pay_plan):
         self._pay_plan = new_pay_plan
 
+    def call_scraper(self):
+        # Initiates the scraping process.
+        # toll_scraper.ScrapeTolls.scrape_title_info(self)
+        # time.sleep(10)
+        # toll_scraper.ScrapeTolls.check_all_boxes(self)
+        # time.sleep(10)
+        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='checkbox-page.png')
+        # toll_scraper.ScrapeTolls.move_to_next_page(self)
+        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page.png')
+        toll_scraper.ScrapeTolls.scrape_table_rows(self)
+
     def quit_browser(self):
         return self.driver.close()
 
@@ -129,6 +132,8 @@ def main_run():
     process.login()
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
+    print(f':_______________________________* Scrapes *_________________________________')
+    process.call_scraper()
 
 
 if __name__ == '__main__':
