@@ -63,31 +63,49 @@ class ScrapeTolls(TollWebsiteAccess):
                                                                         'div[9]/div[1]/h4').text
         acc_details['OpenViolation'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
                                                                        'div/div[9]/div[2]/h4').text
-        # print(f'Account Details: {acc_details}')
-        return acc_details
+        print(f'Account Details: {acc_details}')
+        # return acc_details
 
     def scrape_table_rows(self):
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
         # toll_acc = self.scrape_title_info()
-        # print(self.scrape_title_info())
+        self.scrape_title_info()
         toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
                                                        'form/div/div[11]/table/tbody')
         print(f'Tolls Table Details:')
         # print(f'{table_header}')
         table_body = toll_table.find_elements_by_tag_name('tr')
         for row in table_body:
-            print(row)
-            # get the <details link > in each row and click it
+            print(row.text)
+            time.sleep(6)
+            tolls = row.find_element_by_partial_link_text('View Details')
+            self.driver.execute_script("arguments[0].click();", tolls)
+            self.execute_view_detail()
             # The we collect the data we need.
             # toll_list = []
             # toll_list.append(item)
             # print(toll_list)
             # when done, write it into a csv file.
             # self.write_toll_to_csv(toll_list, toll_acc)
+            print(':----------------------------------tolls-------------------------------------:')
+
+    def execute_view_detail(self):
+        """Calls the javascript View Details function on the table so as to create
+        the dynamic content table."""
+        try:
+            dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
+            rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
+            for toll_item in rows_details:
+                print('*-------------------------Start Tolls Report/View ----------------------------*')
+                print(toll_item.text)
+                print('*-------------------------End Tolls Report/View ----------------------------*')
+                time.sleep(2)
+        except Exception as e:
+            print(f'Could not scrape the tolls due to Error: {e}')
 
     @staticmethod
-    def write_toll_to_csv(toll_list=None, toll_acc=None):
+    def write_toll_to_csv(self, toll_list: list = None, toll_acc: list = None):
         # Writes the title information and tolls scraped into the csv file.
         if toll_list is not list:
             print(f'{toll_list} needs to be a list')
@@ -112,12 +130,6 @@ class ScrapeTolls(TollWebsiteAccess):
                 for item in toll_list:
                     csv_writer.writerow(item)
 
-    def execute_view_detail(self):
-        """Calls the javascript View Details function on the table so as to create
-        the dynamic content table."""
-        # dynamic_table_link = '//*[@id="transactionItems"]'
-        pass
-
     def take_screen_shot(self, filename: str):
         # Takes the screenshot of what the robot has achieved anonymously.
         # that way we can be able to tell whether the robot is doing what we have programmed it to.
@@ -126,13 +138,10 @@ class ScrapeTolls(TollWebsiteAccess):
         print(img_url)
 
     def move_to_next_page(self):
-        # since next page is an img link we need to find a way to substitute the
-        # number a[n] with the correct page number.
-        # by default n=1, so we need to increment it by 1 after every page move.
-        # on page 1 n=2 and on page 2 n=3 etc.
+        # This function targets the image with title=Next.
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
-            next_icon = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/div[11]/div[1]/center/a[4]/img')
+            next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
             self.driver.execute_script("arguments[0].click();", next_icon)
             time.sleep(6)
             print(f'Moved to the next page!')

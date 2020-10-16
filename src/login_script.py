@@ -117,8 +117,10 @@ class TollWebsiteAccess(object):
         # time.sleep(10)
         # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='checkbox-page.png')
         # toll_scraper.ScrapeTolls.move_to_next_page(self)
-        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page.png')
+        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page1.png')
         toll_scraper.ScrapeTolls.scrape_table_rows(self)
+        time.sleep(3)
+        toll_scraper.ScrapeTolls.take_screen_shot(self, filename='viewdetails-page.png')
 
     def quit_browser(self):
         return self.driver.close()
@@ -126,7 +128,6 @@ class TollWebsiteAccess(object):
 
 def main_run():
     process = TollWebsiteAccess()
-    scraper = toll_scraper.ScrapeTolls()
     process.test_site_access()
     print("Your credentials:")
     process.login()
