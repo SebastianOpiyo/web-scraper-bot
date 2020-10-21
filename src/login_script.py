@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
 # Date Modified: Oct 12, 2020
@@ -9,11 +9,7 @@
 It then calls the [toll_scraper] module classes.
 """
 
-from selenium import webdriver
-from chromedriver_py import binary_path
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-import toll_scraper
+from src.base import BasePage
 
 import time
 
@@ -22,14 +18,11 @@ class BotExceptionHandler(Exception):
     pass
 
 
-class TollWebsiteAccess(object):
+class TollWebsiteAccess(BasePage):
     URL = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
     def __init__(self, url=URL):
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('headless')
-        self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.maximize_window()
+        super().__init__()
         self.base_url = url
         self.verificationErrors = []
         self.accept_next_alert = True
@@ -56,6 +49,7 @@ class TollWebsiteAccess(object):
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does."""
+        from src.toll_scraper import ScrapeTolls
         try:
             self.driver.get(self.base_url)
         except BotExceptionHandler:
@@ -70,17 +64,19 @@ class TollWebsiteAccess(object):
             self.driver.execute_script("arguments[0].click();", pay_plan)
             pay_plan.send_keys(self._pay_plan.strip())
             time.sleep(3)
+            ScrapeTolls.take_screen_shot(self, 'selection1.png')
             email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                       'div[2]/div[3]/div[2]/div/div[1]/input')
             self.driver.execute_script("arguments[0].click();", email)
             email.send_keys(str(self._email))
             time.sleep(3)
+            ScrapeTolls.take_screen_shot(self, 'selection2.png')
             submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
             time.sleep(240)
-            toll_scraper.ScrapeTolls.take_screen_shot(self, filename='login-page.png')
             print("Login Successful!!")
+            ScrapeTolls.take_screen_shot(self, 'login-screen.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -109,19 +105,6 @@ class TollWebsiteAccess(object):
     def get_payment_plan(self, new_pay_plan):
         self._pay_plan = new_pay_plan
 
-    def call_scraper(self):
-        # Initiates the scraping process.
-        # toll_scraper.ScrapeTolls.scrape_title_info(self)
-        # time.sleep(10)
-        # toll_scraper.ScrapeTolls.check_all_boxes(self)
-        # time.sleep(10)
-        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='checkbox-page.png')
-        # toll_scraper.ScrapeTolls.move_to_next_page(self)
-        # toll_scraper.ScrapeTolls.take_screen_shot(self, filename='next-page1.png')
-        toll_scraper.ScrapeTolls.scrape_table_rows(self)
-        time.sleep(3)
-        toll_scraper.ScrapeTolls.take_screen_shot(self, filename='viewdetails-page.png')
-
     def quit_browser(self):
         return self.driver.close()
 
@@ -134,7 +117,6 @@ def main_run():
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
     print(f':_______________________________* Scrapes *_________________________________')
-    process.call_scraper()
 
 
 if __name__ == '__main__':
