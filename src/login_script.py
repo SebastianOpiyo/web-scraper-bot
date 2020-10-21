@@ -46,10 +46,10 @@ class TollWebsiteAccess(BasePage):
             print(e)
 
     def login(self):
+        from src.toll_scraper import ScrapeTolls
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does."""
-        from src.toll_scraper import ScrapeTolls
         try:
             self.driver.get(self.base_url)
         except BotExceptionHandler:
@@ -77,6 +77,8 @@ class TollWebsiteAccess(BasePage):
             time.sleep(240)
             print("Login Successful!!")
             ScrapeTolls.take_screen_shot(self, 'login-screen.png')
+            # time.sleep(3)
+            # ScrapeTolls.scrape_title_info(self)
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -87,6 +89,11 @@ class TollWebsiteAccess(BasePage):
             self.driver.execute_script("arguments[0].click();", sign_out)
         except Exception as e:
             print(e)
+
+    def perform_scraping(self):
+        from src.toll_scraper import ScrapeTolls
+        ScrapeTolls.scrape_title_info(self)
+        ScrapeTolls.scrape_table_rows(self)
 
     # getter and setter helper methods for the login credentials.
     @property
@@ -117,6 +124,7 @@ def main_run():
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
     print(f':_______________________________* Scrapes *_________________________________')
+    process.perform_scraping()
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from Screenshot import Screenshot_Clipping
 from src.base import BasePage
-from src.login_script import main_run
+# from src.login_script import main_run
 import requests
 import time
 import psutil
@@ -23,6 +23,7 @@ import csv
 
 
 class ScrapeTolls(BasePage):
+    from src.login_script import TollWebsiteAccess
 
     def __init__(self):
         super().__init__()
@@ -30,7 +31,6 @@ class ScrapeTolls(BasePage):
     def check_all_boxes(self):
         """Check all the checkboxes in the toll list so as
         to get the dynamically generated data using the web driver."""
-        # main_run()
         # currently doesn't fully work as expected.
         try:
             time.sleep(120)
@@ -52,20 +52,20 @@ class ScrapeTolls(BasePage):
         - Total Amount Due
         - Open Violation."""
         try:
-            amount_due = self.driver.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
-                                                           'div[9]/div[1]/h4')
-            print(amount_due.text)
-            # load_page = self.driver.find_elements_by_xpath('html/body')
-            # acc_details = dict()
-            # time.sleep(5)
-            # for item in load_page:
-            #     print(item.text)
-            #     # acc_details['TotalAmountDue'] = item.find_element_by_xpath('//*[@id="sb-site"]/div['
-            #     #                                                            '3]/div/div/form/div/ '
-            #     #                                                            'div[9]/div[1]/h4').text
-            #     # acc_details['OpenViolation'] = item.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
-            #     #                                                           'div/div[9]/div[2]/h4').text
-            #     # print(f'Account Details: {acc_details}')
+            # amount_due = self.driver.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
+            #                                                'div[9]/div[1]/h4')
+            # print(amount_due.text)
+            load_page = self.driver.find_elements_by_xpath('html/body')
+            acc_details = dict()
+            time.sleep(5)
+            for item in load_page:
+                # print(item.text)
+                acc_details['TotalAmountDue'] = item.find_element_by_xpath('//*[@id="sb-site"]/div['
+                                                                           '3]/div/div/form/div/ '
+                                                                           'div[9]/div[1]/h4').text
+                acc_details['OpenViolation'] = item.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
+                                                                          'div/div[9]/div[2]/h4').text
+                print(f'Account Details: {acc_details}')
             # # return acc_details
         except Exception as e:
             print(f'Could not acquire title information because of Error: {e}')
@@ -85,7 +85,7 @@ class ScrapeTolls(BasePage):
             time.sleep(6)
             tolls = row.find_element_by_partial_link_text('View Details')
             self.driver.execute_script("arguments[0].click();", tolls)
-            self.execute_view_detail()
+            self.execute_view_detail(self=self)
             # The we collect the data we need.
             # toll_list = []
             # toll_list.append(item)
@@ -94,6 +94,7 @@ class ScrapeTolls(BasePage):
             # self.write_toll_to_csv(toll_list, toll_acc)
             print(':----------------------------------tolls-------------------------------------:')
 
+    @staticmethod
     def execute_view_detail(self):
         """Calls the javascript View Details function on the table so as to create
         the dynamic content table."""
@@ -164,14 +165,13 @@ class ScrapeTolls(BasePage):
 
 def run_scraper():
     scraper = ScrapeTolls()
-    # main_run()
-    # time.sleep(20)
     print(f'-*-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TITLE INFO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -*-')
     scraper.scrape_title_info()
     # print(f'-*-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TOLLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -*-')
     # scraper.scrape_table_rows()
 
 
-if __name__ == '__main__':
-    run_scraper()
+# if __name__ == '__main__':
+#     main_run()
+#     # run_scraper()
 
