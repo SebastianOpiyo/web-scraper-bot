@@ -1,20 +1,14 @@
-#!/bin/python3
+#!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 7, 2020
 # Date Modified: Oct 7, 2020
 # Description: An Amazon Toll Scraping Bot: Toll scraper.
 # -*- coding: utf-8 -*-
 
-from selenium import webdriver
-from bs4 import BeautifulSoup
-from login_script import TollWebsiteAccess, main_run
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from Screenshot import Screenshot_Clipping
-
-
+from src.base import BasePage
+# from src.login_script import main_run
 import requests
 import time
 import psutil
@@ -28,7 +22,8 @@ import csv
 """
 
 
-class ScrapeTolls(TollWebsiteAccess):
+class ScrapeTolls(BasePage):
+    from src.login_script import TollWebsiteAccess
 
     def __init__(self):
         super().__init__()
@@ -36,7 +31,6 @@ class ScrapeTolls(TollWebsiteAccess):
     def check_all_boxes(self):
         """Check all the checkboxes in the toll list so as
         to get the dynamically generated data using the web driver."""
-        # main_run()
         # currently doesn't fully work as expected.
         try:
             time.sleep(120)
@@ -57,20 +51,30 @@ class ScrapeTolls(TollWebsiteAccess):
         """Scrapes information about the account, i.e:
         - Total Amount Due
         - Open Violation."""
-        load_page = self.driver.find_element_by_xpath('html/body')
-        acc_details = dict()
-        acc_details['TotalAmountDue'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
-                                                                        'div[9]/div[1]/h4').text
-        acc_details['OpenViolation'] = load_page.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
-                                                                       'div/div[9]/div[2]/h4').text
-        print(f'Account Details: {acc_details}')
-        # return acc_details
+        try:
+            # amount_due = self.driver.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
+            #                                                'div[9]/div[1]/h4')
+            # print(amount_due.text)
+            load_page = self.driver.find_elements_by_xpath('html/body')
+            acc_details = dict()
+            time.sleep(5)
+            for item in load_page:
+                # print(item.text)
+                acc_details['TotalAmountDue'] = item.find_element_by_xpath('//*[@id="sb-site"]/div['
+                                                                           '3]/div/div/form/div/ '
+                                                                           'div[9]/div[1]/h4').text
+                acc_details['OpenViolation'] = item.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
+                                                                          'div/div[9]/div[2]/h4').text
+                print(f'Account Details: {acc_details}')
+            # # return acc_details
+        except Exception as e:
+            print(f'Could not acquire title information because of Error: {e}')
+            pass
 
     def scrape_table_rows(self):
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
         # toll_acc = self.scrape_title_info()
-        self.scrape_title_info()
         toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
                                                        'form/div/div[11]/table/tbody')
         print(f'Tolls Table Details:')
@@ -81,7 +85,7 @@ class ScrapeTolls(TollWebsiteAccess):
             time.sleep(6)
             tolls = row.find_element_by_partial_link_text('View Details')
             self.driver.execute_script("arguments[0].click();", tolls)
-            self.execute_view_detail()
+            self.execute_view_detail(self=self)
             # The we collect the data we need.
             # toll_list = []
             # toll_list.append(item)
@@ -90,6 +94,7 @@ class ScrapeTolls(TollWebsiteAccess):
             # self.write_toll_to_csv(toll_list, toll_acc)
             print(':----------------------------------tolls-------------------------------------:')
 
+    @staticmethod
     def execute_view_detail(self):
         """Calls the javascript View Details function on the table so as to create
         the dynamic content table."""
@@ -154,13 +159,19 @@ class ScrapeTolls(TollWebsiteAccess):
     def scrape_the_soup(self):
         pass
 
-    def run(self):
-        self.check_all_boxes()
-
     def exit_driver(self):
         self.driver.quit()
 
 
-if __name__ == '__main__':
+def run_scraper():
     scraper = ScrapeTolls()
-    scraper.run()
+    print(f'-*-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TITLE INFO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -*-')
+    scraper.scrape_title_info()
+    # print(f'-*-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TOLLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -*-')
+    # scraper.scrape_table_rows()
+
+
+# if __name__ == '__main__':
+#     main_run()
+#     # run_scraper()
+

@@ -100,6 +100,7 @@ s3transfer==0.3.3
 Scrapy==2.3.0
 SecretStorage==2.3.1
 selenium==3.141.0
+Selenium-Screenshot==1.7.0
 service-identity==18.1.0
 simplejson==3.16.0
 sip==4.19.21
@@ -121,3 +122,6 @@ webdriver-manager==3.2.2
 webencodings==0.5.1
 xkit==0.0.0
 zope.interface==5.1.0
+
+Flask~=1.1.2
+psutil~=5.7.2
