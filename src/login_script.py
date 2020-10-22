@@ -46,10 +46,10 @@ class TollWebsiteAccess(BasePage):
             print(e)
 
     def login(self):
-        from src.toll_scraper import ScrapeTolls
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does."""
+        from src.toll_scraper import ScrapeTolls
         try:
             self.driver.get(self.base_url)
         except BotExceptionHandler:
@@ -74,7 +74,7 @@ class TollWebsiteAccess(BasePage):
             submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
-            time.sleep(240)
+            time.sleep(200)
             print("Login Successful!!")
             ScrapeTolls.take_screen_shot(self, 'login-screen.png')
             # time.sleep(3)

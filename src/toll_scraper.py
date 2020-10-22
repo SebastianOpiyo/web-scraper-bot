@@ -82,35 +82,47 @@ class ScrapeTolls(BasePage):
         table_body = toll_table.find_elements_by_tag_name('tr')
         for row in table_body:
             print(row.text)
-            time.sleep(6)
+            time.sleep(2)
             tolls = row.find_element_by_partial_link_text('View Details')
             self.driver.execute_script("arguments[0].click();", tolls)
-            self.execute_view_detail(self=self)
+            time.sleep(10)
+            print(f':----------------------------------* Start tolls report *-------------------------------------:')
+            try:
+                dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
+                rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
+                for toll_item in rows_details:
+                    print(toll_item.text)
+                    time.sleep(1)
+            except Exception as e:
+                print(f'Could not scrape the tolls due to Error: {e}')
+            close_button = row.find_element_by_class_name('close.popupclose')
+            self.take_screen_shot('modal-images.png')
+            self.driver.execute_script("arguments[0].click();", close_button)
             # The we collect the data we need.
             # toll_list = []
             # toll_list.append(item)
             # print(toll_list)
             # when done, write it into a csv file.
             # self.write_toll_to_csv(toll_list, toll_acc)
-            print(':----------------------------------tolls-------------------------------------:')
+            print(':----------------------------------* End tolls report *-------------------------------------:')
 
-    @staticmethod
-    def execute_view_detail(self):
-        """Calls the javascript View Details function on the table so as to create
-        the dynamic content table."""
-        try:
-            dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
-            rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
-            for toll_item in rows_details:
-                print('*-------------------------Start Tolls Report/View ----------------------------*')
-                print(toll_item.text)
-                print('*-------------------------End Tolls Report/View ----------------------------*')
-                time.sleep(2)
-        except Exception as e:
-            print(f'Could not scrape the tolls due to Error: {e}')
+    # def execute_view_detail(self):
+    #     """Calls the javascript View Details function on the table so as to create
+    #     the dynamic content table."""
+    #     try:
+    #         dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
+    #         rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
+    #         for toll_item in rows_details:
+    #             print('*-------------------------Start Tolls Report/View ----------------------------*')
+    #             print(toll_item.text)
+    #             print('*-------------------------End Tolls Report/View ----------------------------*')
+    #             time.sleep(2)
+    #     except Exception as e:
+    #         print(f'Could not scrape the tolls due to Error: {e}')
 
     @staticmethod
     def write_toll_to_csv(self, toll_list: list = None, toll_acc: list = None):
+        # Thinking of making this a class method.
         # Writes the title information and tolls scraped into the csv file.
         if toll_list is not list:
             print(f'{toll_list} needs to be a list')
