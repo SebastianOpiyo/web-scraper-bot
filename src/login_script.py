@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
-# Date Modified: Oct 12, 2020
+# Date Modified: Oct 23, 2020
 # Description: An Amazon Toll Scraping Bot: Login page.
 # -*- coding: utf-8 -*-
 

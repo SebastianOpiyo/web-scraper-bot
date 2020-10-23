@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 7, 2020
-# Date Modified: Oct 7, 2020
+# Date Modified: Oct 23, 2020
 # Description: An Amazon Toll Scraping Bot: Toll scraper.
 # -*- coding: utf-8 -*-
 
@@ -13,6 +13,8 @@ import requests
 import time
 import psutil
 import csv
+import random
+import string
 
 """After login we have to do the following:
 1. Select each row and View Details per rows
@@ -74,30 +76,38 @@ class ScrapeTolls(BasePage):
     def scrape_table_rows(self):
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
-        # toll_acc = self.scrape_title_info()
         toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
                                                        'form/div/div[11]/table/tbody')
+        modal_body = self.driver.find_element_by_class_name('modal-content')
+        print(modal_body.text)
         print(f'Tolls Table Details:')
         # print(f'{table_header}')
+
         table_body = toll_table.find_elements_by_tag_name('tr')
         for row in table_body:
             print(row.text)
-            time.sleep(2)
+            self.driver.implicitly_wait(5)
             tolls = row.find_element_by_partial_link_text('View Details')
             self.driver.execute_script("arguments[0].click();", tolls)
-            time.sleep(10)
+            time.sleep(5)
             print(f':----------------------------------* Start tolls report *-------------------------------------:')
             try:
                 dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
                 rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
-                for toll_item in rows_details:
-                    print(toll_item.text)
-                    time.sleep(1)
+                if rows_details:
+                    for toll_item in rows_details:
+                        # Will write each toll_item to the csv
+                        # For now will just print to confirm its working ok.
+                        print(toll_item.text)
+                        time.sleep(1)
+                else:
+                    print(f'No data loaded...')
             except Exception as e:
                 print(f'Could not scrape the tolls due to Error: {e}')
-            close_button = row.find_element_by_class_name('close.popupclose')
-            self.take_screen_shot('modal-images.png')
+            close_button = modal_body.find_element_by_css_selector('button.close.popupclose')
             self.driver.execute_script("arguments[0].click();", close_button)
+            time.sleep(3)
+            # self.take_screen_shot(self.random_filename_generator())
             # The we collect the data we need.
             # toll_list = []
             # toll_list.append(item)
@@ -153,6 +163,13 @@ class ScrapeTolls(BasePage):
         obj = Screenshot_Clipping.Screenshot()
         img_url = obj.full_Screenshot(self.driver, save_path=r'./screenshots', image_name=f'{filename}')
         print(img_url)
+
+    @staticmethod
+    def random_filename_generator():
+        # Generates random strings, used for file name.
+        letters = string.ascii_lowercase
+        name = ''.join(random.choice(letters) for i in range(10))
+        return f'{name}.png'
 
     def move_to_next_page(self):
         # This function targets the image with title=Next.
