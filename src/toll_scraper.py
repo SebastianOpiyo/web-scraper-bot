@@ -7,7 +7,7 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from Screenshot import Screenshot_Clipping
-from src.base import BasePage
+from base import BasePage
 # from src.login_script import main_run
 import requests
 import time
@@ -25,7 +25,7 @@ import string
 
 
 class ScrapeTolls(BasePage):
-    from src.login_script import TollWebsiteAccess
+    from login_script import TollWebsiteAccess
 
     def __init__(self):
         super().__init__()
@@ -54,12 +54,9 @@ class ScrapeTolls(BasePage):
         - Total Amount Due
         - Open Violation."""
         try:
-            # amount_due = self.driver.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/div/'
-            #                                                'div[9]/div[1]/h4')
-            # print(amount_due.text)
             load_page = self.driver.find_elements_by_xpath('html/body')
             acc_details = dict()
-            time.sleep(5)
+            time.sleep(3)
             for item in load_page:
                 # print(item.text)
                 acc_details['TotalAmountDue'] = item.find_element_by_xpath('//*[@id="sb-site"]/div['
@@ -68,7 +65,7 @@ class ScrapeTolls(BasePage):
                 acc_details['OpenViolation'] = item.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
                                                                           'div/div[9]/div[2]/h4').text
                 print(f'Account Details: {acc_details}')
-            # # return acc_details
+            # return acc_details
         except Exception as e:
             print(f'Could not acquire title information because of Error: {e}')
             pass
@@ -151,8 +148,6 @@ def run_scraper():
     # print(f'-*-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TOLLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -*-')
     # scraper.scrape_table_rows()
 
-
 # if __name__ == '__main__':
 #     main_run()
 #     # run_scraper()
-
