@@ -71,35 +71,40 @@ class ScrapeTolls(BasePage):
             pass
 
     def scrape_table_rows(self):
-        div_container = self.driver.find_element_by_xpath('//div[@id="violdtl0" and @class="modal.fade"]')
-        print(div_container)
+        # Scrapes toll data from each row and dumps it into a list
+        # The info from the list is then transferred to a csv file.
+
+        toll_table = self.driver.find_elements_by_id('transactionItems')
+        print(f'Tolls Table Details:')
+        print(f'toll table:{toll_table}')
+        scrapes_list = []
+        for item in toll_table:
+            table_body = item.find_elements_by_tag_name('tr')
+            print(f'table body {table_body}')
+            string_list = []
+            for i in table_body:
+                time.sleep(1)
+                scrape_item = i.get_attribute('innerText')
+                string_list.append(scrape_item)
+            scrapes_list.append(' '.join(string_list))
+        print(scrapes_list)
+        ScrapeTolls.write_toll_to_csv(scrapes_list, 'Amazon Acc')
 
     @staticmethod
-    def write_toll_to_csv(self, toll_list: list = None, toll_acc: list = None):
-        # Thinking of making this a class method.
-        # Writes the title information and tolls scraped into the csv file.
-        if toll_list is not list:
-            print(f'{toll_list} needs to be a list')
-            raise Exception
-        else:
-            pass
-
-        if toll_acc is not dict:
-            print(f'{toll_acc} needs to be a dict')
-            raise Exception
-        else:
-            pass
-
+    def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):
+        """@:param toll_list - a collection of toll scrapes per page.
+           @:param toll_acc - a string indicating which acc is being scraped.
+           - Description: Writes the title information and tolls scraped into the csv file
+        """
         with open('tolls.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             # write to csv the account details
             if toll_acc:
-                for item in toll_acc:
-                    csv_writer.writerow(toll_acc[item])
+                csv_writer.writerows(toll_acc)
             # write to csv the tolls scrapes
             if toll_list:
                 for item in toll_list:
-                    csv_writer.writerow(item)
+                    csv_writer.writerows(item)
 
     def take_screen_shot(self, filename: str):
         # Takes the screenshot of what the robot has achieved anonymously.

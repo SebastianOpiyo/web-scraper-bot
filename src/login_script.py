@@ -39,7 +39,7 @@ class TollWebsiteAccess(BasePage):
         # Check to see that the site is accessible or not
         # important because the site needs VPN ON to be accessible.
         try:
-            self.driver.implicitly_wait(20)
+            self.driver.implicitly_wait(10)
             self.driver.get(self.base_url)
             print("Site can be reached!")
         except Exception as e:
@@ -63,6 +63,7 @@ class TollWebsiteAccess(BasePage):
                                                          'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
             self.driver.execute_script("arguments[0].click();", pay_plan)
             pay_plan.send_keys(self._pay_plan.strip())
+
             time.sleep(2)
             # ScrapeTolls.take_screen_shot(self, 'selection1.png')
             email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
@@ -76,7 +77,10 @@ class TollWebsiteAccess(BasePage):
             self.driver.execute_script("arguments[0].click();", submit_button)
             time.sleep(180)
             print("Login Successful!!")
-            ScrapeTolls.take_screen_shot(self, 'login-screen.png')
+            # ScrapeTolls.take_screen_shot(self, 'login-screen.png')
+            # time.sleep(3)
+            # ScrapeTolls.scrape_title_info(self)
+
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
