@@ -76,86 +76,38 @@ class ScrapeTolls(BasePage):
     def scrape_table_rows(self):
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
-        toll_table = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/'
-                                                       'form/div/div[11]/table/tbody')
-        modal_body = self.driver.find_element_by_class_name('modal-content')
-        print(modal_body.text)
+
+        toll_table = self.driver.find_elements_by_id('transactionItems')
         print(f'Tolls Table Details:')
-        # print(f'{table_header}')
-
-        table_body = toll_table.find_elements_by_tag_name('tr')
-        for row in table_body:
-            print(row.text)
-            self.driver.implicitly_wait(5)
-            tolls = row.find_element_by_partial_link_text('View Details')
-            self.driver.execute_script("arguments[0].click();", tolls)
-            time.sleep(5)
-            print(f':----------------------------------* Start tolls report *-------------------------------------:')
-            try:
-                dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
-                rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
-                if rows_details:
-                    for toll_item in rows_details:
-                        # Will write each toll_item to the csv
-                        # For now will just print to confirm its working ok.
-                        print(toll_item.text)
-                        time.sleep(1)
-                else:
-                    print(f'No data loaded...')
-            except Exception as e:
-                print(f'Could not scrape the tolls due to Error: {e}')
-            close_button = modal_body.find_element_by_css_selector('button.close.popupclose')
-            self.driver.execute_script("arguments[0].click();", close_button)
-            time.sleep(3)
-            # self.take_screen_shot(self.random_filename_generator())
-            # The we collect the data we need.
-            # toll_list = []
-            # toll_list.append(item)
-            # print(toll_list)
-            # when done, write it into a csv file.
-            # self.write_toll_to_csv(toll_list, toll_acc)
-            print(':----------------------------------* End tolls report *-------------------------------------:')
-
-    # def execute_view_detail(self):
-    #     """Calls the javascript View Details function on the table so as to create
-    #     the dynamic content table."""
-    #     try:
-    #         dynamic_table_link = self.driver.find_element_by_xpath('//*[@id="transactionItems"]/tbody')
-    #         rows_details = dynamic_table_link.find_elements_by_tag_name('tr')
-    #         for toll_item in rows_details:
-    #             print('*-------------------------Start Tolls Report/View ----------------------------*')
-    #             print(toll_item.text)
-    #             print('*-------------------------End Tolls Report/View ----------------------------*')
-    #             time.sleep(2)
-    #     except Exception as e:
-    #         print(f'Could not scrape the tolls due to Error: {e}')
+        print(f'toll table:{toll_table}')
+        scrapes_list = []
+        for item in toll_table:
+            table_body = item.find_elements_by_tag_name('tr')
+            print(f'table body {table_body}')
+            string_list = []
+            for i in table_body:
+                time.sleep(1)
+                scrape_item = i.get_attribute('innerText')
+                string_list.append(scrape_item)
+            scrapes_list.append(' '.join(string_list))
+        print(scrapes_list)
+        ScrapeTolls.write_toll_to_csv(scrapes_list, 'Amazon Acc')
 
     @staticmethod
-    def write_toll_to_csv(self, toll_list: list = None, toll_acc: list = None):
-        # Thinking of making this a class method.
-        # Writes the title information and tolls scraped into the csv file.
-        if toll_list is not list:
-            print(f'{toll_list} needs to be a list')
-            raise Exception
-        else:
-            pass
-
-        if toll_acc is not dict:
-            print(f'{toll_acc} needs to be a dict')
-            raise Exception
-        else:
-            pass
-
+    def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):
+        """@:param toll_list - a collection of toll scrapes per page.
+           @:param toll_acc - a string indicating which acc is being scraped.
+           - Description: Writes the title information and tolls scraped into the csv file
+        """
         with open('tolls.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             # write to csv the account details
             if toll_acc:
-                for item in toll_acc:
-                    csv_writer.writerow(toll_acc[item])
+                csv_writer.writerows(toll_acc)
             # write to csv the tolls scrapes
             if toll_list:
                 for item in toll_list:
-                    csv_writer.writerow(item)
+                    csv_writer.writerows(item)
 
     def take_screen_shot(self, filename: str):
         # Takes the screenshot of what the robot has achieved anonymously.
