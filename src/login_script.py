@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
-# Date Modified: Oct 23, 2020
+# Date Modified: Oct 28, 2020
 # Description: An Amazon Toll Scraping Bot: Login page.
 # -*- coding: utf-8 -*-
 
@@ -9,7 +9,7 @@
 It then calls the [toll_scraper] module classes.
 """
 
-from base import BasePage
+from src.base import BasePage
 
 import time
 
@@ -49,7 +49,7 @@ class TollWebsiteAccess(BasePage):
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does."""
-        from toll_scraper import ScrapeTolls
+        from src.toll_scraper import ScrapeTolls
         try:
             self.driver.get(self.base_url)
         except BotExceptionHandler:
@@ -71,7 +71,7 @@ class TollWebsiteAccess(BasePage):
             self.driver.execute_script("arguments[0].click();", email)
             email.send_keys(str(self._email))
             time.sleep(2)
-            ScrapeTolls.take_screen_shot(self, 'selection2.png')
+            # ScrapeTolls.take_screen_shot(self, 'selection2.png')
             submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
@@ -93,9 +93,10 @@ class TollWebsiteAccess(BasePage):
             print(e)
 
     def perform_scraping(self):
-        from toll_scraper import ScrapeTolls
+        from src.toll_scraper import ScrapeTolls
         ScrapeTolls.scrape_title_info(self)
-        ScrapeTolls.scrape_table_rows(self)
+        ScrapeTolls.scrape_page_to_page(self)
+        # ScrapeTolls.scrape_table_rows(self)
 
     # getter and setter helper methods for the login credentials.
     @property
