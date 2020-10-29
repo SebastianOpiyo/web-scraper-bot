@@ -28,18 +28,6 @@ class ScrapeTolls(BasePage):
     def __init__(self):
         super().__init__()
 
-    def scrape_page_to_page(self):
-        """Scrapes from the first page to the last
-        @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
-        """
-        try:
-            self.scrape_title_info()
-            while self.check_next_page():
-                self.scrape_table_rows()
-                self.move_to_next_page()
-        except Exception as e:
-            raise e
-
     def check_next_page(self):
         """Checks for the existence of next page:
         @:param
@@ -116,8 +104,8 @@ class ScrapeTolls(BasePage):
            @:param toll_acc - a string indicating which acc is being scraped.
            - Description: Writes the title information and tolls scraped into the csv file
         """
-        with open('tolls.csv', 'w') as csv_file:
-            csv_writer = csv.writer(csv_file)
+        with open('tolls.csv', 'w', 'a') as csv_file:
+            csv_writer = csv.writer(csv_file, dialect="excel")
             # write to csv the account details
             if toll_acc:
                 csv_file.write(toll_acc)
@@ -125,7 +113,7 @@ class ScrapeTolls(BasePage):
             if toll_list:
                 for item in toll_list:
                     print(item)
-                    csv_writer.writerow(item)
+                csv_writer.writerows(toll_list)
 
     def take_screen_shot(self, filename: str):
         # Takes the screenshot of what the robot has achieved anonymously.

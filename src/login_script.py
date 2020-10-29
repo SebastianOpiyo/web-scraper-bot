@@ -92,11 +92,23 @@ class TollWebsiteAccess(BasePage):
         except Exception as e:
             print(e)
 
-    def perform_scraping(self):
+    def scrape_page_to_page(self):
         from src.toll_scraper import ScrapeTolls
-        ScrapeTolls.scrape_title_info(self)
-        ScrapeTolls.scrape_page_to_page(self)
-        # ScrapeTolls.scrape_table_rows(self)
+        """Scrapes from the first page to the last
+        @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
+        """
+        try:
+            ScrapeTolls.scrape_title_info(self)
+            while ScrapeTolls.check_next_page(self):
+                ScrapeTolls.scrape_table_rows(self)
+                ScrapeTolls.move_to_next_page(self)
+        except Exception as e:
+            raise e
+
+    def perform_scraping(self):
+        # from src.toll_scraper import ScrapeTolls
+        # ScrapeTolls.scrape_title_info(self)
+        self.scrape_page_to_page()
 
     # getter and setter helper methods for the login credentials.
     @property
