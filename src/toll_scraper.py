@@ -98,7 +98,9 @@ class ScrapeTolls(BasePage):
             # print(string_list)
         print(scrapes_list)
         ScrapeTolls.write_toll_to_csv(scrapes_list, 'Amazon Acc')
-        WriteToExcel.openxlsx(scrapes_list)
+        for item in scrapes_list:
+            WriteToExcel().openxlsx(item)
+        # WriteToExcel.openxlsx(scrapes_list)
 
     @staticmethod
     def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):

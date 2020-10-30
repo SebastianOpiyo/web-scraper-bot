@@ -5,7 +5,7 @@
 # Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet.
 # -*- encoding: utf-8 -*-
 
-
+import csv
 from openpyxl import Workbook
 
 
@@ -21,11 +21,31 @@ class WriteToExcel:
 
     def openxlsx(self, toll_list: list):
         # self.sheet.title('Amazon Tolls Scrapes.')
-        self.sheet.append(self.columns)
+        # self.sheet.append(self.columns)
         for toll in toll_list:
             self.sheet.append(toll)
         self.wb.save(self.filename)
 
+    def write_csv_to_excel(self):
+        # file = open(r'./tolls(scraped-Oct29).csv')
+        csv.register_dialect(
+            'mydialect',
+            delimiter=',',
+            quotechar='"',
+            doublequote=True,
+            skipinitialspace=True,
+            lineterminator='\n',
+            quoting=csv.QUOTE_MINIMAL
+        )
+
+        with open('tolls.csv') as file:
+            reader = csv.reader(file, dialect='mydialect')
+            for row in reader:
+                print(row)
+            #     self.sheet.append(row)
+            # self.wb.save('csvToExcel.xlsx')
+
 
 if __name__ == '__main__':
-    WriteToExcel().openxlsx()
+    # WriteToExcel().openxlsx()
+    WriteToExcel().write_csv_to_excel()
