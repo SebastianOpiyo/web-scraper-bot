@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 7, 2020
-# Date Modified: Oct 28, 2020
+# Date Modified: Oct 30, 2020
 # Description: An Amazon Toll Scraping Bot: Toll scraper.
 # -*- coding: utf-8 -*-
 
@@ -79,6 +79,7 @@ class ScrapeTolls(BasePage):
             pass
 
     def scrape_table_rows(self):
+        from src.write_to_excel import WriteToExcel
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
 
@@ -97,6 +98,7 @@ class ScrapeTolls(BasePage):
             # print(string_list)
         print(scrapes_list)
         ScrapeTolls.write_toll_to_csv(scrapes_list, 'Amazon Acc')
+        WriteToExcel.openxlsx(scrapes_list)
 
     @staticmethod
     def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):
@@ -104,7 +106,7 @@ class ScrapeTolls(BasePage):
            @:param toll_acc - a string indicating which acc is being scraped.
            - Description: Writes the title information and tolls scraped into the csv file
         """
-        with open('tolls.csv', 'w', 'a') as csv_file:
+        with open('tolls.csv', 'a') as csv_file:
             csv_writer = csv.writer(csv_file, dialect="excel")
             # write to csv the account details
             if toll_acc:
@@ -113,7 +115,7 @@ class ScrapeTolls(BasePage):
             if toll_list:
                 for item in toll_list:
                     print(item)
-                csv_writer.writerows(toll_list)
+                    csv_writer.writerow(item)
 
     def take_screen_shot(self, filename: str):
         # Takes the screenshot of what the robot has achieved anonymously.
