@@ -20,14 +20,16 @@ class WriteToExcel:
         self.filename = "tolls.xlsx"
 
     def openxlsx(self, toll_list: list):
+        """Writes scraped tolls directly to excel."""
         # self.sheet.title('Amazon Tolls Scrapes.')
         # self.sheet.append(self.columns)
         for toll in toll_list:
-            self.sheet.append(toll)
+            for i in toll:
+                result_list = i.splitlines()
+            # self.sheet.append(result_list)
         self.wb.save(self.filename)
 
     def write_csv_to_excel(self):
-        # file = open(r'./tolls(scraped-Oct29).csv')
         csv.register_dialect(
             'mydialect',
             delimiter=',',
@@ -43,7 +45,7 @@ class WriteToExcel:
             for row in reader:
                 for i in row:
                     result_list = i.splitlines()
-                    print(result_list)
+                    # print(result_list)
                 self.sheet.append(result_list)
             self.wb.save('csvToExcel.xlsx')
 

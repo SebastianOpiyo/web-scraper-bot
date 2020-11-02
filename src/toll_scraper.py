@@ -80,27 +80,26 @@ class ScrapeTolls(BasePage):
 
     def scrape_table_rows(self):
         from src.write_to_excel import WriteToExcel
+        from src.login_script import TollWebsiteAccess
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
 
+        acc_name = f'Account Name: {TollWebsiteAccess.get_payment_plan.__str__}\n'
         toll_table = self.driver.find_elements_by_id('transactionItems')
         scrapes_list = []
         for item in toll_table:
             table_body = item.find_elements_by_tag_name('tr')
-            # print(f'table body {table_body}')
             string_list = []
             for i in table_body:
                 time.sleep(1)
                 scrape_item = i.get_attribute('innerText')
                 string_list.append(scrape_item)
-            # scrapes_list.append(' '.join(string_list))
             scrapes_list.append(string_list)
-            # print(string_list)
-        print(scrapes_list)
-        ScrapeTolls.write_toll_to_csv(scrapes_list, 'Amazon Acc')
-        for item in scrapes_list:
-            WriteToExcel().openxlsx(item)
-        # WriteToExcel.openxlsx(scrapes_list)
+        # print(scrapes_list)
+        ScrapeTolls.write_toll_to_csv(scrapes_list, acc_name)
+        # for item in scrapes_list:
+        #     WriteToExcel().openxlsx(item)
+        # # WriteToExcel.openxlsx(scrapes_list)
 
     @staticmethod
     def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):
