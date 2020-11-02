@@ -41,9 +41,11 @@ class WriteToExcel:
         with open('tolls.csv') as file:
             reader = csv.reader(file, dialect='mydialect')
             for row in reader:
-                print(row)
-            #     self.sheet.append(row)
-            # self.wb.save('csvToExcel.xlsx')
+                for i in row:
+                    result_list = i.splitlines()
+                    print(result_list)
+                self.sheet.append(result_list)
+            self.wb.save('csvToExcel.xlsx')
 
 
 if __name__ == '__main__':
