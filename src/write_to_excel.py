@@ -7,10 +7,16 @@
 
 import csv
 from openpyxl import Workbook
+from enum import Enum
 
 
 class WriteToExcel:
     """Writes scrapes to excel Workbook."""
+
+    class Accounts(Enum):
+        EZPass_464 = ''
+        EZPass_449 = ''
+        EZPass_548 = ''
 
     def __init__(self):
         self.wb = Workbook()
@@ -32,6 +38,9 @@ class WriteToExcel:
     def write_csv_to_excel(self):
         """Writes csv data to excel sheet.
         - We can use the @openxlsx methods or this method to achieve the same result."""
+        from src.login_script import TollWebsiteAccess
+        excel_file = TollWebsiteAccess.name_files_with_account_date(self)
+        print(excel_file)
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
@@ -50,18 +59,7 @@ class WriteToExcel:
                     result_list = i.splitlines()
                     # print(result_list)
                 self.sheet.append(result_list)
-            self.wb.save('csvToExcel.xlsx')
-
-    @staticmethod
-    def name_files_with_account_date():
-        """Uses date and account to generate excel file names."""
-        from src.login_script import TollWebsiteAccess
-        from datetime import date
-        import ctypes
-        today = date.today().isoformat()
-        print(f'{TollWebsiteAccess().get_payment_plan}')
-        file_name = f'{TollWebsiteAccess().get_payment_plan.__str__()}-{today}.xlsx'
-        return file_name
+            self.wb.save(excel_file)
 
 
 if __name__ == '__main__':
