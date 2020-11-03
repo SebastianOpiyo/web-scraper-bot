@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
-# Date Created: Oct 7, 2020
-# Date Modified: Oct 30, 2020
+# Date Created: Oct 30, 2020
+# Date Modified: Nov 2, 2020
 # Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet.
 # -*- encoding: utf-8 -*-
 
@@ -15,7 +15,7 @@ class WriteToExcel:
     def __init__(self):
         self.wb = Workbook()
         self.sheet = self.wb.active
-        self.columns = ["License Plate Number", "Date & Time", "Facility(Roadway or Bridge)",
+        self.columns = [" ", "License Plate Number", "Date & Time", "Facility(Roadway or Bridge)",
                         "Interchange# - Toll Plaza", "Status*", "Toll", "Fee", "NSF Fee", "Amt Due"]
         self.filename = "tolls.xlsx"
 
@@ -30,6 +30,9 @@ class WriteToExcel:
         self.wb.save(self.filename)
 
     def write_csv_to_excel(self):
+        """Writes csv data to excel sheet.
+        - We can use the @openxlsx methods or this method to achieve the same result."""
+        self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
             delimiter=',',
@@ -49,7 +52,19 @@ class WriteToExcel:
                 self.sheet.append(result_list)
             self.wb.save('csvToExcel.xlsx')
 
+    @staticmethod
+    def name_files_with_account_date():
+        """Uses date and account to generate excel file names."""
+        from src.login_script import TollWebsiteAccess
+        from datetime import date
+        import ctypes
+        today = date.today().isoformat()
+        print(f'{TollWebsiteAccess().get_payment_plan}')
+        file_name = f'{TollWebsiteAccess().get_payment_plan.__str__()}-{today}.xlsx'
+        return file_name
+
 
 if __name__ == '__main__':
     # WriteToExcel().openxlsx()
     WriteToExcel().write_csv_to_excel()
+    # WriteToExcel().name_files_with_account_date()
