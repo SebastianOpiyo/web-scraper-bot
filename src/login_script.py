@@ -127,6 +127,14 @@ class TollWebsiteAccess(BasePage):
     def get_payment_plan(self, new_pay_plan):
         self._pay_plan = new_pay_plan
 
+    def name_files_with_account_date(self):
+        """Uses date and account to generate excel file names."""
+        from datetime import date
+        import ctypes
+        today = date.today().isoformat()
+        file_name = f'{self.get_payment_plan}-{today}.xlsx'
+        return file_name
+
     def quit_browser(self):
         return self.driver.close()
 
