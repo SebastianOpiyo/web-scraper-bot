@@ -22,6 +22,16 @@ import string
 """
 
 
+class ScrapingExceptionHandler(Exception):
+    """A base class that handles all the exception during scraping."""
+    pass
+
+
+class PageNavigationErrorHandler(ScrapingExceptionHandler):
+    """Handles all errors emanating from page-page navigation."""
+    pass
+
+
 class ScrapeTolls(BasePage):
     from src.login_script import TollWebsiteAccess
 
@@ -113,7 +123,7 @@ class ScrapeTolls(BasePage):
                 if next_icon:
                     return True
             except Exception as e:
-                print(e)
+                print(f'The bot could not move to the next page due to {e}')
 
     def move_to_next_page(self):
         # This function targets the image with title=Next.

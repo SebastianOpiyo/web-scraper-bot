@@ -17,7 +17,27 @@ def homepage():
 
 @app.route('/login', methods=['GET', 'POST'])
 def toll_login():
-    return "Login in into the Tolls site!"
+    return "Login in into the Tolls site, using the specified credentials.!"
+
+
+@app.route('/addurls', methods=['GET', 'POST'])
+def add_urls():
+    return "Add urls to the bank of urls list!"
+
+
+@app.route('/deleteurls', methods=['GET', 'POST'])
+def delete_urls():
+    return "Deletes urls from the bank!"
+
+
+@app.route('/add_login_credentials', methods=['GET', 'POST'])
+def add_login_credentials():
+    return "Add login credentials!"
+
+
+@app.route('/delete_login_credentials', methods=['GET', 'POST'])
+def delete_login_credentials():
+    return "Delete login credentials!"
 
 
 @app.route('/scrapetolls')
@@ -38,3 +58,7 @@ def create_queue():
 @app.route('/pushtoAmazons3', methods=['GET', 'POST'])
 def push_to_s3():
     return "Push to amazon s3 for storage."
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
