@@ -35,12 +35,12 @@ class WriteToExcel:
             # self.sheet.append(result_list)
         self.wb.save(self.filename)
 
-    def write_csv_to_excel(self):
+    def write_csv_to_excel(self, title: str):
         """Writes csv data to excel sheet.
         - We can use the @openxlsx methods or this method to achieve the same result."""
         from src.login_script import TollWebsiteAccess
-        excel_file = TollWebsiteAccess.name_files_with_account_date(self)
-        print(excel_file)
+        excel_file = TollWebsiteAccess().name_files_with_account_date()
+        self.sheet.title(title)
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
@@ -57,12 +57,11 @@ class WriteToExcel:
             for row in reader:
                 for i in row:
                     result_list = i.splitlines()
-                    # print(result_list)
                 self.sheet.append(result_list)
             self.wb.save(excel_file)
 
 
 if __name__ == '__main__':
     # WriteToExcel().openxlsx()
-    WriteToExcel().write_csv_to_excel()
-    # WriteToExcel().name_files_with_account_date()
+    pass
+

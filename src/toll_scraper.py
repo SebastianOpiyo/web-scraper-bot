@@ -22,57 +22,37 @@ import string
 """
 
 
+class ScrapingExceptionHandler(Exception):
+    """A base class that handles all the exception during scraping."""
+    pass
+
+
+class PageNavigationErrorHandler(ScrapingExceptionHandler):
+    """Handles all errors emanating from page-page navigation."""
+    pass
+
+
 class ScrapeTolls(BasePage):
     from src.login_script import TollWebsiteAccess
 
     def __init__(self):
         super().__init__()
 
-    def check_next_page(self):
-        """Checks for the existence of next page:
-        @:param
-        @:returns Bool values if it does exist or not."""
-        load_page = self.driver.find_element_by_xpath('html/body')
-        next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
-        if next_icon:
-            return True
-
-    def check_all_boxes(self):
-        """Check all the checkboxes in the toll list so as
-        to get the dynamically generated data using the web driver.
-        Note: This is no longer necessary"""
-        # currently doesn't fully work as expected.
-        try:
-            time.sleep(120)
-            # WebDriverWait(self.driver, 120).until(EC.element_to_be_clickable((By.ID, 'checkAll')))
-            # check_all_boxes = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/'
-            #                                                     'div/div[11]/table/thead/tr/th[1]/div/ins"]')
-            check_box = self.driver.find_element_by_id('checkAll')
-            actions = ActionChains(self.driver)
-            actions.move_to_element(check_box).perform()
-            self.driver.execute_script("arguments[0].click();", check_box)
-            time.sleep(5)
-            # self.take_screen_shot('check-page.png')
-            print(f'Selected all checkboxes')
-        except Exception as e:
-            raise e
-
     def scrape_title_info(self):
         """Scrapes information about the account, i.e:
         - Total Amount Due
-        - Open Violation."""
+        - Open Violation.
+        """
         try:
             load_page = self.driver.find_elements_by_xpath('html/body')
             acc_details = dict()
             time.sleep(3)
             for item in load_page:
-                # print(item.text)
                 acc_details['TotalAmountDue'] = item.find_element_by_xpath('//*[@id="sb-site"]/div['
                                                                            '3]/div/div/form/div/ '
                                                                            'div[9]/div[1]/h4').text
                 acc_details['OpenViolation'] = item.find_element_by_xpath('//*[@id="sb-site"]/div[3]/div/div/form/'
                                                                           'div/div[9]/div[2]/h4').text
-                # print(f'Account Details: {acc_details}')
             return acc_details
         except Exception as e:
             print(f'Could not acquire title information because of Error: {e}')
@@ -84,7 +64,7 @@ class ScrapeTolls(BasePage):
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
 
-        acc_name = f'Account Name: {TollWebsiteAccess.get_payment_plan.__str__}\n'
+        # page_notation = f'End-Page---*---New page\n'
         toll_table = self.driver.find_elements_by_id('transactionItems')
         scrapes_list = []
         for item in toll_table:
@@ -95,11 +75,7 @@ class ScrapeTolls(BasePage):
                 scrape_item = i.get_attribute('innerText')
                 string_list.append(scrape_item)
             scrapes_list.append(string_list)
-        # print(scrapes_list)
-        ScrapeTolls.write_toll_to_csv(scrapes_list, acc_name)
-        # for item in scrapes_list:
-        #     WriteToExcel().openxlsx(item)
-        # # WriteToExcel.openxlsx(scrapes_list)
+        ScrapeTolls.write_toll_to_csv(scrapes_list)
 
     @staticmethod
     def write_toll_to_csv(toll_list: list = None, toll_acc: str = None):
@@ -131,6 +107,23 @@ class ScrapeTolls(BasePage):
         letters = string.ascii_lowercase
         name = ''.join(random.choice(letters) for i in range(10))
         return f'{name}.png'
+
+    def check_next_page(self):
+        """Checks for the existence of next page:
+        @:param
+        @:returns Bool values if it does exist or not."""
+
+        load_page = self.driver.find_element_by_xpath('html/body')
+        next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
+        if next_icon:
+            return True
+        elif not next_icon:
+            time.sleep(10)
+            try:
+                if next_icon:
+                    return True
+            except Exception as e:
+                print(f'The bot could not move to the next page due to {e}')
 
     def move_to_next_page(self):
         # This function targets the image with title=Next.

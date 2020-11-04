@@ -9,31 +9,3 @@
 Especially, the table links that need to be clicked to generate
 toll information.
 """
-
-import sys
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWebKitWidgets import QWebPage
-from lxml import html
-
-
-class Render(QWebPage):
-
-    def __init__(self, url):
-        self.app = QApplication(sys.argv)
-        QWebPage.__init__(self)
-        self.loadFinished.connect(self._loadFinished)
-        self.mainFrame().load(QUrl(url))
-        self.app.exec_()
-
-    def _load_finished(self, result):
-        self.frame = self.mainFrame()
-        self.app.quit()
-
-
-url = 'https://www.ezpassnj.com/vector/violations/violationList.do'
-r = Render(url)
-result = r.frame.toHtml()
-htmltree = html.fromstring(result)
-archive_links = htmltree.xpath('//div[2]/div[2]/div/div[@class="campaign"]/a/@href')
-print(archive_links)
