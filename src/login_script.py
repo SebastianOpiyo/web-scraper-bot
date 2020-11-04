@@ -15,6 +15,7 @@ import time
 
 
 class BotExceptionHandler(Exception):
+    """A common base class for other Bot Exception Error handling classes.."""
     pass
 
 
@@ -77,9 +78,6 @@ class TollWebsiteAccess(BasePage):
             self.driver.execute_script("arguments[0].click();", submit_button)
             time.sleep(180)
             print("Login Successful!!")
-            # ScrapeTolls.take_screen_shot(self, 'login-screen.png')
-            # time.sleep(3)
-            # ScrapeTolls.scrape_title_info(self)
 
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
