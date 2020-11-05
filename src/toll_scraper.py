@@ -59,11 +59,8 @@ class ScrapeTolls(BasePage):
             pass
 
     def scrape_table_rows(self):
-        from src.write_to_excel import WriteToExcel
-        from src.login_script import TollWebsiteAccess
         # Scrapes toll data from each row and dumps it into a list
         # The info from the list is then transferred to a csv file.
-
         # page_notation = f'End-Page---*---New page\n'
         toll_table = self.driver.find_elements_by_id('transactionItems')
         scrapes_list = []
