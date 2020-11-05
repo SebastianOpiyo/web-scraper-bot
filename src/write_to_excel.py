@@ -105,7 +105,7 @@ class WriteToExcel(BasePage):
 
         if toll_list:
             license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
-                '', '', '', '', '', '', 5, '',
+                '', '', '', '', '', '', '-', '',
             if toll_list[1] == 'License Plate Number':
                 pass
             else:
@@ -118,8 +118,10 @@ class WriteToExcel(BasePage):
                     state = 'OR'
             try:
                 splice_toll_agency = toll_list[3].split('/')[3]
-                agency = WriteToExcel.check_agency(splice_toll_agency)
-                exit_lane = f'{splice_toll_agency.upper()}--{toll_list[4]}'
+                default_toll_agency = 'NJTA'
+                agency = f'{WriteToExcel.check_agency(splice_toll_agency)}'
+                exit_lane = f'{splice_toll_agency.upper() if splice_toll_agency else default_toll_agency} ' \
+                            f'-- {toll_list[4]}'
                 amount_due = toll_list[9]
             except Exception:
                 pass
@@ -130,16 +132,17 @@ class WriteToExcel(BasePage):
         pass
 
     @staticmethod
-    def check_agency(agency_abbr):
+    def check_agency(agency_abbr=None):
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',
                        'drjt': 'DELAWARE RIVER JOINT TOLL BRIDGE COMMISSION', 'njta': 'NEW JERSEY TURNPIKE AUTHORITY'}
 
         for i in agency_dict:
-            if i == agency_dict:
+            if i == agency_abbr:
                 return agency_dict.get(i)
+            return f'NEW JERSEY TURNPIKE AUTHORITY'
 
 
 if __name__ == '__main__':
     WriteToExcel().final_ezpasstoll_processing()
-    # WriteToExcel().check_agency()
+    # print(WriteToExcel().check_agency())
 
