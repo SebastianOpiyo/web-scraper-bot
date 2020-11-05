@@ -68,7 +68,6 @@ class WriteToExcel(BasePage):
             self.wb.save(excel_file)
 
     def final_ezpasstoll_processing(self):
-
         self.columns = ["LP", "STATE", "DATETIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
         self.sheet.append(self.columns)
 
@@ -77,10 +76,12 @@ class WriteToExcel(BasePage):
             for row in reader:
                 for i in row:
                     result_row = i.splitlines()
-
-                    print(result_row[2])
-
-            # self.wb.save('processed_toll.xlsx')
+                    try:
+                        new_row = WriteToExcel.process_new_toll_row(result_row)
+                        self.sheet.append(new_row)
+                    except Exception:
+                        pass
+            self.wb.save('processed_toll.xlsx')
 
     @staticmethod
     def process_new_toll_row(toll_list: list):
@@ -95,14 +96,16 @@ class WriteToExcel(BasePage):
                      CLASS - (Default=5)
                      AMOUNT - Amount Due
         """
-        license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
-            '', '', '', '', '', '', '', '',
+        # license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
+        #     '', '', '', '', '', '', 5, '',
 
         new_row = []
         if not toll_list:
             raise EmptyListException("The toll list is empty, you might have reached the end of the file!")
 
         if toll_list:
+            license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
+                '', '', '', '', '', '', '-', '',
             if toll_list[1] == 'License Plate Number':
                 pass
             else:
@@ -113,21 +116,33 @@ class WriteToExcel(BasePage):
                     state = 'ID'
                 else:
                     state = 'OR'
+            try:
+                splice_toll_agency = toll_list[3].split('/')[3]
+                default_toll_agency = 'NJTA'
+                agency = f'{WriteToExcel.check_agency(splice_toll_agency)}'
+                exit_lane = f'{splice_toll_agency.upper() if splice_toll_agency else default_toll_agency} ' \
+                            f'-- {toll_list[4]}'
+                amount_due = toll_list[9]
+            except Exception:
+                pass
+            new_row.extend([license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due])
+        return new_row
 
     def stop_at_given_date(self):
         pass
 
-    def check_agency(self, agency_abbr):
+    @staticmethod
+    def check_agency(agency_abbr=None):
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',
                        'drjt': 'DELAWARE RIVER JOINT TOLL BRIDGE COMMISSION', 'njta': 'NEW JERSEY TURNPIKE AUTHORITY'}
 
         for i in agency_dict:
-            if i == agency_dict:
+            if i == agency_abbr:
                 return agency_dict.get(i)
-
+            return f'NEW JERSEY TURNPIKE AUTHORITY'
 
 
 if __name__ == '__main__':
-    # WriteToExcel().final_ezpasstoll_processing()
-    WriteToExcel().check_agency()
+    WriteToExcel().final_ezpasstoll_processing()
+    # print(WriteToExcel().check_agency())
 
