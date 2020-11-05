@@ -10,7 +10,6 @@ It then calls the [toll_scraper] module classes.
 """
 
 from src.base import BasePage
-
 import time
 
 
@@ -92,6 +91,7 @@ class TollWebsiteAccess(BasePage):
 
     def scrape_page_to_page(self):
         from src.toll_scraper import ScrapeTolls
+        from src.write_to_excel import WriteToExcel
         """Scrapes from the first page to the last
         @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
         """
@@ -99,6 +99,7 @@ class TollWebsiteAccess(BasePage):
             ScrapeTolls.scrape_title_info(self)
             while ScrapeTolls.check_next_page(self):
                 ScrapeTolls.scrape_table_rows(self)
+                WriteToExcel().write_csv_to_excel()
                 ScrapeTolls.move_to_next_page(self)
         except Exception as e:
             raise e

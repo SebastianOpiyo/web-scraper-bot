@@ -6,8 +6,12 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request
+from login_script import TollWebsiteAccess
 
 app = Flask(__name__)
+
+login_credentials = {}
+toll_site_urls = []
 
 
 @app.route('/')
@@ -16,13 +20,14 @@ def homepage():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def toll_login():
+def toll_login(pay_plan, email):
     return "Login in into the Tolls site, using the specified credentials.!"
 
 
 @app.route('/addurls', methods=['GET', 'POST'])
-def add_urls():
-    return "Add urls to the bank of urls list!"
+def add_urls(url):
+    toll_site_urls.append(url)
+    return f'Url {url} added to list{toll_site_urls}'
 
 
 @app.route('/deleteurls', methods=['GET', 'POST'])
