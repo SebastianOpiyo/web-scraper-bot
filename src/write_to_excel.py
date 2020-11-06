@@ -96,8 +96,6 @@ class WriteToExcel(BasePage):
                      CLASS - (Default=5)
                      AMOUNT - Amount Due
         """
-        # license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
-        #     '', '', '', '', '', '', 5, '',
 
         new_row = []
         if not toll_list:
@@ -112,10 +110,13 @@ class WriteToExcel(BasePage):
                 date_time = toll_list[2]
                 client = 'AMAZON LOGISTICS, INC.'
                 license_plate = toll_list[1].split('-')[0]
-                if license_plate[0] == 'T':
+                # print(license_plate[1])
+                if license_plate[1] == 'T':
                     state = 'ID'
-                else:
+                elif license_plate[1] == 'H':
                     state = 'OR'
+                else:
+                    state = '-'
             try:
                 splice_toll_agency = toll_list[3].split('/')[3]
                 default_toll_agency = 'NJTA'
@@ -135,7 +136,6 @@ class WriteToExcel(BasePage):
     def check_agency(agency_abbr=None):
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',
                        'drjt': 'DELAWARE RIVER JOINT TOLL BRIDGE COMMISSION', 'njta': 'NEW JERSEY TURNPIKE AUTHORITY'}
-
         for i in agency_dict:
             if i == agency_abbr:
                 return agency_dict.get(i)
