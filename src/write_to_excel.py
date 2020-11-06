@@ -58,13 +58,15 @@ class WriteToExcel(BasePage):
             lineterminator='\n',
             quoting=csv.QUOTE_MINIMAL
         )
-
         with open('tolls.csv', 'r') as file:
             reader = csv.reader(file, dialect='mydialect')
             for row in reader:
                 for i in row:
                     result_list = i.splitlines()
-                self.sheet.append(result_list)
+                    if result_list[1] == 'License Plate Number':
+                        pass
+                    else:
+                        self.sheet.append(result_list)
             self.wb.save(excel_file)
 
     def final_ezpasstoll_processing(self):
@@ -143,6 +145,7 @@ class WriteToExcel(BasePage):
 
 
 if __name__ == '__main__':
-    WriteToExcel().final_ezpasstoll_processing()
+    # WriteToExcel().final_ezpasstoll_processing()
     # print(WriteToExcel().check_agency())
+    WriteToExcel().write_csv_to_excel()
 
