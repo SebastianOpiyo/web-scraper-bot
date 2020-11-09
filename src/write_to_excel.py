@@ -11,13 +11,18 @@ from src.base import BasePage
 from enum import Enum
 
 
-class WriteToExcelExecptions(Exception):
+class WriteToExcelExceptions(Exception):
     """Base class that handles all exception in the WriteToExcel class."""
     pass
 
 
-class EmptyListException(WriteToExcelExecptions):
+class EmptyListException(WriteToExcelExceptions):
     """Handles empty list exceptions."""
+    pass
+
+
+class FinalTollProcessingException(WriteToExcelExceptions):
+    """Any error exception from final tolls processing."""
     pass
 
 
@@ -72,17 +77,31 @@ class WriteToExcel(BasePage):
     def final_ezpasstoll_processing(self):
         self.columns = ["LP", "STATE", "DATETIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
         self.sheet.append(self.columns)
-
         with open('tolls.csv') as csv_data:
+            csv.register_dialect(
+                'mydialect',
+                delimiter=',',
+                quotechar='"',
+                doublequote=True,
+                skipinitialspace=True,
+                lineterminator='\n',
+                quoting=csv.QUOTE_MINIMAL
+            )
             reader = csv.reader(csv_data)
             for row in reader:
+                print(row)
                 for i in row:
                     result_row = i.splitlines()
                     try:
-                        new_row = WriteToExcel.process_new_toll_row(result_row)
-                        self.sheet.append(new_row)
-                    except Exception:
-                        pass
+                        if result_row[1] == 'License Plate number':
+                            pass
+                        else:
+                            new_row = WriteToExcel.process_new_toll_row(result_row)
+                            self.sheet.append(new_row)
+                    except Exception as e:
+                        # raise FinalTollProcessingException('Encountered an Error while doing the final csv to '
+                        #                                    'Excel processing!')
+                        print(e)
             self.wb.save('processed_toll.xlsx')
 
     @staticmethod
@@ -126,12 +145,19 @@ class WriteToExcel(BasePage):
                 exit_lane = f'{splice_toll_agency.upper() if splice_toll_agency else default_toll_agency} ' \
                             f'-- {toll_list[4]}'
                 amount_due = toll_list[9]
-            except Exception:
+            except Exception as e:
+                # print(e)
+                # raise FinalTollProcessingException('Error with processing new toll row!')
                 pass
             new_row.extend([license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due])
         return new_row
 
     def stop_at_given_date(self):
+        """Stop scraping tolls at a given date."""
+        pass
+
+    def start_at_given_date(self):
+        """Start at a given date."""
         pass
 
     @staticmethod
@@ -145,7 +171,7 @@ class WriteToExcel(BasePage):
 
 
 if __name__ == '__main__':
-    # WriteToExcel().final_ezpasstoll_processing()
+    WriteToExcel().final_ezpasstoll_processing()
     # print(WriteToExcel().check_agency())
-    WriteToExcel().write_csv_to_excel()
+    # WriteToExcel().write_csv_to_excel()
 
