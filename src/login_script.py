@@ -2,7 +2,7 @@
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
 # Date Modified: Oct 28, 2020
-# Description: An Amazon Toll Scraping Bot: Login page.
+# Description: An Amazon Toll Scraping Bot: Login page (For EZ-Pass Amazon Accounts).
 # -*- coding: utf-8 -*-
 
 """This file manages login to the sites to be scraped.
@@ -19,15 +19,14 @@ class BotExceptionHandler(Exception):
 
 
 class TollWebsiteAccess(BasePage):
-    URL = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
-    def __init__(self, url=URL):
+    def __init__(self):
         super().__init__()
-        self.base_url = url
-        self.verificationErrors = []
-        self.accept_next_alert = True
+        self.base_url = None
         self._pay_plan = None
         self._email = None
+        # self.verificationErrors = [] # This is
+        # self.accept_next_alert = True
 
     def collect_login_credentials(self):
         username = input("Please enter a valid Pay Plan:")
@@ -35,51 +34,23 @@ class TollWebsiteAccess(BasePage):
         self._pay_plan = username
         self._email = password
 
-    def test_site_access(self):
-        # Check to see that the site is accessible or not
-        # important because the site needs VPN ON to be accessible.
-        try:
-            self.driver.implicitly_wait(10)
-            self.driver.get(self.base_url)
-            print("Site can be reached!")
-        except Exception as e:
-            print(e)
-
     def login(self):
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
-        is not that instant, and we get to see what it actually does."""
+        is not that instant, and we get to see what it actually does.
+        Login to: EZPassNJ"""
         from src.toll_scraper import ScrapeTolls
-        try:
-            self.driver.get(self.base_url)
-        except BotExceptionHandler:
-            print("The Bot Failed to Access the site!!")
+        from src.ez_pass import EzPassLogin
 
+        self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+        self.test_site_access(self.base_url)
         self.collect_login_credentials()
+        EzPassLogin.login_into_ezpass(self)
 
-        try:
-            time.sleep(20)
-            pay_plan = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/'
-                                                         'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", pay_plan)
-            pay_plan.send_keys(self._pay_plan.strip())
-
-            time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection1.png')
-            email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                      'div[2]/div[3]/div[2]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", email)
-            email.send_keys(str(self._email))
-            time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection2.png')
-            submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                              'div[3]/div[2]/button')
-            self.driver.execute_script("arguments[0].click();", submit_button)
-            time.sleep(180)
-            print("Login Successful!!")
-
-        except BotExceptionHandler:
-            print("Timeout exception or Wrong Credentials!")
+    def sun_pass_login(self):
+        """SunPass Access & Scraping."""
+        self.base_url = 'www.sunpass.com/en/home/index.shtml'
+        self.test_site_access(self.base_url)
 
     def logout(self):
         try:
@@ -140,9 +111,8 @@ class TollWebsiteAccess(BasePage):
 
 def main_run():
     process = TollWebsiteAccess()
-    process.test_site_access()
-    print("Your credentials:")
     process.login()
+    print("Your credentials:")
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
     print(f':_______________________________* Scrapes *_________________________________')
