@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 7, 2020
-# Date Modified: Oct 30, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Toll scraper.
 # -*- coding: utf-8 -*-
 
-from selenium.webdriver.common.action_chains import ActionChains
 from Screenshot import Screenshot_Clipping
 from src.base import BasePage
 
@@ -110,9 +109,9 @@ class ScrapeTolls(BasePage):
         return f'{name}.png'
 
     def check_next_page(self):
-        """Checks for the existence of next page:
-        @:param
-        @:returns Bool values if it does exist or not."""
+        """Checks for the existence of next page in the EZ_Pass Acc.:
+        @:returns Bool values if it does exist or not.
+        """
 
         load_page = self.driver.find_element_by_xpath('html/body')
         next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
@@ -127,7 +126,7 @@ class ScrapeTolls(BasePage):
                 print(f'The bot could not move to the next page due to {e}')
 
     def move_to_next_page(self):
-        # This function targets the image with title=Next.
+        # This function targets the image with title=Next in the EZ_Pass Acc..
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
             next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")

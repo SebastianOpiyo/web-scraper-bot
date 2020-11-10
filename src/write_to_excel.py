@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 30, 2020
-# Date Modified: Nov 2, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet.
 # -*- encoding: utf-8 -*-
 
 import csv
 from openpyxl import Workbook
 from src.base import BasePage
-from enum import Enum
 
 
 class WriteToExcelExceptions(Exception):

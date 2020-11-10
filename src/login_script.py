@@ -10,7 +10,6 @@ It then calls the [toll_scraper] module classes.
 """
 
 from src.base import BasePage
-import time
 
 
 class BotExceptionHandler(Exception):
@@ -25,8 +24,6 @@ class TollWebsiteAccess(BasePage):
         self.base_url = None
         self._pay_plan = None
         self._email = None
-        # self.verificationErrors = [] # This is
-        # self.accept_next_alert = True
 
     def collect_login_credentials(self):
         username = input("Please enter a valid Pay Plan:")
@@ -95,7 +92,6 @@ class TollWebsiteAccess(BasePage):
     def name_files_with_account_date(self):
         """Uses date and account to generate excel file names."""
         from datetime import date
-        import ctypes
         today = date.today().isoformat()
         file_name = f'{self.get_payment_plan}-{today}.xlsx'
         return file_name

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Nov 09, 2020
-# Date Modified: Nov 09, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet(Sunpass Account).
 # -*- encoding: utf-8 -*-
 
