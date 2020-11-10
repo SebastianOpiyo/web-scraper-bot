@@ -153,14 +153,6 @@ class WriteToExcel(BasePage):
             new_row.extend([license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due])
         return new_row
 
-    def stop_at_given_date(self):
-        """Stop scraping tolls at a given date."""
-        pass
-
-    def start_at_given_date(self):
-        """Start at a given date."""
-        pass
-
     @staticmethod
     def check_agency(agency_abbr=None):
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',

@@ -67,6 +67,8 @@ class TollWebsiteAccess(BasePage):
             ScrapeTolls.scrape_title_info(self)
             while ScrapeTolls.check_next_page(self):
                 ScrapeTolls.scrape_table_rows(self)
+                # consider instatiating the WriteToExcel class
+                # Otherwise results to lots of garbage (class instance objs)
                 WriteToExcel().write_csv_to_excel()
                 ScrapeTolls.move_to_next_page(self)
         except Exception as e:

@@ -36,6 +36,31 @@ class ScrapeTolls(BasePage):
 
     def __init__(self):
         super().__init__()
+        self.start_date = None
+        self.end_date = None
+
+    # By defining start and end date, we get the flexibility of altering any
+    # in case of need for change.
+    # Note: What about use of setter & getter methods?
+    def stop_at_given_date(self):
+        """Set Stop scraping tolls at a given date."""
+        stop_date = input('Enter Tolls Scrape Stop Date: ')
+        self.end_date = stop_date
+
+    def start_at_given_date(self):
+        """Set Start at a given date."""
+        start_date = input('Enter Tolls Scrape Start Date: ')
+        self.start_date = start_date
+
+    @property
+    def get_start_date(self):
+        """Return start date"""
+        return self.start_date
+
+    @property
+    def get_end_date(self):
+        """Return start date"""
+        return self.end_date
 
     def scrape_title_info(self):
         """Scrapes information about the account, i.e:
@@ -135,3 +160,12 @@ class ScrapeTolls(BasePage):
             print(f'Moved to the next page!')
         except Exception as e:
             print(f'Could not move to the next page because of the Error: {e}')
+
+
+if __name__ == "__main__":
+    scraper_instance = ScrapeTolls()
+    scraper_instance.start_at_given_date()
+    scraper_instance.stop_at_given_date()
+    start_date = scraper_instance.get_start_date
+    end_date = scraper_instance.get_end_date
+    print(start_date, end_date)

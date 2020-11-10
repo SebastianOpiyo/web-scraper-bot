@@ -6,8 +6,13 @@
 # -*- encoding: utf-8 -*-
 
 
+from src.login_script import TollWebsiteAccess, BotExceptionHandler
+from src.toll_scraper import ScrapeTolls
+import time
+
+
 """
-- Check for sight accessability (click My SunPass at the right hand corner)
+- Check for sight accessibility (click My SunPass at the right hand corner)
 - Collect logins 
 - Sign in attempt, on success
 - Click activity located on the left menu
@@ -15,11 +20,6 @@
 - Enter start and End Dates & Click View.
 - Export Transaction to Spreadsheet(Download the spreadsheet)
 """
-
-
-from src.login_script import TollWebsiteAccess, BotExceptionHandler
-from src.toll_scraper import ScrapeTolls
-import time
 
 
 class SunPassLogin(TollWebsiteAccess):
@@ -50,4 +50,24 @@ class SunPassLogin(TollWebsiteAccess):
             print("Timeout exception or Wrong Credentials!")
 
     def logout(self):
+        pass
+
+    def scrape_tolls(self):
+        """
+        - Click the activity button
+        - Set the dates
+        - Download the excel file.
+        :return:
+        """
+
+        activity_button = self.driver.find_element_by_xpath('//*[@id="acctmenu"]/div/ul/li[8]/a')
+        self.driver.execute_script("arguments[0].click();", activity_button)
+        time.sleep(3)
+        filter_by = self.driver.find_element_by_xpath('//*[@id="38"]/option[9]')
+        self.driver.execute_script("arguments[0].click();", filter_by)
+        time.sleep(1)
+        ScrapeTolls.take_screen_shot(self, 'toll_selection_check.png')
+
+    def download_tolls(self):
+        """Find the download link and download the tolls excel doc."""
         pass
