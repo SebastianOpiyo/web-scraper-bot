@@ -18,6 +18,7 @@
 
 
 from src.login_script import TollWebsiteAccess, BotExceptionHandler
+from src.toll_scraper import ScrapeTolls
 import time
 
 
@@ -25,24 +26,28 @@ class SunPassLogin(TollWebsiteAccess):
 
     def login_into_sun_pass(self):
         try:
-            time.sleep(5)
-            pay_plan = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/'
-                                                         'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", pay_plan)
-            pay_plan.send_keys(self._pay_plan.strip())
-
+            ScrapeTolls.take_screen_shot(self, 'site_check.png')
             time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection1.png')
-            email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                      'div[2]/div[3]/div[2]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", email)
-            email.send_keys(str(self._email))
+            my_sunpass_button = self.driver.find_element_by_xpath('//*[@id="header"]/div/div[2]/ul/li[8]/a/span')
+            self.driver.execute_script("arguments[0].click();", my_sunpass_button)
             time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection2.png')
-            submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                              'div[3]/div[2]/button')
-            self.driver.execute_script("arguments[0].click();", submit_button)
-            time.sleep(180)
-            print("Login Successful!!")
+            ScrapeTolls.take_screen_shot(self, 'login_form_check.png')
+            username = self.driver.find_element_by_xpath('//*[@id="tt_username"]')
+            self.driver.execute_script("arguments[0].click();", username)
+            username.send_keys(self._pay_plan.strip())
+            time.sleep(1)
+            site_password = self.driver.find_element_by_xpath('//*[@id="tt_loginPassword"]')
+            self.driver.execute_script("arguments[0].click();", site_password)
+            site_password.send_keys(str(self._email))
+            time.sleep(2)
+            ScrapeTolls.take_screen_shot(self, 'login_check.png')
+            login_button = self.driver.find_element_by_xpath('//*[@id="header"]/div/div[2]/ul/li[8]/div/form/button')
+            self.driver.execute_script("arguments[0].click();", login_button)
+            time.sleep(10)
+            print("SunPass Login Successful!!")
+            ScrapeTolls.take_screen_shot(self, 'success_login_check.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
+
+    def logout(self):
+        pass

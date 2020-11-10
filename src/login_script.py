@@ -34,31 +34,31 @@ class TollWebsiteAccess(BasePage):
         self._pay_plan = username
         self._email = password
 
+    def collect_cred_test_access(self, url: str):
+        """For the sake of DRY code, we use this function to merge two lines of
+        code, that could have otherwise been called in each function that
+        handles each site."""
+        self.test_site_access(url)
+        self.collect_login_credentials()
+
     def login(self):
         """We do the click and data entry into tables then login below:
         We have 3 sec pause between each input just to ensure the bot
         is not that instant, and we get to see what it actually does.
         Login to: EZPassNJ"""
-        from src.toll_scraper import ScrapeTolls
         from src.ez_pass import EzPassLogin
 
         self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
-        self.test_site_access(self.base_url)
-        self.collect_login_credentials()
+        self.collect_cred_test_access(self.base_url)
         EzPassLogin.login_into_ezpass(self)
 
     def sun_pass_login(self):
         """SunPass Access & Scraping."""
-        self.base_url = 'www.sunpass.com/en/home/index.shtml'
-        self.test_site_access(self.base_url)
+        from src.sunpass_account import SunPassLogin
 
-    def logout(self):
-        try:
-            sign_out = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/'
-                                                         'div[3]/div/div/form/div/div[1]/div/div[3]/button')
-            self.driver.execute_script("arguments[0].click();", sign_out)
-        except Exception as e:
-            print(e)
+        self.base_url = 'https://www.sunpass.com/en/home/index.shtml'
+        self.collect_cred_test_access(self.base_url)
+        SunPassLogin.login_into_sun_pass(self)
 
     def scrape_page_to_page(self):
         from src.toll_scraper import ScrapeTolls
@@ -74,11 +74,6 @@ class TollWebsiteAccess(BasePage):
                 ScrapeTolls.move_to_next_page(self)
         except Exception as e:
             raise e
-
-    def perform_scraping(self):
-        # from src.toll_scraper import ScrapeTolls
-        # ScrapeTolls.scrape_title_info(self)
-        self.scrape_page_to_page()
 
     # getter and setter helper methods for the login credentials.
     @property
@@ -111,12 +106,11 @@ class TollWebsiteAccess(BasePage):
 
 def main_run():
     process = TollWebsiteAccess()
-    process.login()
+    process.sun_pass_login()
     print("Your credentials:")
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
     print(f':_______________________________* Scrapes *_________________________________')
-    process.perform_scraping()
 
 
 if __name__ == '__main__':

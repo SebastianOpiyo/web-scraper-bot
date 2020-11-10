@@ -24,6 +24,14 @@ class EzPassLogin(TollWebsiteAccess):
                                                               'div[3]/div[2]/button')
             self.driver.execute_script("arguments[0].click();", submit_button)
             time.sleep(180)
-            print("Login Successful!!")
+            print("EZ Pass Login Successful!!")
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
+
+    def logout(self):
+        try:
+            sign_out = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/'
+                                                         'div[3]/div/div/form/div/div[1]/div/div[3]/button')
+            self.driver.execute_script("arguments[0].click();", sign_out)
+        except Exception as e:
+            print(e)
