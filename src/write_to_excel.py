@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 30, 2020
-# Date Modified: Nov 2, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet.
 # -*- encoding: utf-8 -*-
 
 import csv
 from openpyxl import Workbook
 from src.base import BasePage
-from enum import Enum
 
 
 class WriteToExcelExceptions(Exception):
@@ -75,7 +74,11 @@ class WriteToExcel(BasePage):
             self.wb.save(excel_file)
 
     def final_ezpasstoll_processing(self):
-        self.columns = ["LP", "STATE", "DATETIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
+        """This methods used the following helper methods to accomplish the processing:
+        @method: process_new_toll_row()
+        @:return processec excel file
+        """
+        self.columns = ["LP", "STATE", "DATE-TIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
         self.sheet.append(self.columns)
         with open('tolls.csv') as csv_data:
             csv.register_dialect(
@@ -89,8 +92,8 @@ class WriteToExcel(BasePage):
             )
             reader = csv.reader(csv_data)
             for row in reader:
-                print(row)
-                for i in row:
+                # print(row)
+                for i in row[1:]:
                     result_row = i.splitlines()
                     try:
                         if result_row[1] == 'License Plate number':
@@ -99,9 +102,7 @@ class WriteToExcel(BasePage):
                             new_row = WriteToExcel.process_new_toll_row(result_row)
                             self.sheet.append(new_row)
                     except Exception as e:
-                        # raise FinalTollProcessingException('Encountered an Error while doing the final csv to '
-                        #                                    'Excel processing!')
-                        print(e)
+                        print(f'Encountered the following Error --> {e}')
             self.wb.save('processed_toll.xlsx')
 
     @staticmethod
@@ -131,7 +132,6 @@ class WriteToExcel(BasePage):
                 date_time = toll_list[2]
                 client = 'AMAZON LOGISTICS, INC.'
                 license_plate = toll_list[1].split('-')[0]
-                # print(license_plate[1])
                 if license_plate[1] == 'T':
                     state = 'ID'
                 elif license_plate[1] == 'H':
@@ -139,35 +139,30 @@ class WriteToExcel(BasePage):
                 else:
                     state = '-'
             try:
+                if not toll_list[3]:
+                    # check if url exists, if not we append a fake one
+                    toll_list[3] = 'http://10.37.248.147/njta/202011/' \
+                                   '20201102/18W_09w/01318W_09wW2020110214193143SV_02.jpg'
+
                 splice_toll_agency = toll_list[3].split('/')[3]
-                default_toll_agency = 'NJTA'
                 agency = f'{WriteToExcel.check_agency(splice_toll_agency)}'
-                exit_lane = f'{splice_toll_agency.upper() if splice_toll_agency else default_toll_agency} ' \
-                            f'-- {toll_list[4]}'
+                exit_lane = f'{splice_toll_agency.upper()} -- {toll_list[4]} '
                 amount_due = toll_list[9]
             except Exception as e:
-                # print(e)
-                # raise FinalTollProcessingException('Error with processing new toll row!')
-                pass
+                print(f'Encountered the following Error --> {e}')
             new_row.extend([license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due])
         return new_row
-
-    def stop_at_given_date(self):
-        """Stop scraping tolls at a given date."""
-        pass
-
-    def start_at_given_date(self):
-        """Start at a given date."""
-        pass
 
     @staticmethod
     def check_agency(agency_abbr=None):
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',
                        'drjt': 'DELAWARE RIVER JOINT TOLL BRIDGE COMMISSION', 'njta': 'NEW JERSEY TURNPIKE AUTHORITY'}
-        for i in agency_dict:
-            if i == agency_abbr:
-                return agency_dict.get(i)
+        if agency_abbr is None:
             return f'NEW JERSEY TURNPIKE AUTHORITY'
+        else:
+            for i in agency_dict:
+                if i == agency_abbr:
+                    return agency_dict.get(i)
 
 
 if __name__ == '__main__':
