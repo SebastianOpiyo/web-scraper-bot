@@ -70,7 +70,11 @@ class ScrapeTolls(BasePage):
             for i in table_body:
                 time.sleep(1)
                 scrape_item = i.get_attribute('innerText')
-                string_list.append(scrape_item)
+                if scrape_item:
+                    string_list.append(scrape_item)
+                else:
+                    scrape_item = None
+                    string_list.append(scrape_item)
             scrapes_list.append(string_list)
         ScrapeTolls.write_toll_to_csv(scrapes_list)
 
