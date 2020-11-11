@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# Author: Sebastian Opiyo.
+# Date Created: Nov 09, 2020
+# Date Modified: Nov 11, 2020
+# Description: An Amazon Toll Scraping Bot: Module that writes tolls to the excel sheet(Sunpass Account).
+# -*- encoding: utf-8 -*-
+
 from selenium import webdriver
 
 from webdriver_manager.chrome import ChromeDriverManager
@@ -7,7 +14,9 @@ import time
 class BasePage:
     """Driver class inherited by all the other classes.
     - It does initiate the chrome driver, chrome browser being the option.
-    - It also closes the browser if needed."""
+    - It also closes the browser if needed. NB: - It is a good practice to close
+    browser instances after use.
+    """
 
     def __init__(self):
         self.save_file_path = './rowtolls/CSV_Downloads'

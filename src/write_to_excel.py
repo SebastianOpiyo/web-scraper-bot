@@ -164,6 +164,8 @@ class WriteToExcel(BasePage):
 
     @staticmethod
     def check_agency(agency_abbr=None):
+        """Given an abbreviation of an agency, it checks for to full name
+        from dictionary, if it does exist it assigns the correct one."""
         agency_dict = {'dr': 'DELAWARE DEPARTMENT OF TRANSPORTATION', 'drba': 'DELAWARE RIVER AND BAY AUTHORITY',
                        'drjt': 'DELAWARE RIVER JOINT TOLL BRIDGE COMMISSION', 'njta': 'NEW JERSEY TURNPIKE AUTHORITY'}
         if agency_abbr is None:
