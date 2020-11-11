@@ -27,6 +27,8 @@ class SunPassLogin(TollWebsiteAccess):
 
     def __init__(self):
         super().__init__()
+        self.starting_date = ''
+        self.ending_date = ''
 
     def login_into_sun_pass(self):
         try:
@@ -75,8 +77,14 @@ class SunPassLogin(TollWebsiteAccess):
         select.select_by_visible_text('Toll Transaction')
         time.sleep(1)
         # ScrapeTolls.take_screen_shot(self, 'toll_selection_check.png')
-
         # 1. Enter Start Date & End Date.
+        start_date_input = page_body.find_element_by_name('startDateAll')
+        print(start_date_input)
+        end_date_input = page_body.find_element_by_name('endDateAll')
+        print(end_date_input)
+
+        # Call the download function after everything is set.
+        SunPassLogin.download_tolls(self)
 
     def download_tolls(self):
         """Find the download link and download the tolls excel doc."""

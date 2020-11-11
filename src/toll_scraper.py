@@ -49,8 +49,8 @@ class ScrapeTolls(BasePage):
 
     def start_at_given_date(self):
         """Set Start at a given date."""
-        start_date = input('Enter Tolls Scrape Start Date: ')
-        self.start_date = start_date
+        starting_date = input('Enter Tolls Scrape Start Date: ')
+        self.start_date = starting_date
 
     @property
     def get_start_date(self):
