@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
-# Date Modified: Oct 28, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Login page (For EZ-Pass Amazon Accounts).
 # -*- coding: utf-8 -*-
 
@@ -24,6 +24,8 @@ class TollWebsiteAccess(BasePage):
         self.base_url = None
         self._pay_plan = None
         self._email = None
+        self._site_name = None
+        self._filename = f'{self._pay_plan}@{self._site_name}'
 
     def collect_login_credentials(self):
         username = input("Please enter a valid Pay Plan:")
@@ -46,6 +48,7 @@ class TollWebsiteAccess(BasePage):
         from src.ez_pass import EzPassLogin
 
         self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+        self._site_name = 'EZ_PassNJ'
         self.collect_cred_test_access(self.base_url)
         EzPassLogin.login_into_ezpass(self)
 
@@ -54,8 +57,11 @@ class TollWebsiteAccess(BasePage):
         from src.sunpass_account import SunPassLogin
 
         self.base_url = 'https://www.sunpass.com/en/home/index.shtml'
+        self._site_name = 'SunPass'
         self.collect_cred_test_access(self.base_url)
         SunPassLogin.login_into_sun_pass(self)
+        # print(self._filename)
+        SunPassLogin.scrape_tolls(self)
 
     def scrape_page_to_page(self):
         from src.toll_scraper import ScrapeTolls
@@ -91,15 +97,14 @@ class TollWebsiteAccess(BasePage):
     def get_payment_plan(self, new_pay_plan):
         self._pay_plan = new_pay_plan
 
-    def name_files_with_account_date(self):
-        """Uses date and account to generate excel file names."""
-        from datetime import date
-        today = date.today().isoformat()
-        file_name = f'{self.get_payment_plan}-{today}.xlsx'
-        return file_name
+    @property
+    def get_file_name(self):
+        return self._filename
 
-    def quit_browser(self):
-        return self.driver.close()
+    @staticmethod
+    def call_write_to_excel(payment_plan):
+        from src.write_to_excel import WriteToExcel
+        WriteToExcel().write_csv_to_excel(payment_plan)
 
 
 def main_run():
@@ -108,7 +113,11 @@ def main_run():
     print("Your credentials:")
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
+    print(f'File Name: {process.get_file_name}')
     print(f':_______________________________* Scrapes *_________________________________')
+    # process.call_write_to_excel(process.get_file_name)
+    # process.close_browser()
+    process.quit_driver()
 
 
 if __name__ == '__main__':

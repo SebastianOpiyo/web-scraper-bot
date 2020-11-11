@@ -8,6 +8,7 @@
 
 from src.login_script import TollWebsiteAccess, BotExceptionHandler
 from src.toll_scraper import ScrapeTolls
+from selenium.webdriver.support.ui import Select
 import time
 
 
@@ -24,14 +25,17 @@ import time
 
 class SunPassLogin(TollWebsiteAccess):
 
+    def __init__(self):
+        super().__init__()
+
     def login_into_sun_pass(self):
         try:
-            ScrapeTolls.take_screen_shot(self, 'site_check.png')
+            # ScrapeTolls.take_screen_shot(self, 'site_check.png')
             time.sleep(2)
             my_sunpass_button = self.driver.find_element_by_xpath('//*[@id="header"]/div/div[2]/ul/li[8]/a/span')
             self.driver.execute_script("arguments[0].click();", my_sunpass_button)
             time.sleep(2)
-            ScrapeTolls.take_screen_shot(self, 'login_form_check.png')
+            # ScrapeTolls.take_screen_shot(self, 'login_form_check.png')
             username = self.driver.find_element_by_xpath('//*[@id="tt_username"]')
             self.driver.execute_script("arguments[0].click();", username)
             username.send_keys(self._pay_plan.strip())
@@ -40,12 +44,12 @@ class SunPassLogin(TollWebsiteAccess):
             self.driver.execute_script("arguments[0].click();", site_password)
             site_password.send_keys(str(self._email))
             time.sleep(2)
-            ScrapeTolls.take_screen_shot(self, 'login_check.png')
+            # ScrapeTolls.take_screen_shot(self, 'login_check.png')
             login_button = self.driver.find_element_by_xpath('//*[@id="header"]/div/div[2]/ul/li[8]/div/form/button')
             self.driver.execute_script("arguments[0].click();", login_button)
             time.sleep(10)
             print("SunPass Login Successful!!")
-            ScrapeTolls.take_screen_shot(self, 'success_login_check.png')
+            # ScrapeTolls.take_screen_shot(self, 'success_login_check.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 
@@ -57,17 +61,26 @@ class SunPassLogin(TollWebsiteAccess):
         - Click the activity button
         - Set the dates
         - Download the excel file.
-        :return:
+        :methods: download_tolls - called after form has been filled accordingly.
+        :return: csv file.
         """
 
+        # 1. Perform Filter By Selection
         activity_button = self.driver.find_element_by_xpath('//*[@id="acctmenu"]/div/ul/li[8]/a')
         self.driver.execute_script("arguments[0].click();", activity_button)
         time.sleep(3)
-        filter_by = self.driver.find_element_by_xpath('//*[@id="38"]/option[9]')
-        self.driver.execute_script("arguments[0].click();", filter_by)
+        # ScrapeTolls.take_screen_shot(self, 'selection_check.png')
+        page_body = self.driver.find_element_by_id('searchForm')
+        select = Select(page_body.find_element_by_name('filterBy'))
+        select.select_by_visible_text('Toll Transaction')
         time.sleep(1)
-        ScrapeTolls.take_screen_shot(self, 'toll_selection_check.png')
+        # ScrapeTolls.take_screen_shot(self, 'toll_selection_check.png')
+
+        # 1. Enter Start Date & End Date.
 
     def download_tolls(self):
         """Find the download link and download the tolls excel doc."""
-        pass
+
+        download_csv = self.driver.find_element_by_xpath('//*[@id="winphexcel"]')
+        self.driver.execute_script("arguments[0].click();", download_csv)
+        ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')
