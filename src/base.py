@@ -10,8 +10,15 @@ class BasePage:
     - It also closes the browser if needed."""
 
     def __init__(self):
+        self.save_file_path = './rowtolls/CSV_Downloads'
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('headless')
+        chrome_options.add_experimental_option("prefs",
+                                               {"download.default_directory": self.save_file_path,
+                                                "download.prompt_for_download": False,
+                                                "download.directory_upgrade": True,
+                                                "safebrowsing_for_trusted_sources_enabled": False,
+                                                "safebrowsing.enabled": False})
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
         self.driver.maximize_window()
 
