@@ -27,8 +27,6 @@ class SunPassLogin(TollWebsiteAccess):
 
     def __init__(self):
         super().__init__()
-        self.starting_date = ''
-        self.ending_date = ''
 
     def login_into_sun_pass(self):
         try:
@@ -66,7 +64,7 @@ class SunPassLogin(TollWebsiteAccess):
         :methods: download_tolls - called after form has been filled accordingly.
         :return: csv file.
         """
-
+        from src.toll_scraper import ScrapeTolls
         # 1. Perform Filter By Selection
         activity_button = self.driver.find_element_by_xpath('//*[@id="acctmenu"]/div/ul/li[8]/a')
         self.driver.execute_script("arguments[0].click();", activity_button)
@@ -78,10 +76,18 @@ class SunPassLogin(TollWebsiteAccess):
         time.sleep(1)
         # ScrapeTolls.take_screen_shot(self, 'toll_selection_check.png')
         # 1. Enter Start Date & End Date.
+        start_date_value = ScrapeTolls.start_at_given_date()
+        end_date_value = ScrapeTolls.stop_at_given_date()
+        # We clear and enter values.
         start_date_input = page_body.find_element_by_name('startDateAll')
-        print(start_date_input)
+        start_date_input.clear()
+        self.driver.execute_script("arguments[0].click();", start_date_input)
+        start_date_input.send_keys(start_date_value)
         end_date_input = page_body.find_element_by_name('endDateAll')
-        print(end_date_input)
+        end_date_input.clear()
+        self.driver.execute_script("arguments[0].click();", end_date_input)
+        end_date_input.send_keys(end_date_value)
+        ScrapeTolls.take_screen_shot(self, 'date_values_check.png')
 
         # Call the download function after everything is set.
         SunPassLogin.download_tolls(self)
@@ -91,4 +97,4 @@ class SunPassLogin(TollWebsiteAccess):
 
         download_csv = self.driver.find_element_by_xpath('//*[@id="winphexcel"]')
         self.driver.execute_script("arguments[0].click();", download_csv)
-        ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')
+        # ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')
