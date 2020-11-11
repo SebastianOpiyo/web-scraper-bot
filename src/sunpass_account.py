@@ -91,4 +91,4 @@ class SunPassLogin(TollWebsiteAccess):
 
         download_csv = self.driver.find_element_by_xpath('//*[@id="winphexcel"]')
         self.driver.execute_script("arguments[0].click();", download_csv)
-        ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')
+        # ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')
