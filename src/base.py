@@ -1,7 +1,7 @@
 from selenium import webdriver
 
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common import exceptions
+import time
 
 
 class BasePage:
@@ -25,5 +25,12 @@ class BasePage:
         except Exception as e:
             print(f'Site cannot be reached because of {e}')
 
-    def exit_driver(self):
+    def quit_driver(self):
+        """Closes all open instances of the browser instances"""
+        time.sleep(15)
         self.driver.quit()
+
+    def close_browser(self):
+        """Closes the browser that is in ficus."""
+        time.sleep(15)
+        return self.driver.close()
