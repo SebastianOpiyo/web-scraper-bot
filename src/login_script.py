@@ -40,11 +40,8 @@ class TollWebsiteAccess(BasePage):
         self.test_site_access(url)
         self.collect_login_credentials()
 
-    def login(self):
-        """We do the click and data entry into tables then login below:
-        We have 3 sec pause between each input just to ensure the bot
-        is not that instant, and we get to see what it actually does.
-        Login to: EZPassNJ"""
+    def ez_pass_login(self):
+        """EZPassNJ Access and Scraping."""
         from src.ez_pass import EzPassLogin
 
         self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
@@ -52,7 +49,7 @@ class TollWebsiteAccess(BasePage):
         self.collect_cred_test_access(self.base_url)
         EzPassLogin.login_into_ezpass(self)
 
-    def sun_pass_login(self):
+    def sun_pass_login_and_scraping(self):
         """SunPass Access & Scraping."""
         from src.sunpass_account import SunPassLogin
 
@@ -60,8 +57,16 @@ class TollWebsiteAccess(BasePage):
         self._site_name = 'SunPass'
         self.collect_cred_test_access(self.base_url)
         SunPassLogin.login_into_sun_pass(self)
-        # print(self._filename)
         SunPassLogin.scrape_tolls(self)
+
+    def ntta_login_and_scraping(self):
+        """NTTA Access and Scraping."""
+        from src.Ntta_site import NttaLoginAndSraping
+        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self._site_name = 'NTTA'
+        self.collect_cred_test_access(self.base_url)
+        NttaLoginAndSraping.ntta_login(self)
+        NttaLoginAndSraping.scrapping(self)
 
     def scrape_page_to_page(self):
         from src.toll_scraper import ScrapeTolls
@@ -73,7 +78,7 @@ class TollWebsiteAccess(BasePage):
             ScrapeTolls.scrape_title_info(self)
             while ScrapeTolls.check_next_page(self):
                 ScrapeTolls.scrape_table_rows(self)
-                # consider instatiating the WriteToExcel class
+                # consider instantiating the WriteToExcel class
                 # Otherwise results to lots of garbage (class instance objs)
                 WriteToExcel().write_csv_to_excel()
                 ScrapeTolls.move_to_next_page(self)
@@ -109,14 +114,13 @@ class TollWebsiteAccess(BasePage):
 
 def main_run():
     process = TollWebsiteAccess()
-    process.sun_pass_login()
+    process.ntta_login_and_scraping()
     print("Your credentials:")
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')
     print(f'File Name: {process.get_file_name}')
     print(f':_______________________________* Scrapes *_________________________________')
     # process.call_write_to_excel(process.get_file_name)
-    # process.close_browser()
     process.quit_driver()
 
 
