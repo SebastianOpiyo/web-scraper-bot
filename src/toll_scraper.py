@@ -154,6 +154,5 @@ class ScrapeTolls(BasePage):
 
 if __name__ == "__main__":
     scraper_instance = ScrapeTolls()
-    # print(scraper_instance.start_at_given_date())
-    # print(scraper_instance.stop_at_given_date())
+
 

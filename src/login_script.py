@@ -68,23 +68,6 @@ class TollWebsiteAccess(BasePage):
         NttaLoginAndSraping.ntta_login(self)
         NttaLoginAndSraping.scrapping(self)
 
-    def scrape_page_to_page(self):
-        from src.toll_scraper import ScrapeTolls
-        from src.write_to_excel import WriteToExcel
-        """Scrapes from the first page to the last
-        @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
-        """
-        try:
-            ScrapeTolls.scrape_title_info(self)
-            while ScrapeTolls.check_next_page(self):
-                ScrapeTolls.scrape_table_rows(self)
-                # consider instantiating the WriteToExcel class
-                # Otherwise results to lots of garbage (class instance objs)
-                WriteToExcel().write_csv_to_excel()
-                ScrapeTolls.move_to_next_page(self)
-        except Exception as e:
-            raise e
-
     # getter and setter helper methods for the login credentials.
     @property
     def get_email(self):
@@ -114,7 +97,8 @@ class TollWebsiteAccess(BasePage):
 
 def main_run():
     process = TollWebsiteAccess()
-    process.ntta_login_and_scraping()
+    # process.ntta_login_and_scraping()
+    process.ez_pass_login()
     print("Your credentials:")
     print(f'Toll Acc: {process.get_payment_plan}')
     print(f'Acc. Mail {process.get_email}')

@@ -41,6 +41,8 @@ class EzPassLogin(TollWebsiteAccess):
             print("EZ Pass Login Successful!!")
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
+        # Start scraping page by page in a given account.
+        EzPassLogin.scrape_page_to_page(self)
 
     def logout(self):
         try:
@@ -49,3 +51,21 @@ class EzPassLogin(TollWebsiteAccess):
             self.driver.execute_script("arguments[0].click();", sign_out)
         except Exception as e:
             print(e)
+
+    def scrape_page_to_page(self):
+        from src.toll_scraper import ScrapeTolls
+        from src.write_to_excel import WriteToExcel
+        """Scrapes from the first page to the last
+        @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
+        """
+        try:
+            ScrapeTolls.scrape_title_info(self)
+            while ScrapeTolls.check_next_page(self):
+                ScrapeTolls.scrape_table_rows(self)
+                # consider instantiating the WriteToExcel class
+                # Otherwise results to lots of garbage (class instance objs)
+                WriteToExcel().write_csv_to_excel(self.get_payment_plan)
+                ScrapeTolls.move_to_next_page(self)
+        except Exception as e:
+            raise e
+
