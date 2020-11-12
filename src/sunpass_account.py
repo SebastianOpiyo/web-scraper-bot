@@ -7,7 +7,6 @@
 
 
 from src.login_script import TollWebsiteAccess, BotExceptionHandler
-from src.toll_scraper import ScrapeTolls
 from selenium.webdriver.support.ui import Select
 import time
 
@@ -87,7 +86,7 @@ class SunPassLogin(TollWebsiteAccess):
         end_date_input.clear()
         self.driver.execute_script("arguments[0].click();", end_date_input)
         end_date_input.send_keys(end_date_value)
-        ScrapeTolls.take_screen_shot(self, 'date_values_check.png')
+        # ScrapeTolls.take_screen_shot(self, 'date_values_check.png')
 
         # Call the download function after everything is set.
         SunPassLogin.download_tolls(self)
@@ -97,4 +96,3 @@ class SunPassLogin(TollWebsiteAccess):
 
         download_csv = self.driver.find_element_by_xpath('//*[@id="winphexcel"]')
         self.driver.execute_script("arguments[0].click();", download_csv)
-        # ScrapeTolls.take_screen_shot(self, 'download_csv_check.png')

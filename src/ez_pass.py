@@ -8,6 +8,13 @@
 from src.login_script import TollWebsiteAccess, BotExceptionHandler
 import time
 
+"""
+    • Gain access to the account by clicking Log In/Register
+    • Activity > Transactions
+    • Enter start and end date and click View
+    • Select CSV at the bottom of the page to download
+"""
+
 
 class EzPassLogin(TollWebsiteAccess):
 
