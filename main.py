@@ -14,6 +14,11 @@ TOOLS:
     - PhantomJS
     - Selenium
 """
+from src.login_script import TollWebsiteAccess
+
+
+class MainScraperRun:
+    pass
 
 
 def main():
