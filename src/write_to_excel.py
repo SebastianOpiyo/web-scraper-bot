@@ -60,7 +60,7 @@ class WriteToExcel(BasePage):
         - This data is purely row.
         - We can use the @openxlsx methods or this method to achieve the same result."""
         from src.login_script import TollWebsiteAccess
-        excel_file = f'./rowtolls/{WriteToExcel.name_files_with_account_date(payment_plan)}'
+        excel_file = f'./rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
@@ -82,7 +82,7 @@ class WriteToExcel(BasePage):
                         self.sheet.append(result_list)
             self.wb.save(excel_file)
 
-    def final_ezpasstoll_processing(self):
+    def final_ezpasstoll_processing(self, file_name):
         """This methods used the following helper methods to accomplish the processing:
         @method: process_new_toll_row()
         @:return processec excel file
@@ -112,7 +112,7 @@ class WriteToExcel(BasePage):
                             self.sheet.append(new_row)
                     except Exception as e:
                         print(f'Encountered the following Error --> {e}')
-            self.wb.save('./processedtolls/processed_toll.xlsx')
+            self.wb.save(f'./processedtolls/processed_toll_{file_name}.xlsx')
 
     @staticmethod
     def process_new_toll_row(toll_list: list):
@@ -174,10 +174,3 @@ class WriteToExcel(BasePage):
             for i in agency_dict:
                 if i == agency_abbr:
                     return agency_dict.get(i)
-
-
-if __name__ == '__main__':
-    # WriteToExcel().final_ezpasstoll_processing()
-    # print(WriteToExcel().check_agency())
-    WriteToExcel().write_csv_to_excel()
-

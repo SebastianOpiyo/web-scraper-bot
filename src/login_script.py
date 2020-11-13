@@ -90,22 +90,25 @@ class TollWebsiteAccess(BasePage):
         return self._filename
 
     @staticmethod
-    def call_write_to_excel(payment_plan):
+    def call_write_to_excel():
         from src.write_to_excel import WriteToExcel
-        WriteToExcel().write_csv_to_excel(payment_plan)
+        file_name = input('What is the FileName: ')
+        WriteToExcel().write_csv_to_excel(file_name)
+        WriteToExcel().final_ezpasstoll_processing(file_name)
 
 
 def main_run():
     process = TollWebsiteAccess()
     # process.ntta_login_and_scraping()
-    process.ez_pass_login()
-    print("Your credentials:")
-    print(f'Toll Acc: {process.get_payment_plan}')
-    print(f'Acc. Mail {process.get_email}')
-    print(f'File Name: {process.get_file_name}')
-    print(f':_______________________________* Scrapes *_________________________________')
-    # process.call_write_to_excel(process.get_file_name)
-    process.quit_driver()
+    # process.ez_pass_login()
+    process.sun_pass_login_and_scraping()
+    # print("Your credentials:")
+    # print(f'Toll Acc: {process.get_payment_plan}')
+    # print(f'Acc. Mail {process.get_email}')
+    # print(f'File Name: {process.get_file_name}')
+    # print(f':_______________________________* Scrapes *_________________________________')
+    process.call_write_to_excel()
+    # process.quit_driver()
 
 
 if __name__ == '__main__':
