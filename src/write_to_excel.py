@@ -159,7 +159,7 @@ class WriteToExcel(BasePage):
                 amount_due = toll_list[9]
             except Exception as e:
                 print(f'Encountered the following Error --> {e}')
-            new_row.extend([license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due])
+            new_row.extend([license_plate.strip(), state, date_time, agency, client, exit_lane, toll_class, amount_due])
         return new_row
 
     @staticmethod

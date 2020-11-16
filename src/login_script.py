@@ -68,6 +68,60 @@ class TollWebsiteAccess(BasePage):
         NttaLoginAndSraping.ntta_login(self)
         NttaLoginAndSraping.scrapping(self)
 
+    def fast_track_login_and_scraping(self):
+        """Fast Track Access and Scraping."""
+        from src.fast_track_acc import FastTrack
+        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self._site_name = 'FAST TRACK'
+        self.collect_cred_test_access(self.base_url)
+        FastTrack.login_into_fast_track(self)
+        FastTrack.scrape_tolls(self)
+
+    def river_link_login_and_scraping(self):
+        """River Link Access and Scraping."""
+        from src.river_link import RiverLink
+        self.base_url = 'https://riverlink.com/RiverLink.External/Account/AccountSummary.aspx'
+        self._site_name = 'RIVER LINK'
+        self.collect_cred_test_access(self.base_url)
+        RiverLink.login_into_river_link(self)
+        RiverLink.scrape_tolls(self)
+
+    def oh_ezpass_login_and_scraping(self):
+        """OH EZ Pass Access and Scraping."""
+        from src.Ntta_site import NttaLoginAndSraping
+        self.base_url = 'https://www.ezpassoh.com/EntryPages/Login.aspx'
+        self._site_name = 'OH EZ Pass'
+        self.collect_cred_test_access(self.base_url)
+        NttaLoginAndSraping.ntta_login(self)
+        NttaLoginAndSraping.scrapping(self)
+
+    def pa_ezpass_login_and_scraping(self):
+        """EZ Pass Access and Scraping."""
+        from src.pa_ezpass import PaEzPass
+        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self._site_name = 'EZ PASS-PA'
+        self.collect_cred_test_access(self.base_url)
+        PaEzPass.login_into_pa_ezpass(self)
+        PaEzPass.scrape_tolls(self)
+
+    def good_to_go_login_and_scraping(self):
+        """Good to Go Access and Scraping."""
+        from src.good_to_go import GoodToGo
+        self.base_url = 'https://www.mygoodtogo.com/olcsc/'
+        self._site_name = 'GOOD TO GO'
+        self.collect_cred_test_access(self.base_url)
+        GoodToGo.login_into_good_to_go(self)
+        GoodToGo.scrape_tolls(self)
+
+    def toll_roads_login_and_scraping(self):
+        """Toll Roads Access and Scraping."""
+        from src.the_toll_roads import TollRoads
+        self.base_url = 'https://thetollroads.com/'
+        self._site_name = 'THE TOLL ROAD'
+        self.collect_cred_test_access(self.base_url)
+        TollRoads.login_into_toll_roads(self)
+        TollRoads.scrape_tolls(self)
+
     # getter and setter helper methods for the login credentials.
     @property
     def get_email(self):
@@ -101,7 +155,7 @@ def main_run():
     process = TollWebsiteAccess()
     # process.ntta_login_and_scraping()
     # process.ez_pass_login()
-    process.sun_pass_login_and_scraping()
+    # process.sun_pass_login_and_scraping()
     # print("Your credentials:")
     # print(f'Toll Acc: {process.get_payment_plan}')
     # print(f'Acc. Mail {process.get_email}')
