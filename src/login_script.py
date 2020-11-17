@@ -83,7 +83,7 @@ class TollWebsiteAccess(BasePage):
         self._site_name = 'RIVER LINK'
         self.collect_cred_test_access(self.base_url)
         RiverLink.login_into_river_link(self)
-        RiverLink.scrape_tolls(self)
+        # RiverLink.scrape_tolls(self)
 
     def oh_ezpass_login_and_scraping(self):
         """OH EZ Pass Access and Scraping."""
@@ -155,7 +155,8 @@ def main_run():
     # process.ntta_login_and_scraping()
     # process.ez_pass_login()
     # process.sun_pass_login_and_scraping()
-    process.fast_track_login_and_scraping()
+    # process.fast_track_login_and_scraping()
+    process.river_link_login_and_scraping()
     # print("Your credentials:")
     # print(f'Toll Acc: {process.get_payment_plan}')
     # print(f'Acc. Mail {process.get_email}')
