@@ -21,7 +21,7 @@ https://riverlink.com/RiverLink.External/Account/AccountSummary.aspx
 
 
 class RiverLink(TollWebsiteAccess):
-
+    # TODO: To be done.
     def __init__(self):
         super().__init__()
 
@@ -38,6 +38,7 @@ class RiverLink(TollWebsiteAccess):
             time.sleep(1)
             login_button = self.driver.find_element_by_xpath('//*[@id="btnLogin"]')
             self.driver.execute_script("arguments[0].click();", login_button)
+            ScrapeTolls.take_screen_shot(self, 'login_check.png')
 
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")

@@ -20,6 +20,7 @@ https://www.mygoodtogo.com/olcsc/
 
 
 class GoodToGo(TollWebsiteAccess):
+    # TODO: To be done.
 
     def __init__(self):
         super().__init__()
@@ -38,6 +39,7 @@ class GoodToGo(TollWebsiteAccess):
             login_button = self.driver.find_element_by_xpath('//*[@id="managerYourAccount"]/div[2]/'
                                                              'div/div/div/div/div/div[5]/div')
             self.driver.execute_script("arguments[0].click();", login_button)
+            ScrapeTolls.take_screen_shot(self, 'login_check.png')
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
 

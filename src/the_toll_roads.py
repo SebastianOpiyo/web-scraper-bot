@@ -37,6 +37,7 @@ class TollRoads(TollWebsiteAccess):
             time.sleep(1)
             login_button = self.driver.find_element_by_xpath('//*[@id="btn-submit"]')
             self.driver.execute_script("arguments[0].click();", login_button)
+            ScrapeTolls.take_screen_shot(self, 'login_check.png')
 
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
