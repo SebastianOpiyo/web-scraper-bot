@@ -52,7 +52,6 @@ class TollWebsiteAccess(BasePage):
     def sun_pass_login_and_scraping(self):
         """SunPass Access & Scraping."""
         from src.sunpass_account import SunPassLogin
-
         self.base_url = 'https://www.sunpass.com/en/home/index.shtml'
         self._site_name = 'SunPass'
         self.collect_cred_test_access(self.base_url)
@@ -71,7 +70,7 @@ class TollWebsiteAccess(BasePage):
     def fast_track_login_and_scraping(self):
         """Fast Track Access and Scraping."""
         from src.fast_track_acc import FastTrack
-        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self.base_url = 'https://www.bayareafastrak.org/vector/account/home/accountLogin.do'
         self._site_name = 'FAST TRACK'
         self.collect_cred_test_access(self.base_url)
         FastTrack.login_into_fast_track(self)
@@ -156,12 +155,13 @@ def main_run():
     # process.ntta_login_and_scraping()
     # process.ez_pass_login()
     # process.sun_pass_login_and_scraping()
+    process.fast_track_login_and_scraping()
     # print("Your credentials:")
     # print(f'Toll Acc: {process.get_payment_plan}')
     # print(f'Acc. Mail {process.get_email}')
     # print(f'File Name: {process.get_file_name}')
     # print(f':_______________________________* Scrapes *_________________________________')
-    process.call_write_to_excel()
+    # process.call_write_to_excel()
     # process.quit_driver()
 
 

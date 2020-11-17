@@ -19,6 +19,7 @@ www.ezpass.csc.paturnpike.com/PovEntryPages/Main.aspx
 
 
 class PaEzPass(TollWebsiteAccess):
+    # TODO: To be done.
 
     def __init__(self):
         super().__init__()
@@ -36,6 +37,7 @@ class PaEzPass(TollWebsiteAccess):
             time.sleep(1)
             login_button = self.driver.find_element_by_xpath('//*[@id="ctl00_ContentPlaceHolder_lbLogin"]/span')
             self.driver.execute_script("arguments[0].click();", login_button)
+            ScrapeTolls.take_screen_shot(self, 'login_check.png')
 
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
