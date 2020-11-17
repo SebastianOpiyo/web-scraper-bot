@@ -97,7 +97,7 @@ class TollWebsiteAccess(BasePage):
     def pa_ezpass_login_and_scraping(self):
         """EZ Pass Access and Scraping."""
         from src.pa_ezpass import PaEzPass
-        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self.base_url = 'https://www.ezpass.csc.paturnpike.com/CvoAccountManagement/Transactions.aspx'
         self._site_name = 'EZ PASS-PA'
         self.collect_cred_test_access(self.base_url)
         PaEzPass.login_into_pa_ezpass(self)
@@ -156,7 +156,8 @@ def main_run():
     # process.ez_pass_login()
     # process.sun_pass_login_and_scraping()
     # process.fast_track_login_and_scraping()
-    process.river_link_login_and_scraping()
+    # process.river_link_login_and_scraping()
+    process.pa_ezpass_login_and_scraping()
     # print("Your credentials:")
     # print(f'Toll Acc: {process.get_payment_plan}')
     # print(f'Acc. Mail {process.get_email}')
