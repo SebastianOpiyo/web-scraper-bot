@@ -7,6 +7,7 @@
 
 
 from src.login_script import TollWebsiteAccess, BotExceptionHandler
+from selenium.webdriver.support.ui import Select
 from src.toll_scraper import ScrapeTolls
 import time
 
@@ -39,6 +40,8 @@ class RiverLink(TollWebsiteAccess):
             login_button = self.driver.find_element_by_xpath('//*[@id="btnLogin"]')
             self.driver.execute_script("arguments[0].click();", login_button)
             ScrapeTolls.take_screen_shot(self, 'login_check.png')
+            RiverLink.scrape_tolls(self)
+            ScrapeTolls.take_screen_shot(self, 'download_check.png')
 
         except BotExceptionHandler:
             print("Timeout exception or Wrong Credentials!")
@@ -47,8 +50,37 @@ class RiverLink(TollWebsiteAccess):
         pass
 
     def scrape_tolls(self):
-        pass
+        # Move to acc features > transaction history
+        caret_click = self.driver.find_element_by_link_text('ACCOUNT FEATURES')
+        self.driver.execute_script("arguments[0].click();", caret_click)
+        ScrapeTolls.take_screen_shot(self, 'features_check.png')
+        # click set filters, select toll as transaction type
+        time.sleep(3)
+        transactions_link = self.driver.find_element_by_link_text('Transaction History')
+        self.driver.execute_script("arguments[0].click();", transactions_link)
+        ScrapeTolls.take_screen_shot(self, 'transactions_check.png')
+        time.sleep(2)
+        # set date & click Apply
+        set_filters = self.driver.find_element_by_id('btnSetFilters')
+        self.driver.execute_script("arguments[0].click();", set_filters)
+        ScrapeTolls.take_screen_shot(self, 'filters_check.png')
+        # Select toll
+        select = Select(self.driver.find_element_by_name('ctl00$MainContent$ddlFilterType'))
+        select.select_by_visible_text('Toll')
+        ScrapeTolls.take_screen_shot(self, 'selectToll_check.png')
+        # Enter Date.
+        set_date = input('From Date: ')
+        date_input = self.driver.find_element_by_name('ctl00$MainContent$txtFilterDate')
+        self.driver.execute_script("arguments[0].click();", date_input)
+        date_input.send_keys(set_date)
+        click_apply = self.driver.find_element_by_name('ctl00$MainContent$btnApplyFilter')
+        self.driver.execute_script("arguments[0].click();", click_apply)
+        # call download function.
+        RiverLink.download_tolls(self)
+        time.sleep(3)
+        ScrapeTolls.take_screen_shot(self, 'downloadpg_check.png')
 
     def download_tolls(self):
-        pass
+        download_button = self.driver.find_element_by_name('ctl00$MainContent$databound2$btnDownloadCSV')
+        self.driver.execute_script("arguments[0].click();", download_button)
 
