@@ -39,7 +39,7 @@ class ScrapeTolls(BasePage):
 
     # By defining start and end date, we get the flexibility of altering any
     # in case of need for change.
-    # Note: What about use of setter & getter methods?
+    # Note: This does not apply to all sites, for instance scraping from payplan accounts.
     @classmethod
     def stop_at_given_date(cls):
         """Set Stop scraping tolls at a given date."""
@@ -154,5 +154,6 @@ class ScrapeTolls(BasePage):
 
 if __name__ == "__main__":
     scraper_instance = ScrapeTolls()
+    # scraper_instance.write_toll_to_csv()
 
 
