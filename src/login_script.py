@@ -121,6 +121,24 @@ class TollWebsiteAccess(BasePage):
         TollRoads.login_into_toll_roads(self)
         TollRoads.scrape_tolls(self)
 
+    def hctra_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def txtag_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def coexpress_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def ilpass_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def quickpass_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def pikepass_ok_login_scraping(self):
+        print(f'Site not Incoporated yet, due to lack of access credentials!')
+
     # getter and setter helper methods for the login credentials.
     @property
     def get_email(self):
@@ -153,12 +171,12 @@ class TollWebsiteAccess(BasePage):
 def main_run():
     process = TollWebsiteAccess()
     # process.ntta_login_and_scraping()
-    # process.ez_pass_login()
+    process.ez_pass_login()
     # process.sun_pass_login_and_scraping()
     # process.fast_track_login_and_scraping()
     # process.river_link_login_and_scraping()
     # process.pa_ezpass_login_and_scraping()
-    process.good_to_go_login_and_scraping()
+    # process.good_to_go_login_and_scraping()
     # print("Your credentials:")
     # print(f'Toll Acc: {process.get_payment_plan}')
     # print(f'Acc. Mail {process.get_email}')

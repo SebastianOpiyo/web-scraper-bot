@@ -34,7 +34,7 @@ class TollSites(Enum):
     COEXPRESS = 5
     ILIPASS = 6
     KYRIVERLINK = 7
-    NCQUICKPASSNC = 8
+    NCQUICKPASS = 8
     NJEZPASS = 9
     OHEZPASS = 10
     OKPIKEPASS = 11
@@ -44,13 +44,53 @@ class TollSites(Enum):
 
 class MainScraperRun:
     """This is the main entry file.
-    - It calls all the other modules depending on user needs."""
-    pass
+    - It calls all the other modules depending on user needs.
+
+    TODO:
+    1. List sites and ask user to enter whichever to scrape
+    2. After scraping process and store the results.
+    3. NOTE: When doing the cron job, will go from site to site."""
+
+    def print_existing_sites(self):
+        """Prints a list of existing sites and lets the user pick."""
+        print(f'List of Toll Sites to Pick from:')
+        for site in TollSites:
+            print(site.name)
+        pick_site = input('Pick site to scrape tolls: ')
+        # We call respective func per pick.
+        # We could do better with a switch statement like implementation
+        if not pick_site:
+            print('Please Pick one of the listed sites for scraping!')
+        if pick_site == 'TXHCTRA':
+            TollWebsiteAccess.hctra_login_scraping(self)
+        elif pick_site == 'TXTAG':
+            TollWebsiteAccess.txtag_login_scraping(self)
+        elif pick_site == 'CAFASTTRACK':
+            TollWebsiteAccess.fast_track_login_and_scraping(self)
+        elif pick_site == 'CATHETOLLROADS':
+            TollWebsiteAccess.toll_roads_login_and_scraping(self)
+        elif pick_site == 'COEXPRESS':
+            TollWebsiteAccess.coexpress_login_scraping(self)
+        elif pick_site == 'ILIPASS':
+            TollWebsiteAccess.ilpass_login_scraping(self)
+        elif pick_site == 'KYRIVERLINK':
+            TollWebsiteAccess.river_link_login_and_scraping(self)
+        elif pick_site == 'NCQUICKPASS':
+            TollWebsiteAccess.quickpass_login_scraping(self)
+        elif pick_site == 'NJEZPASS':
+            TollWebsiteAccess().ez_pass_login()
+        elif pick_site == 'OHEZPASS':
+            TollWebsiteAccess.oh_ezpass_login_and_scraping(self)
+        elif pick_site == 'OKPIKEPASS':
+            TollWebsiteAccess.pikepass_ok_login_scraping(self)
+        elif pick_site == 'PAEZPASS':
+            TollWebsiteAccess.pa_ezpass_login_and_scraping(self)
+        elif pick_site == 'WAGOODTOGO':
+            TollWebsiteAccess.good_to_go_login_and_scraping(self)
 
 
 def main():
-    print(repr(TollSites.TXTAG))
-    print(TollSites(3).name)
+    MainScraperRun().print_existing_sites()
 
 
 if __name__ == '__main__':
