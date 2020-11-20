@@ -26,6 +26,7 @@ class TollSites(Enum):
     * PIKEPASS(OK)
     * PA-EZPASS(PA)
     * GOOD-TO-GO
+    * FL-SUNPASS
     """
     TXHCTRA = 1
     TXTAG = 2
@@ -40,6 +41,7 @@ class TollSites(Enum):
     OKPIKEPASS = 11
     PAEZPASS = 12
     WAGOODTOGO = 13
+    FLSUNPASS = 14
 
 
 class MainScraperRun:
@@ -62,31 +64,33 @@ class MainScraperRun:
         if not pick_site:
             print('Please Pick one of the listed sites for scraping!')
         if pick_site == 'TXHCTRA':
-            TollWebsiteAccess.hctra_login_scraping(self)
+            TollWebsiteAccess().hctra_login_scraping()
         elif pick_site == 'TXTAG':
-            TollWebsiteAccess.txtag_login_scraping(self)
+            TollWebsiteAccess().txtag_login_scraping()
         elif pick_site == 'CAFASTTRACK':
-            TollWebsiteAccess.fast_track_login_and_scraping(self)
+            TollWebsiteAccess().fast_track_login_and_scraping()
         elif pick_site == 'CATHETOLLROADS':
-            TollWebsiteAccess.toll_roads_login_and_scraping(self)
+            TollWebsiteAccess().toll_roads_login_and_scraping()
         elif pick_site == 'COEXPRESS':
-            TollWebsiteAccess.coexpress_login_scraping(self)
+            TollWebsiteAccess().coexpress_login_scraping()
         elif pick_site == 'ILIPASS':
-            TollWebsiteAccess.ilpass_login_scraping(self)
+            TollWebsiteAccess().ilpass_login_scraping()
         elif pick_site == 'KYRIVERLINK':
-            TollWebsiteAccess.river_link_login_and_scraping(self)
+            TollWebsiteAccess().river_link_login_and_scraping()
         elif pick_site == 'NCQUICKPASS':
-            TollWebsiteAccess.quickpass_login_scraping(self)
+            TollWebsiteAccess().quickpass_login_scraping()
         elif pick_site == 'NJEZPASS':
             TollWebsiteAccess().ez_pass_login()
         elif pick_site == 'OHEZPASS':
-            TollWebsiteAccess.oh_ezpass_login_and_scraping(self)
+            TollWebsiteAccess().oh_ezpass_login_and_scraping()
         elif pick_site == 'OKPIKEPASS':
-            TollWebsiteAccess.pikepass_ok_login_scraping(self)
+            TollWebsiteAccess().pikepass_ok_login_scraping()
         elif pick_site == 'PAEZPASS':
-            TollWebsiteAccess.pa_ezpass_login_and_scraping(self)
+            TollWebsiteAccess().pa_ezpass_login_and_scraping()
         elif pick_site == 'WAGOODTOGO':
-            TollWebsiteAccess.good_to_go_login_and_scraping(self)
+            TollWebsiteAccess().good_to_go_login_and_scraping()
+        elif pick_site == 'FLSUNPASS':
+            TollWebsiteAccess().sun_pass_login_and_scraping()
 
 
 def main():

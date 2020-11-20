@@ -71,3 +71,6 @@ class EzPassLogin(TollWebsiteAccess):
         except Exception as e:
             raise e
 
+    def process_tolls(self):
+        from src.write_to_excel import WriteToExcel
+        WriteToExcel().final_ezpasstoll_processing(self.get_payment_plan)
