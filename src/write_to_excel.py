@@ -178,22 +178,35 @@ class WriteToExcel(BasePage):
 
 class WriteToExcelFastTrack(WriteToExcel):
 
-    def process_each_csv_row(self, tolllist: list):
+    @staticmethod
+    def process_each_csv_row(tolllist: list):
         """Creates a newly processed row that will be written to the final excel sheet.
                 Note: This method processes fully the row data in csv into a final product.
                 Header Info: LP = Licence Plate (from Toll tag/Plate)
                      STATE - H = OR, T - ID (from Toll tag/Plate)
                      DATETIME = Date time (Month/Date/Year HH/MM/SS) -- (Trans Date + Time)
-                     AGENCY = Agency full name from link abbreviation.
+                     AGENCY = Agency full name from link abbreviation. (FasTrak)
                      CLIENT = AMAZON LOGISTICS, INC. (Remains the same)
                      EXIT - (Agency Abbrv -- Interchange# - Toll Plaza
-                     CLASS - (Default=5)
-                     AMOUNT - Amount Due
+                     CLASS - (Default=5) (No class)
+                     AMOUNT - Amount Due (Debit)
         """
 
         if not tolllist:
             raise EmptyListException("The toll list is empty, you might have reached the end of the file!")
         processed_row = []
+        license_plate, state, date_time, agency, client, exit_lane, toll_class, amount_due = \
+            '', '', '', '', '', '', '-', '',
+        license_plate = tolllist[3].split('-')[0]
+        state = tolllist[3].split('-')[1]
+        date_time = f'{tolllist[1]} {tolllist[2]}'
+        agency = 'FASTRAK'
+        client = 'AMAZON LOGISTICS, INC.'
+        exit_lane = f'{tolllist[4]} -- {tolllist[5]}'
+        amount_due = tolllist[9]
+        processed_row.extend([license_plate.strip(), state, date_time, agency, client, exit_lane,
+                              toll_class, amount_due])
+        return processed_row
 
     def write_processed_row_to_excel(self):
 
@@ -211,7 +224,18 @@ class WriteToExcelFastTrack(WriteToExcel):
             )
             reader = csv.reader(csv_data)
             for i in reader:
-                print(i)
+                try:
+                    if i[0] == 'POSTED DATE':
+                        pass
+                    if i[3] == '-':
+                        pass
+                    else:
+                        new_row = self.process_each_csv_row(i)
+                        self.sheet.append(new_row)
+                except IndexError as e:
+                    pass
+            file_name = input('Enter file name:')
+            self.wb.save(f'./processedtolls/processed_toll_{file_name}.xlsx')
 
     def write_csv_toll_to_excel(self):
         """Writes downloaded csv data to excel sheet.
@@ -244,4 +268,5 @@ if __name__ == '__main__':
     # process.final_ezpasstoll_processing('testfile')
     processfasttrack = WriteToExcelFastTrack()
     # processfasttrack.write_processed_row_to_excel()
-    processfasttrack.write_csv_toll_to_excel()
+    # processfasttrack.write_csv_toll_to_excel()
+    processfasttrack.write_processed_row_to_excel()
