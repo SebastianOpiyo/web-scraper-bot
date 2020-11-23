@@ -213,15 +213,13 @@ class WriteToExcelFastTrack(WriteToExcel):
             for i in reader:
                 print(i)
 
-    def write_csv_toll_to_excel(self, payment_plan):
+    def write_csv_toll_to_excel(self):
         """Writes downloaded csv data to excel sheet.
                 - This data is purely row.
         """
-        excel_file = f'./rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
-        self.columns = ['POSTED DATE', 'TRANSACTION DATE', 'TRANSACTION TIME', 'TOLL TAG # / PLATE #', 'EXIT PLAZA',
-                        'EXIT LANE', 'ENTRY DATE/TIME', 'ENTRY PLAZA', 'ENTRY LANE',
-                        'DEBIT(-)', 'CREDIT(+)', 'BALANCE']
-        # self.sheet.append(self.columns)
+        csv_file_name = input('Enter csv file name without extension: ')
+        new_file_name = input('Name the Excel file: ')
+        excel_file = f'./rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(new_file_name)}'
         csv.register_dialect(
             'mydialect',
             delimiter=',',
@@ -231,8 +229,9 @@ class WriteToExcelFastTrack(WriteToExcel):
             lineterminator='\n',
             quoting=csv.QUOTE_MINIMAL
         )
-        # Adding an input for the file name will add more flexibility.
-        csv_file = './rowtolls/CSV_Downloads/Transactions_transaction_csv_report_54298875.csv'
+        # Adding an input for the file name will add more flexibility
+        # # Therefore this method can be widely used for other agency files..
+        csv_file = f'./rowtolls/CSV_Downloads/{csv_file_name}.csv'
         with open(csv_file, 'r') as file:
             reader = csv.reader(file, dialect='mydialect')
             for row in reader:
@@ -245,4 +244,4 @@ if __name__ == '__main__':
     # process.final_ezpasstoll_processing('testfile')
     processfasttrack = WriteToExcelFastTrack()
     # processfasttrack.write_processed_row_to_excel()
-    processfasttrack.write_csv_toll_to_excel('fasttrack')
+    processfasttrack.write_csv_toll_to_excel()
