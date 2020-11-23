@@ -11,7 +11,7 @@ import zipfile
 
 
 def lambda_handler(event, context):
-    s3_resource  = boto3.resource('s3')
+    s3_resource = boto3.resource('s3')
     # Confirm whether the 's3//' has any bugy effect.
     source_s3_bucket = 's3://staging-area-innovative'
     target_s3_bucket = 's3://innovative-results-bucket-dp1'
@@ -35,5 +35,5 @@ def lambda_handler(event, context):
                 except Exception as e:
                     print(e)
         else:
-            print(file.key+ ' is not a zip file.')
+            print(file.key + ' is not a zip file.')
 

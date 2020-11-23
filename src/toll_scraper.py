@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Oct 7, 2020
-# Date Modified: Oct 30, 2020
+# Date Modified: Nov 10, 2020
 # Description: An Amazon Toll Scraping Bot: Toll scraper.
 # -*- coding: utf-8 -*-
 
-from selenium.webdriver.common.action_chains import ActionChains
 from Screenshot import Screenshot_Clipping
 from src.base import BasePage
 
@@ -37,6 +36,21 @@ class ScrapeTolls(BasePage):
 
     def __init__(self):
         super().__init__()
+
+    # By defining start and end date, we get the flexibility of altering any
+    # in case of need for change.
+    # Note: This does not apply to all sites, for instance scraping from payplan accounts.
+    @classmethod
+    def stop_at_given_date(cls):
+        """Set Stop scraping tolls at a given date."""
+        stop_date = input('Enter Tolls Scrape Stop Date: ')
+        return stop_date.strip()
+
+    @classmethod
+    def start_at_given_date(cls):
+        """Set Start at a given date."""
+        starting_date = input('Enter Tolls Scrape Start Date: ')
+        return starting_date.strip()
 
     def scrape_title_info(self):
         """Scrapes information about the account, i.e:
@@ -70,7 +84,11 @@ class ScrapeTolls(BasePage):
             for i in table_body:
                 time.sleep(1)
                 scrape_item = i.get_attribute('innerText')
-                string_list.append(scrape_item)
+                if scrape_item:
+                    string_list.append(scrape_item)
+                else:
+                    scrape_item = None
+                    string_list.append(scrape_item)
             scrapes_list.append(string_list)
         ScrapeTolls.write_toll_to_csv(scrapes_list)
 
@@ -95,7 +113,7 @@ class ScrapeTolls(BasePage):
         # Takes the screenshot of what the robot has achieved anonymously.
         # that way we can be able to tell whether the robot is doing what we have programmed it to.
         obj = Screenshot_Clipping.Screenshot()
-        img_url = obj.full_Screenshot(self.driver, save_path=r'./screenshots', image_name=f'{filename}')
+        img_url = obj.full_Screenshot(self.driver, save_path=r'./src/screenshots', image_name=f'{filename}')
         print(img_url)
 
     @staticmethod
@@ -106,9 +124,9 @@ class ScrapeTolls(BasePage):
         return f'{name}.png'
 
     def check_next_page(self):
-        """Checks for the existence of next page:
-        @:param
-        @:returns Bool values if it does exist or not."""
+        """Checks for the existence of next page in the EZ_Pass Acc.:
+        @:returns Bool values if it does exist or not.
+        """
 
         load_page = self.driver.find_element_by_xpath('html/body')
         next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
@@ -123,7 +141,7 @@ class ScrapeTolls(BasePage):
                 print(f'The bot could not move to the next page due to {e}')
 
     def move_to_next_page(self):
-        # This function targets the image with title=Next.
+        # This function targets the image with title=Next in the EZ_Pass Acc..
         try:
             load_page = self.driver.find_element_by_xpath('html/body')
             next_icon = load_page.find_element_by_css_selector("a[title=\"Next\"]")
@@ -132,3 +150,10 @@ class ScrapeTolls(BasePage):
             print(f'Moved to the next page!')
         except Exception as e:
             print(f'Could not move to the next page because of the Error: {e}')
+
+
+if __name__ == "__main__":
+    scraper_instance = ScrapeTolls()
+    # scraper_instance.write_toll_to_csv()
+
+

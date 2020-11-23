@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # Author: Sebastian Opiyo.
 # Date Created: Sep 21, 2020
-# Date Modified: Oct 28, 2020
-# Description: An Amazon Toll Scraping Bot: Login page.
+# Date Modified: Nov 10, 2020
+# Description: An Amazon Toll Scraping Bot: Login page (For EZ-Pass Amazon Accounts).
 # -*- coding: utf-8 -*-
 
 """This file manages login to the sites to be scraped.
@@ -10,7 +10,6 @@ It then calls the [toll_scraper] module classes.
 """
 
 from src.base import BasePage
-import time
 
 
 class BotExceptionHandler(Exception):
@@ -19,15 +18,14 @@ class BotExceptionHandler(Exception):
 
 
 class TollWebsiteAccess(BasePage):
-    URL = "https://www.ezpassnj.com/vector/violations/violationList.do"
 
-    def __init__(self, url=URL):
+    def __init__(self):
         super().__init__()
-        self.base_url = url
-        self.verificationErrors = []
-        self.accept_next_alert = True
+        self.base_url = None
         self._pay_plan = None
         self._email = None
+        self._site_name = None
+        self._filename = f'{self._pay_plan}@{self._site_name}'
 
     def collect_login_credentials(self):
         username = input("Please enter a valid Pay Plan:")
@@ -35,79 +33,112 @@ class TollWebsiteAccess(BasePage):
         self._pay_plan = username
         self._email = password
 
-    def test_site_access(self):
-        # Check to see that the site is accessible or not
-        # important because the site needs VPN ON to be accessible.
-        try:
-            self.driver.implicitly_wait(10)
-            self.driver.get(self.base_url)
-            print("Site can be reached!")
-        except Exception as e:
-            print(e)
-
-    def login(self):
-        """We do the click and data entry into tables then login below:
-        We have 3 sec pause between each input just to ensure the bot
-        is not that instant, and we get to see what it actually does."""
-        from src.toll_scraper import ScrapeTolls
-        try:
-            self.driver.get(self.base_url)
-        except BotExceptionHandler:
-            print("The Bot Failed to Access the site!!")
-
+    def collect_cred_test_access(self, url: str):
+        """For the sake of DRY code, we use this function to merge two lines of
+        code, that could have otherwise been called in each function that
+        handles each site."""
+        self.test_site_access(url)
         self.collect_login_credentials()
 
-        try:
-            time.sleep(20)
-            pay_plan = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/'
-                                                         'div/form/div/div[2]/div[3]/div[1]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", pay_plan)
-            pay_plan.send_keys(self._pay_plan.strip())
+    def ez_pass_login(self):
+        """EZPassNJ Access and Scraping."""
+        from src.ez_pass import EzPassLogin
 
-            time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection1.png')
-            email = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                      'div[2]/div[3]/div[2]/div/div[1]/input')
-            self.driver.execute_script("arguments[0].click();", email)
-            email.send_keys(str(self._email))
-            time.sleep(2)
-            # ScrapeTolls.take_screen_shot(self, 'selection2.png')
-            submit_button = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/div[3]/div/div/form/div/'
-                                                              'div[3]/div[2]/button')
-            self.driver.execute_script("arguments[0].click();", submit_button)
-            time.sleep(180)
-            print("Login Successful!!")
+        # self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+        # self._site_name = 'EZ_PassNJ'
+        # self.collect_cred_test_access(self.base_url)
+        # EzPassLogin.login_into_ezpass(self)
+        EzPassLogin.process_tolls(self)
 
-        except BotExceptionHandler:
-            print("Timeout exception or Wrong Credentials!")
+    def sun_pass_login_and_scraping(self):
+        """SunPass Access & Scraping."""
+        from src.sunpass_account import SunPassLogin
+        self.base_url = 'https://www.sunpass.com/en/home/index.shtml'
+        self._site_name = 'SunPass'
+        self.collect_cred_test_access(self.base_url)
+        SunPassLogin.login_into_sun_pass(self)
+        SunPassLogin.scrape_tolls(self)
 
-    def logout(self):
-        try:
-            sign_out = self.driver.find_element_by_xpath('/html/body/div[2]/div/div[4]/'
-                                                         'div[3]/div/div/form/div/div[1]/div/div[3]/button')
-            self.driver.execute_script("arguments[0].click();", sign_out)
-        except Exception as e:
-            print(e)
+    def ntta_login_and_scraping(self):
+        """NTTA Access and Scraping."""
+        from src.Ntta_site import NttaLoginAndSraping
+        self.base_url = 'https://csc.ntta.org/olcsc/AuthenticateUser.do'
+        self._site_name = 'NTTA'
+        self.collect_cred_test_access(self.base_url)
+        NttaLoginAndSraping.ntta_login(self)
+        NttaLoginAndSraping.scrapping(self)
 
-    def scrape_page_to_page(self):
-        from src.toll_scraper import ScrapeTolls
-        from src.write_to_excel import WriteToExcel
-        """Scrapes from the first page to the last
-        @methods: - scrape_title_info; scrape_table_rows; move_to_next_page
-        """
-        try:
-            ScrapeTolls.scrape_title_info(self)
-            while ScrapeTolls.check_next_page(self):
-                ScrapeTolls.scrape_table_rows(self)
-                WriteToExcel().write_csv_to_excel()
-                ScrapeTolls.move_to_next_page(self)
-        except Exception as e:
-            raise e
+    def fast_track_login_and_scraping(self):
+        """Fast Track Access and Scraping."""
+        from src.fast_track_acc import FastTrack
+        self.base_url = 'https://www.bayareafastrak.org/vector/account/home/accountLogin.do'
+        self._site_name = 'FAST TRACK'
+        self.collect_cred_test_access(self.base_url)
+        FastTrack.login_into_fast_track(self)
+        FastTrack.scrape_tolls(self)
 
-    def perform_scraping(self):
-        # from src.toll_scraper import ScrapeTolls
-        # ScrapeTolls.scrape_title_info(self)
-        self.scrape_page_to_page()
+    def river_link_login_and_scraping(self):
+        """River Link Access and Scraping."""
+        from src.river_link import RiverLink
+        self.base_url = 'https://riverlink.com/RiverLink.External/Account/AccountSummary.aspx'
+        self._site_name = 'RIVER LINK'
+        self.collect_cred_test_access(self.base_url)
+        RiverLink.login_into_river_link(self)
+        # RiverLink.scrape_tolls(self)
+
+    def oh_ezpass_login_and_scraping(self):
+        """OH EZ Pass Access and Scraping."""
+        from src.Ntta_site import NttaLoginAndSraping
+        self.base_url = 'https://www.ezpassoh.com/EntryPages/Login.aspx'
+        self._site_name = 'OH EZ Pass'
+        self.collect_cred_test_access(self.base_url)
+        NttaLoginAndSraping.ntta_login(self)
+        NttaLoginAndSraping.scrapping(self)
+
+    def pa_ezpass_login_and_scraping(self):
+        """EZ Pass Access and Scraping."""
+        from src.pa_ezpass import PaEzPass
+        self.base_url = 'https://www.ezpass.csc.paturnpike.com/CvoAccountManagement/Transactions.aspx'
+        self._site_name = 'EZ PASS-PA'
+        self.collect_cred_test_access(self.base_url)
+        PaEzPass.login_into_pa_ezpass(self)
+        PaEzPass.scrape_tolls(self)
+
+    def good_to_go_login_and_scraping(self):
+        """Good to Go Access and Scraping."""
+        from src.good_to_go import GoodToGo
+        self.base_url = 'https://www.mygoodtogo.com/olcsc/'
+        self._site_name = 'GOOD TO GO'
+        self.collect_cred_test_access(self.base_url)
+        GoodToGo.login_into_good_to_go(self)
+        GoodToGo.scrape_tolls(self)
+
+    def toll_roads_login_and_scraping(self):
+        """Toll Roads Access and Scraping."""
+        from src.the_toll_roads import TollRoads
+        self.base_url = 'https://thetollroads.com/'
+        self._site_name = 'THE TOLL ROAD'
+        self.collect_cred_test_access(self.base_url)
+        TollRoads.login_into_toll_roads(self)
+        TollRoads.scrape_tolls(self)
+
+    def hctra_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def txtag_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def coexpress_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def ilpass_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def quickpass_login_scraping(self):
+        print(f'Site not Incoporated yet')
+
+    def pikepass_ok_login_scraping(self):
+        print(f'Site not Incoporated yet, due to lack of access credentials!')
 
     # getter and setter helper methods for the login credentials.
     @property
@@ -126,27 +157,34 @@ class TollWebsiteAccess(BasePage):
     def get_payment_plan(self, new_pay_plan):
         self._pay_plan = new_pay_plan
 
-    def name_files_with_account_date(self):
-        """Uses date and account to generate excel file names."""
-        from datetime import date
-        import ctypes
-        today = date.today().isoformat()
-        file_name = f'{self.get_payment_plan}-{today}.xlsx'
-        return file_name
+    @property
+    def get_file_name(self):
+        return self._filename
 
-    def quit_browser(self):
-        return self.driver.close()
+    @staticmethod
+    def call_write_to_excel():
+        from src.write_to_excel import WriteToExcel
+        file_name = input('What is the FileName: ')
+        WriteToExcel().write_csv_to_excel(file_name)
+        WriteToExcel().final_ezpasstoll_processing(file_name)
 
 
 def main_run():
     process = TollWebsiteAccess()
-    process.test_site_access()
-    print("Your credentials:")
-    process.login()
-    print(f'Toll Acc: {process.get_payment_plan}')
-    print(f'Acc. Mail {process.get_email}')
-    print(f':_______________________________* Scrapes *_________________________________')
-    process.perform_scraping()
+    # process.ntta_login_and_scraping()
+    process.ez_pass_login()
+    # process.sun_pass_login_and_scraping()
+    # process.fast_track_login_and_scraping()
+    # process.river_link_login_and_scraping()
+    # process.pa_ezpass_login_and_scraping()
+    # process.good_to_go_login_and_scraping()
+    # print("Your credentials:")
+    # print(f'Toll Acc: {process.get_payment_plan}')
+    # print(f'Acc. Mail {process.get_email}')
+    # print(f'File Name: {process.get_file_name}')
+    # print(f':_______________________________* Scrapes *_________________________________')
+    # process.call_write_to_excel()
+    # process.quit_driver()
 
 
 if __name__ == '__main__':
