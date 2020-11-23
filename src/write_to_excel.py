@@ -118,7 +118,8 @@ class WriteToExcel(BasePage):
     def process_new_toll_row(toll_list: list):
         """Creates a newly processed row that will be written to the final excel sheet.
                 Note: This method processes fully the row data in csv into a final product.
-                Header Info: LP = Licence Plate
+                Header Info:
+                     LP = Licence Plate
                      STATE - H = OR, T - ID
                      DATETIME = Date time (Month/Date/Year HH/MM/SS)
                      AGENCY = Agency full name from link abbreviation.
