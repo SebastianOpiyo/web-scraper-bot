@@ -59,8 +59,7 @@ class WriteToExcel(BasePage):
         """Writes csv data to excel sheet.
         - This data is purely row.
         - We can use the @openxlsx methods or this method to achieve the same result."""
-        from src.login_script import TollWebsiteAccess
-        excel_file = f'./rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
+        excel_file = f'./src/rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
@@ -104,6 +103,7 @@ class WriteToExcel(BasePage):
                 # print(row)
                 for i in row[1:]:
                     result_row = i.splitlines()
+                    # print(result_row)
                     try:
                         if result_row[1] == 'License Plate number':
                             pass
@@ -174,3 +174,75 @@ class WriteToExcel(BasePage):
             for i in agency_dict:
                 if i == agency_abbr:
                     return agency_dict.get(i)
+
+
+class WriteToExcelFastTrack(WriteToExcel):
+
+    def process_each_csv_row(self, tolllist: list):
+        """Creates a newly processed row that will be written to the final excel sheet.
+                Note: This method processes fully the row data in csv into a final product.
+                Header Info: LP = Licence Plate (from Toll tag/Plate)
+                     STATE - H = OR, T - ID (from Toll tag/Plate)
+                     DATETIME = Date time (Month/Date/Year HH/MM/SS) -- (Trans Date + Time)
+                     AGENCY = Agency full name from link abbreviation.
+                     CLIENT = AMAZON LOGISTICS, INC. (Remains the same)
+                     EXIT - (Agency Abbrv -- Interchange# - Toll Plaza
+                     CLASS - (Default=5)
+                     AMOUNT - Amount Due
+        """
+
+        if not tolllist:
+            raise EmptyListException("The toll list is empty, you might have reached the end of the file!")
+        processed_row = []
+
+    def write_processed_row_to_excel(self):
+
+        self.columns = ["LP", "STATE", "DATE-TIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
+        self.sheet.append(self.columns)
+        with open('./rowtolls/CSV_Downloads/Transactions_transaction_csv_report_54298875.csv') as csv_data:
+            csv.register_dialect(
+                'mydialect',
+                delimiter=',',
+                quotechar='"',
+                doublequote=True,
+                skipinitialspace=True,
+                lineterminator='\n',
+                quoting=csv.QUOTE_MINIMAL
+            )
+            reader = csv.reader(csv_data)
+            for i in reader:
+                print(i)
+
+    def write_csv_toll_to_excel(self, payment_plan):
+        """Writes downloaded csv data to excel sheet.
+                - This data is purely row.
+        """
+        excel_file = f'./rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
+        self.columns = ['POSTED DATE', 'TRANSACTION DATE', 'TRANSACTION TIME', 'TOLL TAG # / PLATE #', 'EXIT PLAZA',
+                        'EXIT LANE', 'ENTRY DATE/TIME', 'ENTRY PLAZA', 'ENTRY LANE',
+                        'DEBIT(-)', 'CREDIT(+)', 'BALANCE']
+        # self.sheet.append(self.columns)
+        csv.register_dialect(
+            'mydialect',
+            delimiter=',',
+            quotechar='"',
+            doublequote=True,
+            skipinitialspace=True,
+            lineterminator='\n',
+            quoting=csv.QUOTE_MINIMAL
+        )
+        # Adding an input for the file name will add more flexibility.
+        csv_file = './rowtolls/CSV_Downloads/Transactions_transaction_csv_report_54298875.csv'
+        with open(csv_file, 'r') as file:
+            reader = csv.reader(file, dialect='mydialect')
+            for row in reader:
+                self.sheet.append(row)
+            self.wb.save(excel_file)
+
+
+if __name__ == '__main__':
+    # process = WriteToExcel()
+    # process.final_ezpasstoll_processing('testfile')
+    processfasttrack = WriteToExcelFastTrack()
+    # processfasttrack.write_processed_row_to_excel()
+    processfasttrack.write_csv_toll_to_excel('fasttrack')

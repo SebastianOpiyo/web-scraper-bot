@@ -19,7 +19,7 @@ class BasePage:
     """
 
     def __init__(self):
-        self.save_file_path = './rowtolls/CSV_Downloads'
+        self.save_file_path = './src/rowtolls/CSV_Downloads'
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('headless')
         chrome_options.add_experimental_option("prefs",

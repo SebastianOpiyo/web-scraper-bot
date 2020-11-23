@@ -44,10 +44,11 @@ class TollWebsiteAccess(BasePage):
         """EZPassNJ Access and Scraping."""
         from src.ez_pass import EzPassLogin
 
-        self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
-        self._site_name = 'EZ_PassNJ'
-        self.collect_cred_test_access(self.base_url)
-        EzPassLogin.login_into_ezpass(self)
+        # self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+        # self._site_name = 'EZ_PassNJ'
+        # self.collect_cred_test_access(self.base_url)
+        # EzPassLogin.login_into_ezpass(self)
+        EzPassLogin.process_tolls(self)
 
     def sun_pass_login_and_scraping(self):
         """SunPass Access & Scraping."""

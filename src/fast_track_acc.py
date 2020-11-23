@@ -58,7 +58,11 @@ class FastTrack(TollWebsiteAccess):
         # 1. Click Transactions (located on the left side menu)
         tranxn_link = self.driver.find_element_by_xpath('//*[@id="sidebar"]/ul/li[4]/a')
         self.driver.execute_script("arguments[0].click();", tranxn_link)
+        time.sleep(2)
+        ScrapeTolls.take_screen_shot(self, 'transactions_check.png')
         # 2. Enter start and end dates and click View
+        # By default it starts with the previous friday.
+        # This settings are only necessary if the dates go beyond the set date.
         # from_date = input('')
         # to_date = input('')
         # The values for the below variables can be split from one of the input above.
@@ -67,11 +71,10 @@ class FastTrack(TollWebsiteAccess):
         # target_day = ''
 
         # 3. Download CSV
-        download_csv = self.driver.find_element_by_link_text('CSV')
-        self.driver.execute_script("arguments[0].click();", download_csv)
-
         # Call the download function after everything is set.
         FastTrack.download_tolls(self)
+        time.sleep(2)
+        ScrapeTolls.take_screen_shot(self, 'downloadcsv_check.png')
 
     def download_tolls(self):
         """Find the download link and download the tolls excel doc."""

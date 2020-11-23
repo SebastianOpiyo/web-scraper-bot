@@ -86,7 +86,7 @@ class SunPassLogin(TollWebsiteAccess):
         end_date_input.clear()
         self.driver.execute_script("arguments[0].click();", end_date_input)
         end_date_input.send_keys(end_date_value)
-        # ScrapeTolls.take_screen_shot(self, 'date_values_check.png')
+        ScrapeTolls.take_screen_shot(self, 'date_values_check.png')
 
         # Call the download function after everything is set.
         SunPassLogin.download_tolls(self)

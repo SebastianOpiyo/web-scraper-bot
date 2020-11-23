@@ -113,7 +113,7 @@ class ScrapeTolls(BasePage):
         # Takes the screenshot of what the robot has achieved anonymously.
         # that way we can be able to tell whether the robot is doing what we have programmed it to.
         obj = Screenshot_Clipping.Screenshot()
-        img_url = obj.full_Screenshot(self.driver, save_path=r'./screenshots', image_name=f'{filename}')
+        img_url = obj.full_Screenshot(self.driver, save_path=r'./src/screenshots', image_name=f'{filename}')
         print(img_url)
 
     @staticmethod
