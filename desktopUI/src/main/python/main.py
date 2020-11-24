@@ -49,6 +49,9 @@ class Window(QMainWindow):
                              "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
         self.setCentralWidget(combo)
 
+    def _createDateEdit(self):
+        pass
+
     def _createpushbuttons(self):
         pass
 
