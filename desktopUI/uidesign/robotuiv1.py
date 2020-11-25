@@ -126,8 +126,10 @@ class Ui_TollScraperRobot(object):
                                        "EZPASS(NJ)", "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)",
                                        "THETOLLROADS(CA)", "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
         self.statusbar.showMessage('Robot Ready!')
+
         self.startscraper.setText(_translate("TollScraperRobot", "Start Scraper"))
         self.stopscraper.setText(_translate("TollScraperRobot", "Stop Scraper"))
+
         self.viewfiles.setText(_translate("TollScraperRobot", "View Files"))
         self.mailtolls.setText(_translate("TollScraperRobot", "Mail Tolls"))
         self.start_dateEdit.setDisplayFormat(_translate("TollScraperRobot", "MM/dd/yyyy"))
