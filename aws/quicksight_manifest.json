@@ -3,7 +3,7 @@
     "fileLocations": [
         {
             "URIs": [
-                "s3://staging-area-innovative/data_warehouse/1601365958 - Tuesday 29 September 2020 @ 1052/data_warehouse-1601365958 - Tuesday 29 September 2020 @ 1052.csv"
+                "s3://staging-area-innovative/data_warehouse/data_warehouse.csv"
 
             ]
         },
