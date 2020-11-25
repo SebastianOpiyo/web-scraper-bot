@@ -9,12 +9,15 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sys
 
 class Ui_TollScraperRobot(object):
+    """Main GUI window. """
+
     def setupUi(self, TollScraperRobot):
         TollScraperRobot.setObjectName("TollScraperRobot")
         TollScraperRobot.resize(800, 599)
+
         self.centralwidget = QtWidgets.QWidget(TollScraperRobot)
         self.centralwidget.setObjectName("centralwidget")
         self.startscraper = QtWidgets.QPushButton(self.centralwidget)
@@ -99,6 +102,7 @@ class Ui_TollScraperRobot(object):
         self.actionAbout_Robot.setObjectName("actionAbout_Robot")
         self.actionversion = QtWidgets.QAction(TollScraperRobot)
         self.actionversion.setObjectName("actionversion")
+
         self.menuopen.addAction(self.actionFile)
         self.menuopen.addAction(self.actionFolder)
         self.menuFile.addAction(self.actionclose)
@@ -116,11 +120,12 @@ class Ui_TollScraperRobot(object):
 
     def retranslateUi(self, TollScraperRobot):
         _translate = QtCore.QCoreApplication.translate
-        TollScraperRobot.setWindowTitle(_translate("TollScraperRobot", "MainWindow"))
+        TollScraperRobot.setWindowTitle(_translate("TollScraperRobot", "Gravitas Business Solution Ltd."))
         # TollScraperRobot.setStatusBar(_translate("TollScraperRobot", "Ready!"))
         self.Agency_comboBox.addItems(["SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)",
                                        "EZPASS(NJ)", "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)",
                                        "THETOLLROADS(CA)", "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
+        self.statusbar.showMessage('Robot Ready!')
         self.startscraper.setText(_translate("TollScraperRobot", "Start Scraper"))
         self.stopscraper.setText(_translate("TollScraperRobot", "Stop Scraper"))
         self.viewfiles.setText(_translate("TollScraperRobot", "View Files"))
@@ -139,10 +144,23 @@ class Ui_TollScraperRobot(object):
         self.menuopen.setTitle(_translate("TollScraperRobot", "open"))
         self.menuview.setTitle(_translate("TollScraperRobot", "view"))
         self.menuHelp.setTitle(_translate("TollScraperRobot", "Help"))
+
         self.actionclose.setText(_translate("TollScraperRobot", "close"))
+        self.actionclose.triggered.connect(self.exit_window)
+
         self.actionFile.setText(_translate("TollScraperRobot", "File"))
         self.actionFolder.setText(_translate("TollScraperRobot", "Folder"))
         self.actionMaximize.setText(_translate("TollScraperRobot", "Maximize"))
         self.actionMinimize.setText(_translate("TollScraperRobot", "Minimize"))
         self.actionAbout_Robot.setText(_translate("TollScraperRobot", "About Robot"))
         self.actionversion.setText(_translate("TollScraperRobot", "version"))
+
+    # Helper functions
+    def exit_window(self):
+        close = QtWidgets.QMessageBox.question(self, "QUIT?",
+                                               "Are you sure want to STOP and EXIT?",
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        if close == QtWidgets.QMessageBox.Yes:
+            sys.exit()
+        else:
+            pass
