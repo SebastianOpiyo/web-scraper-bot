@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>599</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="startscraper">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>270</y>
-      <width>91</width>
+      <x>160</x>
+      <y>230</y>
+      <width>101</width>
       <height>27</height>
      </rect>
     </property>
@@ -27,12 +27,12 @@
      <string>Start Scraper</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="stopscraper">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>320</y>
-      <width>91</width>
+      <x>550</x>
+      <y>230</y>
+      <width>121</width>
       <height>27</height>
      </rect>
     </property>
@@ -40,12 +40,12 @@
      <string>Stop Scraper</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="processcrapes">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>380</y>
-      <width>91</width>
+      <x>160</x>
+      <y>320</y>
+      <width>101</width>
       <height>27</height>
      </rect>
     </property>
@@ -53,12 +53,12 @@
      <string>Process</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="viewfiles">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>430</y>
-      <width>91</width>
+      <x>550</x>
+      <y>320</y>
+      <width>121</width>
       <height>27</height>
      </rect>
     </property>
@@ -66,12 +66,12 @@
      <string>View Files</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="mailtolls">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>490</y>
-      <width>91</width>
+      <x>370</x>
+      <y>390</y>
+      <width>111</width>
       <height>27</height>
      </rect>
     </property>
@@ -79,41 +79,41 @@
      <string>Mail Tolls</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="Agency_comboBox">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>50</y>
-      <width>79</width>
+      <x>160</x>
+      <y>90</y>
+      <width>101</width>
       <height>27</height>
      </rect>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="start_dateEdit">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>50</y>
-      <width>110</width>
+      <x>550</x>
+      <y>90</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit_2">
+   <widget class="QDateEdit" name="end_dateEdit">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>120</y>
-      <width>110</width>
+      <x>550</x>
+      <y>160</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="agency_label">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>50</y>
+      <y>90</y>
       <width>111</width>
       <height>19</height>
      </rect>
@@ -122,11 +122,11 @@
      <string>Select Agency</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="startdate_label">
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>60</y>
+      <y>90</y>
       <width>91</width>
       <height>19</height>
      </rect>
@@ -135,17 +135,30 @@
      <string>Start Date</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="enddate_label">
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>120</y>
-      <width>67</width>
+      <y>160</y>
+      <width>71</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
      <string>End Date</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="titlelabel">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>0</y>
+      <width>291</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:22pt; font-weight:600;&quot;&gt;Toll Scraping Robot&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -155,17 +168,77 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuopen">
+     <property name="title">
+      <string>open</string>
+     </property>
+     <addaction name="actionFile"/>
+     <addaction name="actionFolder"/>
+    </widget>
+    <addaction name="actionclose"/>
+    <addaction name="menuopen"/>
+   </widget>
+   <widget class="QMenu" name="menuview">
+    <property name="title">
+     <string>view</string>
+    </property>
+    <addaction name="actionMaximize"/>
+    <addaction name="actionMinimize"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_Robot"/>
+    <addaction name="actionversion"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuview"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionclose">
+   <property name="text">
+    <string>close</string>
+   </property>
+  </action>
+  <action name="actionFile">
+   <property name="text">
+    <string>File</string>
+   </property>
+  </action>
+  <action name="actionFolder">
+   <property name="text">
+    <string>Folder</string>
+   </property>
+  </action>
+  <action name="actionMaximize">
+   <property name="text">
+    <string>Maximize</string>
+   </property>
+  </action>
+  <action name="actionMinimize">
+   <property name="text">
+    <string>Minimize</string>
+   </property>
+  </action>
+  <action name="actionAbout_Robot">
+   <property name="text">
+    <string>About Robot</string>
+   </property>
+  </action>
+  <action name="actionversion">
+   <property name="text">
+    <string>version</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
