@@ -65,6 +65,7 @@ class Ui_TollScraperRobot(object):
         self.user_name.setObjectName("user_name")
         self.password = QtWidgets.QLineEdit(self.centralwidget)
         self.password.setGeometry(QtCore.QRect(540, 220, 191, 25))
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.username_label = QtWidgets.QLabel(self.centralwidget)
         self.username_label.setGeometry(QtCore.QRect(50, 220, 81, 20))
@@ -125,16 +126,15 @@ class Ui_TollScraperRobot(object):
     def retranslateUi(self, TollScraperRobot):
         _translate = QtCore.QCoreApplication.translate
         TollScraperRobot.setWindowTitle(_translate("TollScraperRobot", "Gravitas Business Solution Ltd."))
-        self.Agency_comboBox.addItems(["SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)",
-                                       "EZPASS(NJ)", "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)",
-                                       "THETOLLROADS(CA)", "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
+        agency_initials = ["Select Agency", "SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)", "EZPASS(NJ)",
+                           "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)", "THETOLLROADS(CA)",
+                           "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"]
+        self.Agency_comboBox.addItems(agency_initials)
 
         self.statusbar.showMessage('Robot Ready!')
 
-        # self.progressBar.connect(self.start_progress_action)
-
         self.startscraper.setText(_translate("TollScraperRobot", "Start Scraper"))
-        self.startscraper.clicked.connect(self.start_progress_action)
+        self.startscraper.clicked.connect(self.start_scraping)
 
         self.stopscraper.setText(_translate("TollScraperRobot", "Stop Scraper"))
 
@@ -150,6 +150,7 @@ class Ui_TollScraperRobot(object):
                                                                "Toll Scraping Robot</span></p></body></html>"))
         self.username_label.setText(_translate("TollScraperRobot", "User name"))
         self.password_label.setText(_translate("TollScraperRobot", "Password"))
+        # self.password.setEchoMode(QLineEdit.Password)
         self.menuFile.setTitle(_translate("TollScraperRobot", "File"))
         self.menuopen.setTitle(_translate("TollScraperRobot", "open"))
         self.menuview.setTitle(_translate("TollScraperRobot", "view"))
@@ -181,3 +182,12 @@ class Ui_TollScraperRobot(object):
         for i in range(200):
             time.sleep(1)
             self.progressBar.setValue(i)
+
+    def start_scraping(self):
+        """Calls the entry methods and passes in the following params."""
+        agency = self.Agency_comboBox.currentText()
+        user_name = self.user_name.text()
+        password = self.password.text()
+        startdate = self.start_dateEdit.text()
+        enddate = self.end_dateEdit.text()
+        self.start_progress_action()
