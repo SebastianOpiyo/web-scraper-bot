@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QBasicTimer
 import sys
 
 class Ui_TollScraperRobot(object):
@@ -17,6 +18,9 @@ class Ui_TollScraperRobot(object):
     def setupUi(self, TollScraperRobot):
         TollScraperRobot.setObjectName("TollScraperRobot")
         TollScraperRobot.resize(800, 599)
+
+        self.timer = QBasicTimer()
+        self.step = 0
 
         self.centralwidget = QtWidgets.QWidget(TollScraperRobot)
         self.centralwidget.setObjectName("centralwidget")
@@ -56,21 +60,21 @@ class Ui_TollScraperRobot(object):
         self.titlelabel = QtWidgets.QLabel(self.centralwidget)
         self.titlelabel.setGeometry(QtCore.QRect(250, 0, 291, 51))
         self.titlelabel.setObjectName("titlelabel")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(130, 220, 191, 25))
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(540, 220, 191, 25))
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(50, 220, 81, 20))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(450, 220, 81, 20))
-        self.label_2.setObjectName("label_2")
+        self.user_name = QtWidgets.QLineEdit(self.centralwidget)
+        self.user_name.setGeometry(QtCore.QRect(130, 220, 191, 25))
+        self.user_name.setObjectName("user_name")
+        self.password = QtWidgets.QLineEdit(self.centralwidget)
+        self.password.setGeometry(QtCore.QRect(540, 220, 191, 25))
+        self.password.setObjectName("password")
+        self.username_label = QtWidgets.QLabel(self.centralwidget)
+        self.username_label.setGeometry(QtCore.QRect(50, 220, 81, 20))
+        self.username_label.setObjectName("username_label")
+        self.password_label = QtWidgets.QLabel(self.centralwidget)
+        self.password_label.setGeometry(QtCore.QRect(450, 220, 81, 20))
+        self.password_label.setObjectName("password_label")
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(130, 520, 601, 23))
-        self.progressBar.setProperty("value", 3)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         TollScraperRobot.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(TollScraperRobot)
@@ -121,13 +125,17 @@ class Ui_TollScraperRobot(object):
     def retranslateUi(self, TollScraperRobot):
         _translate = QtCore.QCoreApplication.translate
         TollScraperRobot.setWindowTitle(_translate("TollScraperRobot", "Gravitas Business Solution Ltd."))
-        # TollScraperRobot.setStatusBar(_translate("TollScraperRobot", "Ready!"))
         self.Agency_comboBox.addItems(["SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)",
                                        "EZPASS(NJ)", "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)",
                                        "THETOLLROADS(CA)", "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
+
         self.statusbar.showMessage('Robot Ready!')
 
+        # self.progressBar.connect(self.start_progress_action)
+
         self.startscraper.setText(_translate("TollScraperRobot", "Start Scraper"))
+        self.startscraper.clicked.connect(self.start_progress_action)
+
         self.stopscraper.setText(_translate("TollScraperRobot", "Stop Scraper"))
 
         self.viewfiles.setText(_translate("TollScraperRobot", "View Files"))
@@ -140,8 +148,8 @@ class Ui_TollScraperRobot(object):
         self.titlelabel.setText(_translate("TollScraperRobot", "<html><head/><body><p align=\"center\"><span style=\" "
                                                                "font-size:22pt; font-weight:600;\">"
                                                                "Toll Scraping Robot</span></p></body></html>"))
-        self.label.setText(_translate("TollScraperRobot", "User name"))
-        self.label_2.setText(_translate("TollScraperRobot", "Password"))
+        self.username_label.setText(_translate("TollScraperRobot", "User name"))
+        self.password_label.setText(_translate("TollScraperRobot", "Password"))
         self.menuFile.setTitle(_translate("TollScraperRobot", "File"))
         self.menuopen.setTitle(_translate("TollScraperRobot", "open"))
         self.menuview.setTitle(_translate("TollScraperRobot", "view"))
@@ -166,3 +174,10 @@ class Ui_TollScraperRobot(object):
             sys.exit()
         else:
             pass
+
+    def start_progress_action(self):
+        """Starts timed progress bar."""
+        import time
+        for i in range(200):
+            time.sleep(1)
+            self.progressBar.setValue(i)
