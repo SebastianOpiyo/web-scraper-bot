@@ -125,13 +125,12 @@ class Ui_TollScraperRobot(object):
     def retranslateUi(self, TollScraperRobot):
         _translate = QtCore.QCoreApplication.translate
         TollScraperRobot.setWindowTitle(_translate("TollScraperRobot", "Gravitas Business Solution Ltd."))
-        self.Agency_comboBox.addItems(["SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)",
-                                       "EZPASS(NJ)", "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)",
-                                       "THETOLLROADS(CA)", "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"])
+        agency_initials = ["Select Agency", "SUNPASS(FL)", "GOODTOGO(WA)", "EZPASS(PA)", "PIKEPASS(OK)", "EZPASS(OH)", "EZPASS(NJ)",
+                           "QUICKPASS(NC)", "RIVERLINK(KY)", "IPASS(IL)", "EXPRESS(CO)", "THETOLLROADS(CA)",
+                           "FASTTRACK(CA)", "TXTAG", "HCTRA(TX)"]
+        self.Agency_comboBox.addItems(agency_initials)
 
         self.statusbar.showMessage('Robot Ready!')
-
-        # self.progressBar.connect(self.start_progress_action)
 
         self.startscraper.setText(_translate("TollScraperRobot", "Start Scraper"))
         self.startscraper.clicked.connect(self.start_progress_action)
