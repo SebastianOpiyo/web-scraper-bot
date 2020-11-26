@@ -54,7 +54,8 @@ class MainScraperRun:
     3. NOTE: When doing the cron job, will go from site to site."""
 
     def print_existing_sites(self):
-        """Prints a list of existing sites and lets the user pick."""
+        """This is for a commandline App.
+        - Prints a list of existing sites and lets the user pick."""
         print(f'List of Toll Sites to Pick from:')
         for site in TollSites:
             print(site.name)
@@ -90,6 +91,39 @@ class MainScraperRun:
         elif pick_site == 'WAGOODTOGO':
             TollWebsiteAccess().good_to_go_login_and_scraping()
         elif pick_site == 'FLSUNPASS':
+            TollWebsiteAccess().sun_pass_login_and_scraping()
+
+
+    def desktop_main(self):
+        """Entry Point For the desktop Application."""
+        pick_site = ''
+        if pick_site == "HCTRA(TX)":
+            TollWebsiteAccess().hctra_login_scraping()
+        elif pick_site == "TXTAG":
+            TollWebsiteAccess().txtag_login_scraping()
+        elif pick_site == "FASTTRACK(CA)":
+            TollWebsiteAccess().fast_track_login_and_scraping()
+        elif pick_site == "THETOLLROADS(CA)":
+            TollWebsiteAccess().toll_roads_login_and_scraping()
+        elif pick_site == "EXPRESS(CO)":
+            TollWebsiteAccess().coexpress_login_scraping()
+        elif pick_site == "IPASS(IL)":
+            TollWebsiteAccess().ilpass_login_scraping()
+        elif pick_site == "RIVERLINK(KY)":
+            TollWebsiteAccess().river_link_login_and_scraping()
+        elif pick_site == "QUICKPASS(NC)":
+            TollWebsiteAccess().quickpass_login_scraping()
+        elif pick_site == "EZPASS(NJ)":
+            TollWebsiteAccess().ez_pass_login()
+        elif pick_site == "EZPASS(OH)":
+            TollWebsiteAccess().oh_ezpass_login_and_scraping()
+        elif pick_site == "PIKEPASS(OK)":
+            TollWebsiteAccess().pikepass_ok_login_scraping()
+        elif pick_site == "EZPASS(PA)":
+            TollWebsiteAccess().pa_ezpass_login_and_scraping()
+        elif pick_site == "GOODTOGO(WA)":
+            TollWebsiteAccess().good_to_go_login_and_scraping()
+        elif pick_site == "SUNPASS(FL)":
             TollWebsiteAccess().sun_pass_login_and_scraping()
 
 

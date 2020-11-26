@@ -6,7 +6,7 @@
 # -*- coding: utf-8 -*-
 
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
-from desktopUI.uidesign.scraperobotui import Ui_TollScraperRobot
+from desktopUI.uidesign.robotuiv1 import Ui_TollScraperRobot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 import sys
