@@ -27,11 +27,13 @@ class TollWebsiteAccess(BasePage):
         self._site_name = None
         self._filename = f'{self._pay_plan}@{self._site_name}'
 
-    def collect_login_credentials(self):
-        username = input("Please enter a valid Pay Plan:")
-        password = input("Please enter a valid Email:")
-        self._pay_plan = username
-        self._email = password
+    def collect_login_credentials(self, username=None, password=None):
+        if not username and not password:
+            username = input("Please enter a valid Pay Plan:")
+            password = input("Please enter a valid Email:")
+        else:
+            self._pay_plan = username
+            self._email = password
 
     def collect_cred_test_access(self, url: str):
         """For the sake of DRY code, we use this function to merge two lines of
@@ -44,10 +46,10 @@ class TollWebsiteAccess(BasePage):
         """EZPassNJ Access and Scraping."""
         from src.ez_pass import EzPassLogin
 
-        # self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
-        # self._site_name = 'EZ_PassNJ'
-        # self.collect_cred_test_access(self.base_url)
-        # EzPassLogin.login_into_ezpass(self)
+        self.base_url = "https://www.ezpassnj.com/vector/violations/violationList.do"
+        self._site_name = 'EZ_PassNJ'
+        self.collect_cred_test_access(self.base_url)
+        EzPassLogin.login_into_ezpass(self)
         EzPassLogin.process_tolls(self)
 
     def sun_pass_login_and_scraping(self):

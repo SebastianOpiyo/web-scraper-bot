@@ -14,7 +14,8 @@ import sys
 
 class MainWindow(QMainWindow, Ui_TollScraperRobot):
 
-    """Main Window."""
+    """Main Window.
+    Starts the desktop app."""
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
