@@ -6,6 +6,7 @@
 # -*- encoding: utf-8 -*-
 
 import csv
+import pathlib
 from openpyxl import Workbook
 from src.base import BasePage
 
@@ -59,7 +60,7 @@ class WriteToExcel(BasePage):
         """Writes csv data to excel sheet.
         - This data is purely row.
         - We can use the @openxlsx methods or this method to achieve the same result."""
-        excel_file = f'./src/rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
+        excel_file = f'../../../../src/rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',

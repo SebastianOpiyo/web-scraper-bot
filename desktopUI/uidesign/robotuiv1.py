@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QBasicTimer
 import sys
 
+
 class Ui_TollScraperRobot(object):
     """Main GUI window. """
 
@@ -184,6 +185,7 @@ class Ui_TollScraperRobot(object):
             self.progressBar.setValue(i)
 
     def start_scraping(self):
+        from src.main import MainScraperRun
         """Calls the entry methods and passes in the following params."""
         agency = self.Agency_comboBox.currentText()
         user_name = self.user_name.text()
@@ -191,3 +193,5 @@ class Ui_TollScraperRobot(object):
         startdate = self.start_dateEdit.text()
         enddate = self.end_dateEdit.text()
         self.start_progress_action()
+        MainScraperRun.desktop_main(agency=agency, username=user_name, password=password, startdate=startdate,
+                                    enddate=enddate)
