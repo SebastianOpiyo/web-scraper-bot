@@ -6,7 +6,7 @@
 # -*- encoding: utf-8 -*-
 
 import csv
-import pathlib
+from pathlib import Path
 from openpyxl import Workbook
 from src.base import BasePage
 
@@ -36,6 +36,18 @@ class WriteToExcel(BasePage):
         self.columns = [" ", "License Plate Number", "Date & Time", "Facility(Roadway or Bridge)",
                         "Interchange# - Toll Plaza", "Status*", "Toll", "Fee", "NSF Fee", "Amt Due"]
         self.filename = "tolls.xlsx"
+        self.documents = Path.home() / 'Documents'
+        self.row_csv_folder = Path(self.documents, 'scrapingRobotFiles', 'row_csv_tolls')
+
+    def create_working_directory(self):
+        try:
+            main_folder = Path(self.documents / 'RobotsFolder').mkdir(exist_ok=False)
+            csv_files = Path(self.documents / 'RobotsFolder' / 'row_CSV').mkdir(exist_ok=False)
+            row_excel = Path(self.documents / 'RobotsFolder' / 'row_Excels').mkdir(exist_ok=False)
+            processed_excel = Path(self.documents / 'RobotsFolder' / 'processed_Excel').mkdir(exist_ok=False)
+            return main_folder, csv_files, row_excel, processed_excel
+        except FileExistsError as e:
+            pass
 
     def openxlsx(self, toll_list: list):
         """Writes scraped tolls directly to excel."""
@@ -271,4 +283,5 @@ if __name__ == '__main__':
     processfasttrack = WriteToExcelFastTrack()
     # processfasttrack.write_processed_row_to_excel()
     # processfasttrack.write_csv_toll_to_excel()
-    processfasttrack.write_processed_row_to_excel()
+    # processfasttrack.write_processed_row_to_excel()
+    processfasttrack.create_working_directory()
