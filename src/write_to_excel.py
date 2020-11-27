@@ -35,9 +35,16 @@ class WriteToExcel(BasePage):
         self.sheet = self.wb.active
         self.columns = [" ", "License Plate Number", "Date & Time", "Facility(Roadway or Bridge)",
                         "Interchange# - Toll Plaza", "Status*", "Toll", "Fee", "NSF Fee", "Amt Due"]
+        # File names
+        self.row_excel_file = ''
+        self.row_csv_file = ''
+        self.processed_excel_file = ''
         self.filename = "tolls.xlsx"
+        # File paths
         self.documents = Path.home() / 'Documents'
-        self.row_csv_folder = Path(self.documents, 'scrapingRobotFiles', 'row_csv_tolls')
+        self.row_csv_folder = Path(self.documents, 'RobotsFolder', 'row_Excels')
+        self.processed_excel = Path(self.documents, 'RobotsFolder', 'processed_Excel')
+        self.row_excel = Path(self.documents, 'RobotsFolder', 'row_Excels')
 
     def create_working_directory(self):
         try:
@@ -46,6 +53,17 @@ class WriteToExcel(BasePage):
             row_excel = Path(self.documents / 'RobotsFolder' / 'row_Excels').mkdir(exist_ok=False)
             processed_excel = Path(self.documents / 'RobotsFolder' / 'processed_Excel').mkdir(exist_ok=False)
             return main_folder, csv_files, row_excel, processed_excel
+        except FileExistsError as e:
+            pass
+
+    def create_file(self, payment_plan):
+        try:
+            excel_file = f'{WriteToExcel.name_files_with_account_date(payment_plan)}'
+            self.row_excel_file = excel_file
+            self.processed_excel_file = excel_file
+            excel_file_path = Path(self.row_excel, excel_file).touch(exist_ok=False)
+            processed_excel = Path(self.processed_excel, excel_file).touch(exist_ok=False)
+            return excel_file_path, processed_excel
         except FileExistsError as e:
             pass
 
@@ -72,7 +90,10 @@ class WriteToExcel(BasePage):
         """Writes csv data to excel sheet.
         - This data is purely row.
         - We can use the @openxlsx methods or this method to achieve the same result."""
-        excel_file = f'../../../../src/rowtolls/row_excel/{WriteToExcel.name_files_with_account_date(payment_plan)}'
+        self.create_file(payment_plan)
+        file = Path(self.row_excel, f'{self.row_excel_file}')
+        # Fix Os filepath variation here.
+        excel_file_path = Path(file)
         self.sheet.append(self.columns)
         csv.register_dialect(
             'mydialect',
@@ -92,16 +113,20 @@ class WriteToExcel(BasePage):
                         pass
                     else:
                         self.sheet.append(result_list)
-            self.wb.save(excel_file)
+            self.wb.save(excel_file_path)
 
     def final_ezpasstoll_processing(self, file_name):
         """This methods used the following helper methods to accomplish the processing:
         @method: process_new_toll_row()
         @:return processec excel file
         """
+        self.create_file(file_name)
+        file = Path(self.processed_excel, f'{self.processed_excel_file}')
         self.columns = ["LP", "STATE", "DATE-TIME", "AGENCY", "CLIENT", "EXIT-LANE", "CLASS", "AMOUNT"]
         self.sheet.append(self.columns)
-        with open('tolls.csv') as csv_data:
+        tolls = Path('../desktopUI/src/main/python/tolls.csv')
+        # print(tolls)
+        with open(tolls) as csv_data:
             csv.register_dialect(
                 'mydialect',
                 delimiter=',',
@@ -125,7 +150,7 @@ class WriteToExcel(BasePage):
                             self.sheet.append(new_row)
                     except Exception as e:
                         print(f'Encountered the following Error --> {e}')
-            self.wb.save(f'./processedtolls/processed_toll_{file_name}.xlsx')
+            self.wb.save(file)
 
     @staticmethod
     def process_new_toll_row(toll_list: list):
@@ -284,4 +309,5 @@ if __name__ == '__main__':
     # processfasttrack.write_processed_row_to_excel()
     # processfasttrack.write_csv_toll_to_excel()
     # processfasttrack.write_processed_row_to_excel()
-    processfasttrack.create_working_directory()
+    # processfasttrack.create_working_directory()
+    processfasttrack.final_ezpasstoll_processing('Processed-11-27-2020')
