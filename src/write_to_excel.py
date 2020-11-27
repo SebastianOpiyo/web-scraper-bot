@@ -301,6 +301,12 @@ class WriteToExcelFastTrack(WriteToExcel):
                 self.sheet.append(row)
             self.wb.save(excel_file)
 
+    def csv_file_cleanup(self):
+        """Renames the file according to account and moves it to
+        already processed csv folder."""
+        csv_location = Path.cwd()
+        print(csv_location)
+
 
 if __name__ == '__main__':
     # process = WriteToExcel()
@@ -310,4 +316,5 @@ if __name__ == '__main__':
     # processfasttrack.write_csv_toll_to_excel()
     # processfasttrack.write_processed_row_to_excel()
     # processfasttrack.create_working_directory()
-    processfasttrack.final_ezpasstoll_processing('Processed-11-27-2020')
+    processfasttrack.final_ezpasstoll_processing('P00043020203875548-2020-11-27')
+    # processfasttrack.csv_file_cleanup()
