@@ -19,21 +19,24 @@ class BotExceptionHandler(Exception):
 
 class TollWebsiteAccess(BasePage):
 
-    def __init__(self):
+    def __init__(self, username=None, password=None, start_date=None, end_date=None):
         super().__init__()
         self.base_url = None
-        self._pay_plan = None
-        self._email = None
+        self._pay_plan = username
+        self._email = password
+        self.start_date = start_date
+        self.end_date = end_date
         self._site_name = None
         self._filename = f'{self._pay_plan}@{self._site_name}'
 
-    def collect_login_credentials(self, username=None, password=None):
-        if not username and not password:
+    def collect_login_credentials(self):
+        if not self._pay_plan and not self._email:
             username = input("Please enter a valid Pay Plan:")
             password = input("Please enter a valid Email:")
-        else:
             self._pay_plan = username
             self._email = password
+        else:
+            pass
 
     def collect_cred_test_access(self, url: str):
         """For the sake of DRY code, we use this function to merge two lines of
